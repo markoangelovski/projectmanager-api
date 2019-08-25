@@ -1,0 +1,66 @@
+{
+  "title": "Project 1",
+  "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam rem quo doloribus fugit repellat, nobis nemo. Beatae similique consectetur cumque quo? Ab, aspernatur voluptatibus laboriosam quia perspiciatis perferendis iure!",
+  "owner": "Ime i prezime ownera projekta",
+  "kanboard": "https://cmg.rocks/project-board",
+  "dev": "https://site-dev.azurewebsites.net",
+  "stage": "https://site-stage.azurewebsites.net",
+  "prod": "https://site.azurewebsites.net",
+  "live": "https://www.livesite.com",
+  "nas": "NAS path na root folder ako postoji",
+  "order": 1,
+  "date": "24-07-2019",
+  "tasks": [
+    {
+      "title": "Task 1",
+      "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam rem quo doloribus fugit repellat, nobis nemo. Beatae similique consectetur cumque quo? Ab, aspernatur voluptatibus laboriosam quia perspiciatis perferendis iure!",
+      "kanban": "https://cmg.rocks/project-board/task",
+      "nas": "NAS path na folder ako postoji",
+      "dueDate": "31-12-2019",
+      "order": 1,
+      "notes": [
+        {
+          "note": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+          "date": "24-07-2019",
+          "order": 1
+        },
+        {
+          "note": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+          "date": "24-07-2019",
+          "order": 2
+        }
+      ],
+      "links": [
+        {
+          "title": "Link 1",
+          "link": "https://www.link1.com",
+          "date": "24-07-2019",
+          "order": 1
+        },
+        {
+          "title": "Link 2",
+          "link": "https://www.link2.com",
+          "date": "24-07-2019",
+          "order": 2
+        }
+      ],
+      "subtasks": [
+        {
+          "title": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+          "date": "24-07-2019",
+          "done": true,
+          "order": 1
+        },
+        {
+          "title": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+          "date": "24-07-2019",
+          "done": false,
+          "order": 2
+        }
+      ],
+      "tags": ["BV", "PS", "BINLite", "GCR", "JR", "SmartL", "CookieC"],
+      "date": "24-07-2019",
+      "done": false
+    }
+  ]
+}

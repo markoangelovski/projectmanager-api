@@ -1,0 +1,10 @@
+### Create a new Project
+POST http://localhost:3000/projects
+Content-Type: application/json
+
+{
+  "title": "Nešto manje novi projekt",
+  "description": "Opis nešto manje novog projekta."
+}
+### Get all projects
+GET  http://localhost:3000/projects

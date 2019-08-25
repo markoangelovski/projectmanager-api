@@ -1,0 +1,12 @@
+### Create a new Project
+POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+  "title": "Skroz novi task",
+  "description": "Opis skroz novog taska",
+  "column": "Upcoming",
+  "project": "5d593ce25fe6752140ddb679"
+}
+### Get all tasks
+GET  http://localhost:3000/tasks
