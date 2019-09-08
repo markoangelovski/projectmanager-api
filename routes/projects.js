@@ -47,4 +47,31 @@ router.get("/", async (req, res) => {
   }
 });
 
+// @route   Update /projects/:projectId
+// @desc    Get all projects
+
+// @route   DELETE /projects/:projectId
+// @desc    Delete a project
+router.delete("/:projectId", async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.projectId);
+    if (project) {
+      const deletedProject = await project.remove();
+      res.status(200).json({
+        message: "Project deleted!",
+        deletedProject
+      });
+    } else {
+      res.status(404).json({
+        message: "Project not found!"
+      });
+    }
+  } catch (error) {
+    console.warn(error);
+    res.status(500).json({
+      error
+    });
+  }
+});
+
 module.exports = router;

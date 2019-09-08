@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+// Tasks import
+const Task = require("./../models/task");
+
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true, default: "New Project" },
   description: String,
@@ -22,5 +25,15 @@ const projectSchema = new mongoose.Schema({
 });
 
 // Create pre.remove hook to delete tasks
+projectSchema.pre("remove", async function(next) {
+  try {
+    await Task.remove({
+      project: this._id
+    });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = mongoose.model("Project", projectSchema);

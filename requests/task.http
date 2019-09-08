@@ -3,10 +3,11 @@ POST http://localhost:3000/tasks
 Content-Type: application/json
 
 {
-  "title": "Skroz novi task",
-  "description": "Opis skroz novog taska",
-  "column": "Upcoming",
-  "project": "5d593ce25fe6752140ddb679"
+  "title": "Task 3",
+  "description": "Opis taska 3",
+  "column": "Completed",
+  "dueDate": 1577836800000,
+  "project": "5d598db65082662b5fbbe853"
 }
 ### Get all tasks
 GET  http://localhost:3000/tasks

@@ -8,3 +8,6 @@ Content-Type: application/json
 }
 ### Get all projects
 GET  http://localhost:3000/projects
+
+### Delete project
+DELETE  http://localhost:3000/projects/5d5975b85082662b5fbbe83b
