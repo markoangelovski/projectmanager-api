@@ -19,7 +19,10 @@ router.post("/", async (req, res) => {
 
       task.save();
 
-      res.status(201).json(task);
+      res.status(201).json({
+        message: "Task successfully created!",
+        task
+      });
     } else {
       res.status(404).json({
         message: "Project not found!"
@@ -45,8 +48,9 @@ router.get("/", async (req, res) => {
         tasks
       });
     } else {
-      res.status(404).json({
-        message: "No tasks found!"
+      res.status(200).json({
+        taskCount: 0,
+        tasks: []
       });
     }
   } catch (error) {

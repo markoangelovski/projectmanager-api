@@ -3,8 +3,9 @@ const mongoose = require("mongoose");
 const taskSchema = new mongoose.Schema({
   title: { type: String, default: "New Task" },
   description: String,
+  owner: String,
   column: { type: String, default: "Upcoming" },
-  kanTaskLink: String,
+  kanboard: String,
   nas: String,
   dueDate: { type: Number, default: Date.now },
   order: Number,

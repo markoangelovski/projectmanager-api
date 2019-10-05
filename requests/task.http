@@ -1,13 +1,13 @@
-### Create a new Project
+### Create a new Task
 POST http://localhost:3000/tasks
 Content-Type: application/json
 
 {
-  "title": "Task 3",
+  "title": "Task 1",
   "description": "Opis taska 3",
   "column": "Completed",
   "dueDate": 1577836800000,
-  "project": "5d598db65082662b5fbbe853"
+  "project": "5d59a26e5082662b5fbbe867"
 }
 ### Get all tasks
 GET  http://localhost:3000/tasks

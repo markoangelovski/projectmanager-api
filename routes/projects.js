@@ -35,8 +35,9 @@ router.get("/", async (req, res) => {
         projects
       });
     } else {
-      res.status(404).json({
-        message: "No projects found!"
+      res.status(200).json({
+        projectCount: 0,
+        projects: []
       });
     }
   } catch (error) {
@@ -58,7 +59,7 @@ router.delete("/:projectId", async (req, res) => {
     if (project) {
       const deletedProject = await project.remove();
       res.status(200).json({
-        message: "Project deleted!",
+        message: `Project "${deletedProject.title}" successfully deleted!`,
         deletedProject
       });
     } else {
