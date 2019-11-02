@@ -4,6 +4,7 @@ const subTaskSchema = new mongoose.Schema({
   title: { type: String, default: "Sub-task 1" },
   description: { type: String, default: "Sub-task 1" },
   date: { type: Number, default: Date.now },
+  dueDate: { type: Number, default: Date.now },
   done: { type: Boolean, default: false },
   order: Number,
   task: {

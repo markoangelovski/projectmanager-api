@@ -7,7 +7,23 @@ Content-Type: application/json
   "description": "Opis taska 3",
   "column": "Completed",
   "dueDate": 1577836800000,
-  "project": "5d59a26e5082662b5fbbe867"
+  "project": "5d97bfa477af2a35563765aa"
 }
+
 ### Get all tasks
 GET  http://localhost:3000/tasks
+
+### Update task
+PATCH http://localhost:3000/tasks/5d97ce268d8c753c4adcbafc
+Content-Type: application/json
+
+[
+  {
+  "propName": "title",
+  "value": "Naslov promijenjen još jednom"
+  },
+  {
+  "propName": "column",
+  "value": "Upcoming"
+  }
+]

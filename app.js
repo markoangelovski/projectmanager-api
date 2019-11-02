@@ -16,10 +16,12 @@ app.use(express.json({ extended: true }));
 // Routes imports
 const projectsRoutes = require("./routes/projects");
 const tasksRoutes = require("./routes/tasks");
+const linksRoutes = require("./routes/links");
 
 // Routes
 app.use("/projects", projectsRoutes);
 app.use("/tasks", tasksRoutes);
+app.use("/links", linksRoutes);
 
 const PORT = process.env.PORT || 3000;
 

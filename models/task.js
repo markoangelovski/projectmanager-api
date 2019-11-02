@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+// inks import
+const Link = require("./../models/link");
+
 const taskSchema = new mongoose.Schema({
   title: { type: String, default: "New Task" },
   description: String,
@@ -35,6 +38,18 @@ const taskSchema = new mongoose.Schema({
   tags: [],
   date: { type: Number, default: Date.now },
   done: { type: Boolean, default: false }
+});
+
+// Create pre.remove hook to delete links
+taskSchema.pre("remove", async function(next) {
+  try {
+    await Link.remove({
+      task: this._id
+    });
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = mongoose.model("Task", taskSchema);
