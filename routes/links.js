@@ -33,7 +33,7 @@ router.post("/:taskId", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({
-      message: error.message,
+      message: `Service connection error ocurred: ${error.message}`,
       error
     });
   }
@@ -73,7 +73,7 @@ router.patch("/:linkId", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({
-      message: error.message,
+      message: `Service connection error ocurred: ${error.message}`,
       error
     });
   }
@@ -100,7 +100,7 @@ router.delete("/:taskId", async (req, res) => {
       ]);
 
       res.status(200).json({
-        message: `Link ${deletedLink.title} successfully deleted!`,
+        message: `Link "${deletedLink.title}" successfully deleted!`,
         task: updatedTask
       });
     } else {
@@ -111,7 +111,8 @@ router.delete("/:taskId", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({
-      message: `Service connection error ocurred: ${error.message}`
+      message: `Service connection error ocurred: ${error.message}`,
+      error
     });
   }
 });

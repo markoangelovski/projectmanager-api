@@ -27,3 +27,6 @@ Content-Type: application/json
   "value": "Upcoming"
   }
 ]
+
+### Delete task
+DELETE  http://localhost:3000/tasks/5db490e9921c8439e0b7dea2

@@ -30,8 +30,9 @@ router.post("/", async (req, res) => {
       });
     }
   } catch (error) {
-    console.warn(error);
+    console.error(error.message);
     res.status(500).json({
+      message: `Service connection error ocurred: ${error.message}`,
       error
     });
   }
@@ -57,8 +58,9 @@ router.get("/", async (req, res) => {
       });
     }
   } catch (error) {
-    console.warn(error);
+    console.error(error.message);
     res.status(500).json({
+      message: `Service connection error ocurred: ${error.message}`,
       error
     });
   }
@@ -87,8 +89,42 @@ router.patch("/:taskId", async (req, res) => {
       });
     }
   } catch (error) {
-    console.warn(error);
+    console.error(error.message);
     res.status(500).json({
+      message: `Service connection error ocurred: ${error.message}`,
+      error
+    });
+  }
+});
+
+// @route   DELETE /tasks/:taskId
+// @desc    Delete a project
+router.delete("/:taskId", async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.taskId);
+    const project = task ? await Project.findById(task.project._id) : null;
+    if (task || project) {
+      project.tasks = project.tasks.filter(
+        task => task._id != req.params.taskId
+      );
+      const [deletedTask, updatedProject] = await Promise.all([
+        task.remove(),
+        project.save()
+      ]);
+
+      res.status(200).json({
+        message: `Task "${deletedTask.title}" successfully deleted!`,
+        project: updatedProject
+      });
+    } else {
+      res.status(404).json({
+        message: "Project or task not found!"
+      });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      message: `Service connection error ocurred: ${error.message}`,
       error
     });
   }
