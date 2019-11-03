@@ -1,0 +1,14 @@
+### Create a new note
+POST http://localhost:3000/notes/5dbda8da86838336f54c84ba
+Content-Type: application/json
+
+{
+  "note": "neš note!"
+}
+
+### Patch a note: /notes/:noteId?note={URI-encoded-values}
+PATCH  http://localhost:3000/notes/5dbdb9a819b3c03c44710055?note=nota%20bene
+
+### Delete a note: /notes/{taskId}/?noteId={noteId}
+DELETE  http://localhost:3000/notes/5dbda8da86838336f54c84ba?noteId=5dbdadd186838336f54c84c0
+

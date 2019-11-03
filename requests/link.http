@@ -12,5 +12,5 @@ Content-Type: application/json
 PATCH  http://localhost:3000/links/5db4860abd41f338d20416c0?link=%5B%7B%22propName%22%3A%22title%22%2C%22value%22%3A%22Ne%C5%A1to%22%7D%2C%7B%22propName%22%3A%22link%22%2C%22value%22%3A%22bbb%22%7D%5D
 
 ### Delete a link: /links/{taskId}/?linkId={linkId}
-DELETE  http://localhost:3000/links/links/5db7892c199e881f5cc359a0?linkId=5db47ce20cb5ca35d893a211
+DELETE  http://localhost:3000/links/5dbda8da86838336f54c84ba?linkId=5dbebf21cc1535588489f8f7
 

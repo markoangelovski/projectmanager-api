@@ -44,7 +44,8 @@ router.get("/", async (req, res) => {
   try {
     const tasks = await Task.find()
       .populate("project", "title")
-      .populate("links");
+      .populate("links")
+      .populate("notes");
 
     if (tasks.length > 0) {
       res.status(200).json({

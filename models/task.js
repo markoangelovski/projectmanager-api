@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 // inks import
 const Link = require("./../models/link");
+const Note = require("./../models/note");
 
 const taskSchema = new mongoose.Schema({
   title: { type: String, default: "New Task" },
@@ -44,6 +45,9 @@ const taskSchema = new mongoose.Schema({
 taskSchema.pre("remove", async function(next) {
   try {
     await Link.remove({
+      task: this._id
+    });
+    await Note.remove({
       task: this._id
     });
     next();

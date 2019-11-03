@@ -42,7 +42,7 @@ router.post("/:taskId", async (req, res) => {
 //links/:linkId?link={URI-encoded-values}
 //{URI-encoded-values} === [{"propName":"name1","value":"value1"},{"propName":"name2","value":"value2"}]
 // @route   PATCH /links
-// @desc    Create a new link
+// @desc    Update a link
 router.patch("/:linkId", async (req, res) => {
   // Set payload to update
   const id = req.params.linkId;
