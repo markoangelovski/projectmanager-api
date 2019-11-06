@@ -51,8 +51,8 @@ taskSchema.pre("remove", async function(next) {
       task: this._id
     });
     next();
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
 

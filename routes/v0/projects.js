@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 // Models
-const Project = require("./../models/project");
+const Project = require("../../models/project");
 
 // @route   POST /projects
 // @desc    Create a new project

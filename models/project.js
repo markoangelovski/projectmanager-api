@@ -31,8 +31,8 @@ projectSchema.pre("remove", async function(next) {
       project: this._id
     });
     next();
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 });
 

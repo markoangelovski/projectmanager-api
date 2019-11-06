@@ -1,0 +1,42 @@
+### Get all users route
+GET http://localhost:3000/auth
+
+### Auth check
+POST http://localhost:3000/auth
+
+### Register route
+POST  http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "Bobanč",
+  "password": "Obradović"
+}
+
+### Login route
+POST  http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Boshko",
+  "password": "Obradović"
+}
+
+### Check user route
+GET http://localhost:3000/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGJmMDE3OGQ5NWQ3Yjc0Y2Q0ZGNkYjgiLCJ1c2VybmFtZSI6IkJvc2hrbyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTcyODEzMzE0LCJleHAiOjE1NzI4OTk3MTR9.0lso4Bhowv1bp1_YiLwA5a8gT4SU3FI-yDSC5RIquis
+
+### Test notes route
+GET http://localhost:3000/notes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGJmMDE3OGQ5NWQ3Yjc0Y2Q0ZGNkYjgiLCJ1c2VybmFtZSI6IkJvc2hrbyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTcyODEzMzE0LCJleHAiOjE1NzI4OTk3MTR9.0lso4Bhowv1bp1_YiLwA5a8gT4SU3FI-yDSC5RIquis
+
+### Test notes route
+GET http://localhost:3000/notes/new
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGJmMDE3OGQ5NWQ3Yjc0Y2Q0ZGNkYjgiLCJ1c2VybmFtZSI6IkJvc2hrbyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTcyODEzMzE0LCJleHAiOjE1NzI4OTk3MTR9.0lso4Bhowv1bp1_YiLwA5a8gT4SU3FI-yDSC5RIquis
+
+{
+  "title": "Boshko",
+  "note": "Obradović"
+}
+

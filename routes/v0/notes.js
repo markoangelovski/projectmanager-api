@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 // Models
-const Task = require("../models/task");
-const Note = require("../models/note");
+const Task = require("../../models/task");
+const Note = require("../../models/note");
 
 // @route   POST /notes
 // @desc    Create a new note
