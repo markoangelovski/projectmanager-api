@@ -16,7 +16,6 @@ const validateUser = require("../../validation/user");
 // @route /auth
 // @desc Auth root
 router.post("/", isLoggedIn, async (req, res) => {
-  console.log("req.cookie", req.cookies);
   res.json({
     message: "User authenticated.",
     user: req.user
@@ -102,8 +101,7 @@ router.post("/login", async (req, res, next) => {
           const token = jwt.sign(user, process.env.JWT, { expiresIn: "1d" });
           res.cookie("auth", `Bearer ${token}`, { httpOnly: true });
           res.json({
-            user,
-            token
+            user
           });
         } else {
           const error = new Error("Unable to login");

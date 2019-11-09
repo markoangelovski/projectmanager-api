@@ -43,7 +43,7 @@ const linksRoutes = require(`./routes/${v}/links`);
 const notesRoutes = require(`./routes/${v}/notes`);
 
 // Routes
-app.use("/auth", usersRoutes);
+app.use(`/${v}/auth`, usersRoutes);
 app.use("/projects", projectsRoutes);
 app.use("/tasks", tasksRoutes);
 app.use("/links", linksRoutes);
