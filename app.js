@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/db");
 const { checkUser } = require("./middleware/checkUser");
@@ -11,7 +12,14 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    optionsSuccessStatus: 204
+  })
+);
 app.use(morgan("dev"));
 app.use(express.json({ extended: true }));
 app.use(checkUser);

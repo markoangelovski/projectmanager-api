@@ -9,8 +9,8 @@ POST  http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-  "username": "Bobanč",
-  "password": "Obradović"
+  "email": "marko@angelovski.ga",
+  "password": "maderfaker"
 }
 
 ### Login route
@@ -18,8 +18,8 @@ POST  http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "username": "Boshko",
-  "password": "Obradović"
+  "email": "marko@angelovski.ga",
+  "password": "maderfaker"
 }
 
 ### Check user route

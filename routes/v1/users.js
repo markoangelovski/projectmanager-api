@@ -16,6 +16,7 @@ const validateUser = require("../../validation/user");
 // @route /auth
 // @desc Auth root
 router.post("/", isLoggedIn, async (req, res) => {
+  console.log("req.cookie", req.cookies);
   res.json({
     message: "User authenticated.",
     user: req.user
@@ -40,13 +41,13 @@ router.post("/register", async (req, res, next) => {
 
   if (!result.error) {
     // Check if user already exists in DB
-    const existingUser = await User.findOne({ username: req.body.username });
+    const existingUser = await User.findOne({ email: req.body.email });
     if (!existingUser) {
       try {
         // Hash password
         const hash = await bcrypt.hash(req.body.password.trim(), 12);
         const user = new User({
-          username: req.body.username,
+          email: req.body.email,
           password: hash
         });
         // Save user to db
@@ -55,7 +56,7 @@ router.post("/register", async (req, res, next) => {
         if (savedUser) {
           res.status(201).json({
             message: "User account successfully created!",
-            user: savedUser.username
+            user: savedUser.email
           });
         } else {
           const error = new Error("An error ocurred with the database!");
@@ -80,26 +81,30 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   // validate user input
   const result = validateUser.validate(req.body);
+  console.log("cookie", req.cookie);
   if (!result.error) {
     try {
       // check if user exists
-      const user = await User.findOne({ username: req.body.username });
-      if (user) {
+      const findUser = await User.findOne({ email: req.body.email });
+      if (findUser) {
         // Cofirm password
         const hashConfirmed = await bcrypt.compare(
           req.body.password,
-          user.password
+          findUser.password
         );
         // If password is confirmed, create token
         if (hashConfirmed) {
-          const payload = {
-            _id: user._id,
-            username: user.username,
-            role: user.role
+          const user = {
+            _id: findUser._id,
+            email: findUser.email,
+            role: findUser.role
           };
-          const token = jwt.sign(payload, process.env.JWT, { expiresIn: "1d" });
-
-          res.send(token);
+          const token = jwt.sign(user, process.env.JWT, { expiresIn: "1d" });
+          res.cookie("auth", `Bearer ${token}`, { httpOnly: true });
+          res.json({
+            user,
+            token
+          });
         } else {
           const error = new Error("Unable to login");
           res.status(409);

@@ -1,10 +1,8 @@
 const Joi = require("@hapi/joi");
 
 const userSchema = Joi.object({
-  username: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(30)
+  email: Joi.string()
+    .email()
     .required(),
 
   password: Joi.string()

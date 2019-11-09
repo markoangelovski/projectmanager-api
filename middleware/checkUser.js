@@ -2,10 +2,12 @@ const jwt = require("jsonwebtoken");
 
 function checkUser(req, res, next) {
   const authHeader = req.headers.authorization;
+  const authCookie = req.cookie;
+  console.log("auth cookie", authCookie);
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    if (token) {
-      const verified = jwt.verify(token, process.env.JWT);
+    const verified = jwt.verify(token, process.env.JWT);
+    if (verified) {
       req.user = verified;
       next();
     } else {
