@@ -15,7 +15,7 @@ connectDB();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: true,
+    origin: process.env.NODE_ORIGIN,
     credentials: true,
     optionsSuccessStatus: 204
   })
