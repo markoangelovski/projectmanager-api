@@ -15,18 +15,20 @@ router.post("/", async (req, res) => {
     const project = await Project.findById(req.body.project);
     if (project) {
       project.tasks.push(task._id);
-
-      project.save();
-
-      task.save();
+      const [savedProject, savedTask] = await Promise.all([
+        project.save(),
+        task.save()
+      ]);
 
       res.status(201).json({
-        message: "Task successfully created!",
-        task
+        message: `Task ${task.title} successfully created!`,
+        task: savedTask
       });
     } else {
       res.status(404).json({
-        message: "Project not found!"
+        message: "Project not found!",
+        error:
+          "Project for which you are trying to create a task was not found."
       });
     }
   } catch (error) {
@@ -79,14 +81,20 @@ router.patch("/:taskId", async (req, res) => {
     }
 
     const task = await Task.updateOne({ _id: id }, { $set: updateOps });
+    const updatedTask = await Task.findById(id)
+      .populate("project", "title")
+      .populate("links")
+      .populate("notes");
 
     if (task.n == 1) {
       res.status(200).json({
-        message: "Task successfully updated!"
+        message: "Task successfully updated!",
+        task: updatedTask
       });
     } else {
       res.status(404).json({
-        message: "Task not found!"
+        message: "Task not found!",
+        error: 404
       });
     }
   } catch (error) {
@@ -119,7 +127,8 @@ router.delete("/:taskId", async (req, res) => {
       });
     } else {
       res.status(404).json({
-        message: "Project or task not found!"
+        message: "Project or task not found!",
+        error: 404
       });
     }
   } catch (error) {

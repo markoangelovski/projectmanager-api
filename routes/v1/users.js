@@ -99,7 +99,11 @@ router.post("/login", async (req, res, next) => {
             role: findUser.role
           };
           const token = jwt.sign(user, process.env.JWT, { expiresIn: "1d" });
-          res.cookie("auth", `Bearer ${token}`, { httpOnly: true });
+          res.cookie("auth", `Bearer ${token}`, {
+            httpOnly: true,
+            sameSite: "None",
+            secure: process.env.NODE_ENV === "production" ? true : false
+          });
           res.json({
             user
           });

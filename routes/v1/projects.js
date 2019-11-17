@@ -9,7 +9,7 @@ const Project = require("../../models/project");
 
 // @route   POST /projects
 // @desc    Create a new project
-router.post("/", isLoggedIn, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const project = new Project(req.body);
     await project.save();

@@ -10,7 +10,9 @@ const Note = require("../../models/note");
 // @desc    Create a new note
 router.post("/:taskId", async (req, res) => {
   try {
-    const task = await Task.findById(req.params.taskId);
+    const task = await Task.findById(req.params.taskId)
+      .populate("links")
+      .populate("notes");
     if (task) {
       const note = new Note({
         note: req.body.note,
@@ -26,7 +28,8 @@ router.post("/:taskId", async (req, res) => {
       });
     } else {
       res.status(404).json({
-        message: "Task not found!"
+        message: "Task not found!",
+        error: "Task you are trying to update was not found."
       });
     }
   } catch (error) {
@@ -51,18 +54,25 @@ router.patch("/:noteId", async (req, res) => {
       { _id: id },
       { $set: { note: value } }
     );
+    const note = await Note.findById(id);
+    const task = await Task.findById(note.task)
+      .populate("links")
+      .populate("notes");
 
     if (!updated.n) {
       res.status(404).json({
-        message: "Note not found!"
+        message: "Note not found!",
+        error: "Note you are trying to update could not be found."
       });
     } else if (!updated.nModified) {
       res.status(200).json({
-        message: "No detail modifications detected. No actions taken."
+        message: "No detail modifications detected. No actions taken.",
+        task
       });
     } else if (updated.nModified) {
       res.status(201).json({
-        message: "Note successfully updated!"
+        message: "Note successfully updated!",
+        task
       });
     }
   } catch (error) {
@@ -80,14 +90,16 @@ router.delete("/:taskId", async (req, res) => {
   try {
     // Find Task and Note in DB
     const [taskToUpdate, noteToUpdate] = await Promise.all([
-      Task.findById(req.params.taskId),
+      Task.findById(req.params.taskId)
+        .populate("links")
+        .populate("notes"),
       Note.findById(req.query.noteId)
     ]);
 
     // If Task or Note are found, delete the Note and note entry from task
     if (taskToUpdate || noteToUpdate) {
       taskToUpdate.notes = taskToUpdate.notes.filter(
-        note => note != req.query.noteId
+        note => note._id != req.query.noteId
       );
       const [deletedNote, updatedTask] = await Promise.all([
         Note.findByIdAndDelete(req.query.noteId),
@@ -100,7 +112,8 @@ router.delete("/:taskId", async (req, res) => {
       });
     } else {
       res.status(404).json({
-        message: "Task or Note not found"
+        message: "Task or Note not found",
+        error: "Note that you are trying to delete could not be found."
       });
     }
   } catch (error) {

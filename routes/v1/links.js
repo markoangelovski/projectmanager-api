@@ -10,7 +10,9 @@ const Link = require("../../models/link");
 // @desc    Create a new link
 router.post("/:taskId", async (req, res) => {
   try {
-    const task = await Task.findById(req.params.taskId);
+    const task = await Task.findById(req.params.taskId)
+      .populate("links")
+      .populate("notes");
     if (task) {
       const link = new Link({
         title: req.body.title,
@@ -56,18 +58,25 @@ router.patch("/:linkId", async (req, res) => {
 
   try {
     const updated = await Link.updateOne({ _id: id }, { $set: setValues });
+    const link = await Link.findById(id);
+    const task = await Task.findById(link.task)
+      .populate("links")
+      .populate("notes");
 
     if (!updated.n) {
       res.status(404).json({
-        message: "Link not found!"
+        message: "Link not found!",
+        error: "Link you are trying to edit was not found!"
       });
     } else if (!updated.nModified) {
       res.status(200).json({
-        message: "No detail modifications detected. No actions taken."
+        message: "No detail modifications detected. No actions taken.",
+        task
       });
     } else if (updated.nModified) {
       res.status(201).json({
-        message: "Link successfully updated!"
+        message: "Link successfully updated!",
+        task
       });
     }
   } catch (error) {
@@ -85,15 +94,18 @@ router.delete("/:taskId", async (req, res) => {
   try {
     // Find Task and Link in DB
     const [taskToUpdate, linkToUpdate] = await Promise.all([
-      Task.findById(req.params.taskId),
+      Task.findById(req.params.taskId)
+        .populate("links")
+        .populate("notes"),
       Link.findById(req.query.linkId)
     ]);
 
     // If Task or Links are found, delete the Link and link entry from task
     if (taskToUpdate || linkToUpdate) {
       taskToUpdate.links = taskToUpdate.links.filter(
-        link => link != req.query.linkId
+        link => link._id != req.query.linkId
       );
+
       const [deletedLink, updatedTask] = await Promise.all([
         Link.findByIdAndDelete(req.query.linkId),
         taskToUpdate.save()
@@ -105,7 +117,8 @@ router.delete("/:taskId", async (req, res) => {
       });
     } else {
       res.status(404).json({
-        message: "Task or Link not found"
+        message: "Task or Link not found",
+        error: "Link that you are trying to delete was not found!"
       });
     }
   } catch (error) {

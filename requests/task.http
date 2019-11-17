@@ -1,5 +1,5 @@
 ### Create a new Task
-POST http://localhost:3000/tasks
+POST http://localhost:3000/v1/tasks
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
   "description": "Opis taska 3",
   "column": "Completed",
   "dueDate": 1577836800000,
-  "project": "5d97bfa477af2a35563765aa"
+  "project": "5db47c710cb5ca35d893a210"
 }
 
 ### Get all tasks

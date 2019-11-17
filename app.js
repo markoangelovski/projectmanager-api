@@ -20,20 +20,21 @@ app.use(
     optionsSuccessStatus: 204
   })
 );
-app.use(morgan("dev"));
 app.use(express.json({ extended: true }));
 app.use(checkUser);
-
-// Current api version in use
-const v = "v1";
+if ((process.env.NODE_ENV = "staging")) app.use(morgan("dev"));
 
 // Home route
 app.get("/", (req, res, next) => {
   res.json({
     message: "Wellcome!",
-    user: req.user
+    user: req.user,
+    env: process.env
   });
 });
+
+// Current api version in use
+const v = "v1";
 
 // Routes imports
 const usersRoutes = require(`./routes/${v}/users`);
@@ -44,10 +45,10 @@ const notesRoutes = require(`./routes/${v}/notes`);
 
 // Routes
 app.use(`/${v}/auth`, usersRoutes);
-app.use("/projects", projectsRoutes);
-app.use("/tasks", tasksRoutes);
-app.use("/links", linksRoutes);
-app.use("/notes", notesRoutes);
+app.use(`/${v}/projects`, projectsRoutes);
+app.use(`/${v}/tasks`, tasksRoutes);
+app.use(`/${v}/links`, linksRoutes);
+app.use(`/${v}/notes`, notesRoutes);
 
 // Error handlers
 function notFound(req, res, next) {

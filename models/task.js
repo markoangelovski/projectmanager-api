@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// inks import
+// Schema import
 const Link = require("./../models/link");
 const Note = require("./../models/note");
 
@@ -44,12 +44,10 @@ const taskSchema = new mongoose.Schema({
 // Create pre.remove hook to delete links
 taskSchema.pre("remove", async function(next) {
   try {
-    await Link.remove({
-      task: this._id
-    });
-    await Note.remove({
-      task: this._id
-    });
+    await Promise.all([
+      Link.remove({ project: this._id }),
+      Note.remove({ project: this._id })
+    ]);
     next();
   } catch (error) {
     next(error);
