@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/db");
-const { checkUser } = require("./middleware/checkUser");
+const { checkUser, isLoggedIn } = require("./middleware/checkUser");
 
 const app = express();
 
@@ -22,12 +22,13 @@ app.use(
 );
 app.use(express.json({ extended: true }));
 app.use(checkUser);
-if (process.env.NODE_ENV === "staging") app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 // Home route
 app.get("/", (req, res, next) => {
   res.json({
-    message: "Wellcome!",
+    status: "OK",
+    statusCode: 200,
     user: req.user
   });
 });
@@ -35,19 +36,12 @@ app.get("/", (req, res, next) => {
 // Current api version in use
 const v = "v1";
 
-// Routes imports
-const usersRoutes = require(`./routes/${v}/users`);
-const projectsRoutes = require(`./routes/${v}/projects`);
-const tasksRoutes = require(`./routes/${v}/tasks`);
-const linksRoutes = require(`./routes/${v}/links`);
-const notesRoutes = require(`./routes/${v}/notes`);
-
 // Routes
-app.use(`/${v}/auth`, usersRoutes);
-app.use(`/${v}/projects`, projectsRoutes);
-app.use(`/${v}/tasks`, tasksRoutes);
-app.use(`/${v}/links`, linksRoutes);
-app.use(`/${v}/notes`, notesRoutes);
+app.use(`/${v}/auth`, require(`./routes/${v}/users`));
+app.use(`/${v}/projects`, isLoggedIn, require(`./routes/${v}/projects`));
+app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
+app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));
+app.use(`/${v}/notes`, isLoggedIn, require(`./routes/${v}/notes`));
 
 // Error handlers
 function notFound(req, res, next) {

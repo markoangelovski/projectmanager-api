@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "seed:admin": "node tasks/createAdminUser"
   },
   "keywords": [],
   "author": "",

@@ -1,8 +1,9 @@
 ### Get all users route
-GET http://localhost:3000/auth
+GET http://localhost:3000/v1/auth
 
 ### Auth check
-POST http://localhost:3000/auth
+POST http://localhost:3000/v1/auth
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJyb2xlIjoidXNlciIsImlhdCI6MTU3NDAwOTMxMSwiZXhwIjoxNTc0MDk1NzExfQ.GpfdqvriS6rUhU49QEuF0PJ23VBtOI1KPR6Vml73wRM
 
 ### Register route
 POST  http://localhost:3000/auth/register
@@ -22,21 +23,9 @@ Content-Type: application/json
   "password": "maderfaker"
 }
 
-### Check user route
-GET http://localhost:3000/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGJmMDE3OGQ5NWQ3Yjc0Y2Q0ZGNkYjgiLCJ1c2VybmFtZSI6IkJvc2hrbyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTcyODEzMzE0LCJleHAiOjE1NzI4OTk3MTR9.0lso4Bhowv1bp1_YiLwA5a8gT4SU3FI-yDSC5RIquis
-
 ### Test notes route
-GET http://localhost:3000/notes
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGJmMDE3OGQ5NWQ3Yjc0Y2Q0ZGNkYjgiLCJ1c2VybmFtZSI6IkJvc2hrbyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTcyODEzMzE0LCJleHAiOjE1NzI4OTk3MTR9.0lso4Bhowv1bp1_YiLwA5a8gT4SU3FI-yDSC5RIquis
+PATCH http://localhost:3000/v1/auth/update-profile
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJyb2xlIjoidXNlciIsImlhdCI6MTU3NDAwOTMxMSwiZXhwIjoxNTc0MDk1NzExfQ.GpfdqvriS6rUhU49QEuF0PJ23VBtOI1KPR6Vml73wRM
 
-### Test notes route
-GET http://localhost:3000/notes/new
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGJmMDE3OGQ5NWQ3Yjc0Y2Q0ZGNkYjgiLCJ1c2VybmFtZSI6IkJvc2hrbyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTcyODEzMzE0LCJleHAiOjE1NzI4OTk3MTR9.0lso4Bhowv1bp1_YiLwA5a8gT4SU3FI-yDSC5RIquis
 
-{
-  "title": "Boshko",
-  "note": "Obradović"
-}
 

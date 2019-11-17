@@ -82,7 +82,6 @@ router.patch("/:taskId", async (req, res) => {
 
     const task = await Task.updateOne({ _id: id }, { $set: updateOps });
     const updatedTask = await Task.findById(id)
-      .populate("project", "title")
       .populate("links")
       .populate("notes");
 

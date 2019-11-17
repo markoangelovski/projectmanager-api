@@ -14,7 +14,7 @@ const User = require("../../models/user");
 const validateUser = require("../../validation/user");
 
 // @route /auth
-// @desc Auth root
+// @desc Check if user it authenticated
 router.post("/", isLoggedIn, async (req, res) => {
   res.json({
     message: "User authenticated.",
@@ -26,15 +26,20 @@ router.post("/", isLoggedIn, async (req, res) => {
 // @desc Get all users
 router.get("/", async (req, res) => {
   const users = await User.find();
+  const userList = users.map(user => {
+    return {
+      email: user.email
+    };
+  });
   res.json({
     message: "Success!",
-    users
+    users: userList
   });
 });
 
 // @route /auth/register
 // @desc register route
-router.post("/register", async (req, res, next) => {
+router.post("/register", isLoggedIn, async (req, res, next) => {
   // Validate user input
   const result = validateUser.validate(req.body);
 
@@ -102,7 +107,11 @@ router.post("/login", async (req, res, next) => {
           res.cookie("auth", `Bearer ${token}`, {
             httpOnly: true,
             sameSite: "None",
-            secure: process.env.NODE_ENV === "production" ? true : false
+            secure:
+              process.env.NODE_ENV === "production" ||
+              process.env.NODE_ENV === "staging"
+                ? true
+                : false
           });
           res.json({
             user
@@ -126,5 +135,26 @@ router.post("/login", async (req, res, next) => {
     next(error);
   }
 });
+
+// @route /auth/update-profile
+// @desc Update profile route
+// router.patch("/update-profile", async (req, res, next) => {
+//   const result = validateUser.validate(req.body);
+//   if (req.user) {
+//     try {
+//       const user = await User.findOne({ email: req.user.email });
+
+//       const setValues = {};
+
+//       res.status(200).json(user);
+//     } catch (error) {
+//       next(error);
+//     }
+//   } else {
+//     const error = new Error("User not found!");
+//     res.status(422);
+//     next(error);
+//   }
+// });
 
 module.exports = router;
