@@ -22,14 +22,13 @@ app.use(
 );
 app.use(express.json({ extended: true }));
 app.use(checkUser);
-if ((process.env.NODE_ENV = "staging")) app.use(morgan("dev"));
+if (process.env.NODE_ENV === "staging") app.use(morgan("dev"));
 
 // Home route
 app.get("/", (req, res, next) => {
   res.json({
     message: "Wellcome!",
-    user: req.user,
-    env: process.env
+    user: req.user
   });
 });
 
