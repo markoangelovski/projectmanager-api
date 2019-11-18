@@ -1,5 +1,6 @@
 {
   "name": "projectmanager",
+  "repository": "https://github.com/markoangelovski/projectmanager-api",
   "scripts": {},
   "env": {},
   "formation": {
