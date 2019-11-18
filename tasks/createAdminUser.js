@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const connectDB = require("../config/db");
+const { connectDB, closeDB } = require("../config/db");
 
 // DB connection
 connectDB();
@@ -17,16 +17,21 @@ const setAdminUser = async () => {
         password: await bcrypt.hash(process.env.DEFAULT_ADMIN_PASSWORD, 12)
       });
       const savedAdmin = await admin.save();
+      closeDB();
       if (savedAdmin) {
         console.log("Admin successfully set!");
+        closeDB();
       } else {
         console.log("An error ocurred. Please try again later.");
+        closeDB();
       }
     } else {
       console.log("Admin already exists!");
+      closeDB();
     }
   } catch (error) {
     console.error(error);
+    closeDB();
   }
 };
 
