@@ -1,0 +1,24 @@
+### Create a new Project
+POST https://projectmanager-prod.herokuapp.com/v1/projects
+Content-Type: application/json
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJyb2xlIjoidXNlciIsImlhdCI6MTU3MzQxNzk4NywiZXhwIjoxNTczNTA0Mzg3fQ.ZIj5xtfYv4ugHCWXBEdWLrYScgjhPGeA_Cg3OXYo3xQ
+
+{
+  "title": "Nešto manje novi projekt",
+  "description": "Opis nešto manje novog projekta."
+}
+
+### Get all projects
+GET  https://projectmanager-prod.herokuapp.com/v1/projects
+
+### Delete project
+DELETE  https://projectmanager-prod.herokuapp.com/v1/projects/5d5975b85082662b5fbbe83b
+
+### Login route
+POST  https://projectmanager-prod.herokuapp.com/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "marko@angelovski.ga",
+  "password": "maderfaker"
+}

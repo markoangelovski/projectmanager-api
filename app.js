@@ -1,5 +1,4 @@
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
@@ -22,7 +21,10 @@ app.use(
 );
 app.use(express.json({ extended: true }));
 app.use(checkUser);
-if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") {
+  const morgan = require("morgan");
+  app.use(morgan("dev"));
+}
 
 // Home route
 app.get("/", (req, res, next) => {
