@@ -1,0 +1,12 @@
+{
+  "name": "projectmanager",
+  "scripts": {},
+  "env": {},
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [],
+  "buldpacks": []
+}
