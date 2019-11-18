@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "seed:admin": "node tasks/createAdminUser"
+    "heroku-postbuild": "node tasks/createAdminUser"
   },
   "keywords": [],
   "author": "",
