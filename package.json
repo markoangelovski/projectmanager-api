@@ -9,6 +9,9 @@
     "dev": "nodemon app.js",
     "heroku-postbuild": "node tasks/createAdminUser"
   },
+  "engines": {
+    "node": "12.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
