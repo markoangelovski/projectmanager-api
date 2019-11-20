@@ -5,8 +5,8 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "heroku-postbuild": "node tasks/createAdminUser"
   },
   "engines": {
@@ -25,7 +25,10 @@
     "mongoose": "^5.7.11"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
     "morgan": "^1.9.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   }
 }
