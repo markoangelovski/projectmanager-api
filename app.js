@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const { connectDB } = require("./config/db");
 const { checkUser, isLoggedIn } = require("./middleware/checkUser");
 
+require("dotenv").config();
+
 const app = express();
 
 // Connect to Database
