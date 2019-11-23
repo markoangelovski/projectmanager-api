@@ -39,7 +39,7 @@ router.get("/", async (req, res) => {
 
 // @route /auth/register
 // @desc register route
-router.post("/register", async (req, res, next) => {
+router.post("/register", isLoggedIn, async (req, res, next) => {
   // Validate user input
   const result = validateUser.validate(req.body);
 
