@@ -85,7 +85,7 @@ router.post("/register", isLoggedIn, async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   // validate user input
   const result = validateUser.validate(req.body);
-  console.log("cookie", req.cookie);
+
   if (!result.error) {
     try {
       // check if user exists

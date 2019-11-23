@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
+
+require("dotenv").config();
 
 const { connectDB } = require("./config/db");
 const { checkUser, isLoggedIn } = require("./middleware/checkUser");
@@ -11,6 +14,7 @@ const app = express();
 connectDB();
 
 // Middleware
+app.use(helmet());
 app.use(cookieParser());
 app.use(
   cors({
@@ -63,5 +67,4 @@ function errorHandler(error, req, res, next) {
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}!`));
+module.exports = app;

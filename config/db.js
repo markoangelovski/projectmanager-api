@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 
+const dbURL =
+  process.env.NODE_ENV === "test" ? process.env.TEST_DB : process.env.DB;
+
 async function connectDB() {
   try {
     await mongoose.connect(
-      process.env.DB,
+      dbURL,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true

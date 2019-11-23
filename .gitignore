@@ -2,3 +2,4 @@ node_modules
 db-outline.json
 nodemon.json
 v0
+.env
