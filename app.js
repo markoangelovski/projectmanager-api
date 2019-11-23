@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
 
 const { connectDB } = require("./config/db");
 const { checkUser, isLoggedIn } = require("./middleware/checkUser");
@@ -13,6 +14,7 @@ const app = express();
 connectDB();
 
 // Middleware
+app.use(helmet());
 app.use(cookieParser());
 app.use(
   cors({
