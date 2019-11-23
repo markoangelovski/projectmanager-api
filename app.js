@@ -3,10 +3,10 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 
+require("dotenv").config();
+
 const { connectDB } = require("./config/db");
 const { checkUser, isLoggedIn } = require("./middleware/checkUser");
-
-require("dotenv").config();
 
 const app = express();
 
