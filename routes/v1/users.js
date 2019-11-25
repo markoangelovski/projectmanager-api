@@ -67,6 +67,7 @@ router.post("/register", isLoggedIn, async (req, res, next) => {
           next(error);
         }
       } catch (error) {
+        console.warn(error);
         next(error);
       }
     } else {
@@ -127,6 +128,7 @@ router.post("/login", async (req, res, next) => {
         next(error);
       }
     } catch (error) {
+      console.warn(error);
       next(error);
     }
   } else {
@@ -148,6 +150,7 @@ router.post("/login", async (req, res, next) => {
 
 //       res.status(200).json(user);
 //     } catch (error) {
+// console.warn(error);
 //       next(error);
 //     }
 //   } else {

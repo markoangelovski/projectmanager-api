@@ -1,7 +1,5 @@
 const express = require("express");
 
-const { isLoggedIn } = require("../../middleware/checkUser");
-
 const router = express.Router();
 
 // Models
@@ -9,27 +7,29 @@ const Project = require("../../models/project");
 
 // @route   POST /projects
 // @desc    Create a new project
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const project = new Project(req.body);
+    project.owner = req.user;
     await project.save();
     res.status(201).json({
-      message: "Project successfully created!",
+      message: `Project ${project.title} successfully created!`,
       project
     });
   } catch (error) {
-    console.warn(error);
-    res.status(500).json({
-      error
-    });
+    console.error(error.message);
+    res.status(500);
+    next(error);
   }
 });
 
 // @route   GET /projects
 // @desc    Get all projects
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
-    const projects = await Project.find().populate("tasks");
+    const projects = await Project.find({ owner: req.user._id }).populate(
+      "tasks"
+    );
 
     if (projects.length > 0) {
       res.status(200).json({
@@ -43,22 +43,22 @@ router.get("/", async (req, res) => {
       });
     }
   } catch (error) {
-    console.warn(error);
-    res.status(500).json({
-      error
-    });
+    console.error(error.message);
+    res.status(500);
+    next(error);
   }
 });
 
-// @route   Update /projects/:projectId
-// @desc    Get all projects
+// @route   PATCH /projects/:projectId
+// @desc    Update project
 
 // @route   DELETE /projects/:projectId
 // @desc    Delete a project
-router.delete("/:projectId", async (req, res) => {
+router.delete("/:projectId", async (req, res, next) => {
   try {
     const project = await Project.findById(req.params.projectId);
-    if (project) {
+    const isOwner = project.owner == req.user._id;
+    if (project && isOwner) {
       const deletedProject = await project.remove();
       res.status(200).json({
         message: `Project "${deletedProject.title}" successfully deleted!`,
@@ -70,10 +70,9 @@ router.delete("/:projectId", async (req, res) => {
       });
     }
   } catch (error) {
-    console.warn(error);
-    res.status(500).json({
-      error
-    });
+    console.error(error.message);
+    res.status(500);
+    next(error);
   }
 });
 

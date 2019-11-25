@@ -8,16 +8,20 @@ const Link = require("../../models/link");
 
 // @route   POST /links
 // @desc    Create a new link
-router.post("/:taskId", async (req, res) => {
+router.post("/:taskId", async (req, res, next) => {
   try {
-    const task = await Task.findById(req.params.taskId)
+    const task = await Task.findOne({
+      _id: req.params.taskId,
+      owner: req.user._id
+    })
       .populate("links")
       .populate("notes");
     if (task) {
       const link = new Link({
         title: req.body.title,
         link: req.body.link,
-        task: req.params.taskId
+        task: req.params.taskId,
+        owner: req.user
       });
       task.links.push(link);
 
@@ -28,16 +32,14 @@ router.post("/:taskId", async (req, res) => {
         task: savedTask
       });
     } else {
-      res.status(404).json({
-        message: "Task not found!"
-      });
+      res.status(404);
+      const error = new Error("Task not found!");
+      next(error);
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: `Service connection error ocurred: ${error.message}`,
-      error
-    });
+    res.status(500);
+    next(error);
   }
 });
 
@@ -45,7 +47,7 @@ router.post("/:taskId", async (req, res) => {
 //{URI-encoded-values} === [{"propName":"name1","value":"value1"},{"propName":"name2","value":"value2"}]
 // @route   PATCH /links
 // @desc    Update a link
-router.patch("/:linkId", async (req, res) => {
+router.patch("/:linkId", async (req, res, next) => {
   // Set payload to update
   const id = req.params.linkId;
   const values = JSON.parse(req.query.link);
@@ -57,17 +59,19 @@ router.patch("/:linkId", async (req, res) => {
   }
 
   try {
-    const updated = await Link.updateOne({ _id: id }, { $set: setValues });
-    const link = await Link.findById(id);
-    const task = await Task.findById(link.task)
+    const updated = await Link.updateOne(
+      { _id: id, owner: req.user._id },
+      { $set: setValues }
+    );
+    const link = await Link.findOne({ _id: id, owner: req.user._id });
+    const task = await Task.findOne({ _id: link.task, owner: req.user._id })
       .populate("links")
       .populate("notes");
 
     if (!updated.n) {
-      res.status(404).json({
-        message: "Link not found!",
-        error: "Link you are trying to edit was not found!"
-      });
+      res.status(404);
+      const error = new Error("Link you are trying to edit was not found!");
+      next(error);
     } else if (!updated.nModified) {
       res.status(200).json({
         message: "No detail modifications detected. No actions taken.",
@@ -81,27 +85,25 @@ router.patch("/:linkId", async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: `Service connection error ocurred: ${error.message}`,
-      error
-    });
+    res.status(500);
+    next(error);
   }
 });
 
 // @route   DELETE /links/:taskId?linkId={linkId}
 // @desc    Delete a link
-router.delete("/:taskId", async (req, res) => {
+router.delete("/:taskId", async (req, res, next) => {
   try {
     // Find Task and Link in DB
     const [taskToUpdate, linkToUpdate] = await Promise.all([
-      Task.findById(req.params.taskId)
+      Task.findOne({ _id: req.params.taskId, owner: req.user._id })
         .populate("links")
         .populate("notes"),
-      Link.findById(req.query.linkId)
+      Link.findOne({ _id: req.query.linkId, owner: req.user._id })
     ]);
 
     // If Task or Links are found, delete the Link and link entry from task
-    if (taskToUpdate || linkToUpdate) {
+    if (taskToUpdate && linkToUpdate) {
       taskToUpdate.links = taskToUpdate.links.filter(
         link => link._id != req.query.linkId
       );
@@ -116,17 +118,14 @@ router.delete("/:taskId", async (req, res) => {
         task: updatedTask
       });
     } else {
-      res.status(404).json({
-        message: "Task or Link not found",
-        error: "Link that you are trying to delete was not found!"
-      });
+      res.status(404);
+      const error = new Error("Link you are trying to delete was not found!");
+      next(error);
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: `Service connection error ocurred: ${error.message}`,
-      error
-    });
+    res.status(500);
+    next(error);
   }
 });
 

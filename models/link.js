@@ -16,8 +16,15 @@ const linkSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Task",
     required: true
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
   }
 });
+
+module.exports = mongoose.model("Link", linkSchema);
 
 // not functioning!!!
 // Create pre.updateOne hook to validate links
@@ -47,5 +54,3 @@ const linkSchema = new mongoose.Schema({
 //   next(err);
 // }
 // });
-
-module.exports = mongoose.model("Link", linkSchema);

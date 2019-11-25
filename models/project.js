@@ -8,7 +8,12 @@ const Note = require("./../models/note");
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true, default: "New Project" },
   description: String,
-  owner: String,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+  pl: String,
   kanboard: String,
   dev: String,
   stage: String,
