@@ -6,17 +6,22 @@ const router = express.Router();
 const Task = require("../../models/task");
 const Note = require("../../models/note");
 
-// @route   POST /notes
+// @route   POST /notes/:taskId
 // @desc    Create a new note
-router.post("/:taskId", async (req, res) => {
+router.post("/:taskId", async (req, res, next) => {
   try {
-    const task = await Task.findById(req.params.taskId)
+    const task = await Task.findOne({
+      _id: req.params.taskId,
+      owner: req.user._id
+    })
       .populate("links")
       .populate("notes");
+
     if (task) {
       const note = new Note({
         note: req.body.note,
-        task: req.params.taskId
+        task: req.params.taskId,
+        owner: req.user
       });
       task.notes.push(note);
 
@@ -27,43 +32,40 @@ router.post("/:taskId", async (req, res) => {
         task: savedTask
       });
     } else {
-      res.status(404).json({
-        message: "Task not found!",
-        error: "Task you are trying to update was not found."
-      });
+      res.status(404);
+      const error = new Error("Task you are trying to update was not found.");
+      next(error);
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: `Service connection error ocurred: ${error.message}`,
-      error
-    });
+    res.status(500);
+    next(error);
   }
 });
 
-// notes/:noteId?note={note tex}
+// notes/:noteId?note={note text}
 // @route   PATCH /notes
 // @desc    Update a note
-router.patch("/:noteId", async (req, res) => {
+router.patch("/:noteId", async (req, res, next) => {
   try {
     // Set payload to update
     const id = req.params.noteId;
     const value = JSON.parse(req.query.note);
 
     const updated = await Note.updateOne(
-      { _id: id },
+      { _id: id, owner: req.user._id },
       { $set: { note: value } }
     );
-    const note = await Note.findById(id);
-    const task = await Task.findById(note.task)
+
+    const note = await Note.findOne({ _id: id, owner: req.user._id });
+    const task = await Task.findOne({ _id: note.task, owner: req.user._id })
       .populate("links")
       .populate("notes");
 
     if (!updated.n) {
-      res.status(404).json({
-        message: "Note not found!",
-        error: "Note you are trying to update could not be found."
-      });
+      res.status(404);
+      const error = new Error("Note you are trying to update was not found.");
+      next(error);
     } else if (!updated.nModified) {
       res.status(200).json({
         message: "No detail modifications detected. No actions taken.",
@@ -77,32 +79,30 @@ router.patch("/:noteId", async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: `Service connection error ocurred: ${error.message}`,
-      error
-    });
+    res.status(500);
+    next(error);
   }
 });
 
 // @route   DELETE /notes/:taskId?noteId={noteId}
 // @desc    Delete a note
-router.delete("/:taskId", async (req, res) => {
+router.delete("/:taskId", async (req, res, next) => {
   try {
     // Find Task and Note in DB
     const [taskToUpdate, noteToUpdate] = await Promise.all([
-      Task.findById(req.params.taskId)
+      Task.findOne({ _id: req.params.taskId, owner: req.user._id })
         .populate("links")
         .populate("notes"),
-      Note.findById(req.query.noteId)
+      Note.findOne({ _id: req.query.noteId, owner: req.user._id })
     ]);
 
     // If Task or Note are found, delete the Note and note entry from task
-    if (taskToUpdate || noteToUpdate) {
+    if (taskToUpdate && noteToUpdate) {
       taskToUpdate.notes = taskToUpdate.notes.filter(
         note => note._id != req.query.noteId
       );
       const [deletedNote, updatedTask] = await Promise.all([
-        Note.findByIdAndDelete(req.query.noteId),
+        noteToUpdate.remove(),
         taskToUpdate.save()
       ]);
 
@@ -111,17 +111,16 @@ router.delete("/:taskId", async (req, res) => {
         task: updatedTask
       });
     } else {
-      res.status(404).json({
-        message: "Task or Note not found",
-        error: "Note that you are trying to delete could not be found."
-      });
+      res.status(404);
+      const error = new Error(
+        "Note that you are trying to delete could not be found."
+      );
+      next(error);
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
-      message: `Service connection error ocurred: ${error.message}`,
-      error
-    });
+    res.status(500);
+    next(error);
   }
 });
 

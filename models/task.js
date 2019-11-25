@@ -7,7 +7,12 @@ const Note = require("./../models/note");
 const taskSchema = new mongoose.Schema({
   title: { type: String, default: "New Task" },
   description: String,
-  owner: String,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
+  pl: String,
   column: { type: String, default: "Upcoming" },
   kanboard: String,
   nas: String,
@@ -45,8 +50,8 @@ const taskSchema = new mongoose.Schema({
 taskSchema.pre("remove", async function(next) {
   try {
     await Promise.all([
-      Link.remove({ project: this._id }),
-      Note.remove({ project: this._id })
+      Link.remove({ task: this._id }),
+      Note.remove({ task: this._id })
     ]);
     next();
   } catch (error) {

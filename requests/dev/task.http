@@ -1,26 +1,29 @@
 ### Create a new Task
 POST http://localhost:3000/v1/tasks
 Content-Type: application/json
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1NzQ2MTQzNjgsImV4cCI6MTU3NDcwMDc2OH0.uuBXG_4IFDh5bNPsygfYwb0SSgrLp4oySuFG63t8vcQ
 
 {
   "title": "Task 1",
   "description": "Opis taska 3",
   "column": "Completed",
   "dueDate": 1577836800000,
-  "project": "5db47c710cb5ca35d893a210"
+  "project": "5ddafcb0301587174d9c5c60"
 }
 
 ### Get all tasks
-GET  http://localhost:3000/tasks
+GET  http://localhost:3000/v1/tasks
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1NzQ2MTQzNjgsImV4cCI6MTU3NDcwMDc2OH0.uuBXG_4IFDh5bNPsygfYwb0SSgrLp4oySuFG63t8vcQ
 
 ### Update task
-PATCH http://localhost:3000/tasks/5d97ce268d8c753c4adcbafc
+PATCH http://localhost:3000/v1/tasks/5ddb2ff0a4c9183c3968c64d
 Content-Type: application/json
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1NzQ2NDY2NDEsImV4cCI6MTU3NDczMzA0MX0.dBu6Vw7bdjYbV2hBsoSCvLTTnDgfIR9Rq8LL32aiEqs
 
 [
   {
   "propName": "title",
-  "value": "Naslov promijenjen još jednom"
+  "value": "Naslov promijenjen jednom"
   },
   {
   "propName": "column",
@@ -29,4 +32,5 @@ Content-Type: application/json
 ]
 
 ### Delete task
-DELETE  http://localhost:3000/tasks/5db490e9921c8439e0b7dea2
+DELETE  http://localhost:3000/v1/tasks/5ddb2ff0a4c9183c3968c64d
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRiMmYyYmE0YzkxODNjMzk2OGM2NDkiLCJlbWFpbCI6Imd1ZXN0MUBndWVzdDEuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE1NzQ2NDU3MDMsImV4cCI6MTU3NDczMjEwM30.0cj0wZ99fgm0jCmwtjnYAI_9Uor5ZHYkFtH17Z36qCM
