@@ -2,10 +2,12 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const avatar = require("../../lib/avatar");
+
 const router = express.Router();
 
 // Middleware imports
-const { isLoggedIn } = require("../../middleware/checkUser");
+const { isLoggedIn, isAdmin, hasBody } = require("../../middleware/checkUser");
 
 // Model imports
 const User = require("../../models/user");
@@ -28,7 +30,8 @@ router.get("/", async (req, res) => {
   const users = await User.find();
   const userList = users.map(user => {
     return {
-      email: user.email
+      email: user.email,
+      avatar_url: user.avatar_url
     };
   });
   res.json({
@@ -39,7 +42,7 @@ router.get("/", async (req, res) => {
 
 // @route /auth/register
 // @desc register route
-router.post("/register", isLoggedIn, async (req, res, next) => {
+router.post("/register", hasBody, isAdmin, async (req, res, next) => {
   // Validate user input
   const result = validateUser.validate(req.body);
 
@@ -52,7 +55,8 @@ router.post("/register", isLoggedIn, async (req, res, next) => {
         const hash = await bcrypt.hash(req.body.password.trim(), 12);
         const user = new User({
           email: req.body.email,
-          password: hash
+          password: hash,
+          avatar_url: await avatar()
         });
         // Save user to db
         const savedUser = await user.save();
@@ -60,7 +64,7 @@ router.post("/register", isLoggedIn, async (req, res, next) => {
         if (savedUser) {
           res.status(201).json({
             message: "User account successfully created!",
-            user: savedUser.email
+            user: savedUser
           });
         } else {
           const error = new Error("An error ocurred with the database!");
@@ -102,6 +106,7 @@ router.post("/login", async (req, res, next) => {
           const user = {
             _id: findUser._id,
             email: findUser.email,
+            avatar_url: findUser.avatar_url,
             role: findUser.role
           };
           const token = jwt.sign(user, process.env.JWT, { expiresIn: "1d" });

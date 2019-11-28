@@ -22,7 +22,9 @@ describe("POST /v1/auth/login", () => {
     const password = await bcrypt.hash("testpassword", 12);
     const newUser = new User({
       email: "test@user.com",
-      password
+      avatar_url: "https://images.unsplash.com",
+      password,
+      role: "admin"
     });
     await newUser.save();
   });
@@ -80,11 +82,22 @@ describe("POST /v1/auth/register", () => {
     await User.collection.drop();
   });
 
-  it("should require user email", async () => {
+  it("should require a body", async () => {
     const response = await request(app)
       .post("/v1/auth/register")
       .set("Cookie", cookie)
       .send({})
+      .expect(422);
+    expect(response.body.message).to.equal(
+      "Oops! You're up to no good, aren't ya? Missing something?"
+    );
+  });
+
+  it("should require user email", async () => {
+    const response = await request(app)
+      .post("/v1/auth/register")
+      .set("Cookie", cookie)
+      .send({ data: "some data" })
       .expect(422);
     expect(response.body.message).to.equal('"email" is required');
   });
