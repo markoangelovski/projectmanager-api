@@ -44,6 +44,7 @@ router.post("/", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   try {
     const tasks = await Task.find({ owner: req.user._id })
+      .populate("owner", "avatar_url")
       .populate("project", "title")
       .populate("links")
       .populate("notes");
@@ -82,6 +83,7 @@ router.patch("/:taskId", async (req, res, next) => {
       { $set: updateOps }
     );
     const updatedTask = await Task.findOne({ _id: id, owner: req.user._id })
+      .populate("owner", "avatar_url")
       .populate("project", "title")
       .populate("links")
       .populate("notes");

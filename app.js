@@ -57,11 +57,15 @@ function notFound(req, res, next) {
 }
 
 function errorHandler(error, req, res, next) {
-  res.status(res.statusCode || 500);
-  res.json({
+  // Create error payload
+  const payload = {
     message: error.message,
     error
-  });
+  };
+  // If in development, send error stack
+  process.env.NODE_ENV === "development" ? (payload.stack = error.stack) : null;
+  res.status(res.statusCode || 500);
+  res.json(payload);
 }
 
 app.use(notFound);

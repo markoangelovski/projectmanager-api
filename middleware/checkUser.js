@@ -27,4 +27,30 @@ function isLoggedIn(req, res, next) {
   }
 }
 
-module.exports = { checkUser, isLoggedIn };
+function isAdmin(req, res, next) {
+  const admin = req.user.role === "admin";
+  if (admin) {
+    next();
+  } else {
+    const error = new Error(
+      "Oops! You need to have admin privileges for that! Naughty!"
+    );
+    res.status(401);
+    next(error);
+  }
+}
+
+function hasBody(req, res, next) {
+  hasBody = JSON.stringify(req.body) !== "{}";
+  if (hasBody) {
+    next();
+  } else {
+    const error = new Error(
+      "Oops! You're up to no good, aren't ya? Missing something?"
+    );
+    res.status(422);
+    next(error);
+  }
+}
+
+module.exports = { checkUser, isLoggedIn, isAdmin, hasBody };
