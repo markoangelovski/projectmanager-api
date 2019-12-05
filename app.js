@@ -48,6 +48,7 @@ app.use(`/${v}/projects`, isLoggedIn, require(`./routes/${v}/projects`));
 app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
 app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));
 app.use(`/${v}/notes`, isLoggedIn, require(`./routes/${v}/notes`));
+app.use(`/${v}/events`, isLoggedIn, require(`./routes/${v}/events`));
 
 // Error handlers
 function notFound(req, res, next) {
