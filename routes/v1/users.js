@@ -113,11 +113,7 @@ router.post("/login", async (req, res, next) => {
           res.cookie("auth", `Bearer ${token}`, {
             httpOnly: true,
             sameSite: "None",
-            secure:
-              process.env.NODE_ENV === "production" ||
-              process.env.NODE_ENV === "staging"
-                ? true
-                : false
+            secure: process.env.NODE_ENV === "development" ? false : true
           });
           res.json({
             user
@@ -141,6 +137,19 @@ router.post("/login", async (req, res, next) => {
     res.status(422);
     next(error);
   }
+});
+
+// @route /auth/logout
+// @desc Logout route
+router.get("/logout", isLoggedIn, async (req, res, next) => {
+  res.clearCookie("auth", {
+    httpOnly: true,
+    sameSite: "None",
+    secure: process.env.NODE_ENV === "development" ? false : true
+  });
+  res.json({
+    message: "Logout successfull!"
+  });
 });
 
 // @route /auth/update-profile

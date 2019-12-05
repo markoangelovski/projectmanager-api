@@ -1,6 +1,6 @@
 {
   "name": "projectmanager-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "app.js",
   "private": true,
@@ -8,7 +8,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "deploy-pr": "git push -u remote-github development",
-    "deploy-pull": "git pull remote github master",
+    "deploy-pull": "git pull",
     "test": "NODE_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --timeout 5000 --exit",
     "heroku-postbuild": "node tasks/createAdminUser"
   },
