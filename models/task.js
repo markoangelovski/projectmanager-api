@@ -23,6 +23,12 @@ const taskSchema = new mongoose.Schema({
     ref: "Project",
     required: true
   },
+  days: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event"
+    }
+  ],
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
