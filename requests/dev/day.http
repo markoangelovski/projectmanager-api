@@ -14,15 +14,13 @@ Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4M
 ### Create a new event, "date" can be in "2019-12-03" format as well
 POST http://localhost:3000/v1/days
 Content-Type: application/json
-Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE0ODE2MDg3OTA5MDQtNmI0N2M4OGU1YjAwP2l4bGliPXJiLTEuMi4xJnE9ODAmZm09anBnJmNyb3A9ZW50cm9weSZjcz10aW55c3JnYiZ3PTE1MCZoPTE1MCZmaXQ9Y3JvcCZpeGlkPWV5SmhjSEJmYVdRaU9qRjkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1NzkwNDk1MzQsImV4cCI6MTU3OTEzNTkzNH0.JB83a79JQ9D33Nlrdg3vp8sd4N0vrLrJZn6nPYpCs24
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGM2NjA4MDdmNTlkZjM5YTE0NjFlMDciLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE0ODE2MDg3OTA5MDQtNmI0N2M4OGU1YjAwP2l4bGliPXJiLTEuMi4xJnE9ODAmZm09anBnJmNyb3A9ZW50cm9weSZjcz10aW55c3JnYiZ3PTE1MCZoPTE1MCZmaXQ9Y3JvcCZpeGlkPWV5SmhjSEJmYVdRaU9qRjkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1NzkyMjA4MDcsImV4cCI6MTU3OTMwNzIwN30.oqFOlNLlKoKOyHyErSZiSYfC8wlzM0aDrwl93H5MzEI
 
 {
-  "day": "2020-01-15",
+  "day": "2020-01-11",
   "task": "5de087f5f6be4e686a9d9621",
-  "events": [{
-    "title": "tutwutaat",
-    "duration": 1.5
-  }]
+  "title": "tutwutaataa",
+  "duration": 1.5
 }
 
 ### Get all events: /events?start=startDate&end=endDate

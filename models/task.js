@@ -23,7 +23,7 @@ const taskSchema = new mongoose.Schema({
     ref: "Project",
     required: true
   },
-  days: [
+  events: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event"

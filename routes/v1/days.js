@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Model import
 const Task = require("../../models/task");
-const Day = require("../../models/day");
+const { Day, Event } = require("../../models/day");
 
 // @route   POST /events
 // @desc    Create a new event
@@ -11,7 +11,7 @@ router.post("/", async (req, res, next) => {
   try {
     // Get Day's Task if it is passed
     const task = req.body.task
-      ? await Task.findOne({ _id: req.body.task })
+      ? await Task.findOne({ _id: req.body.task, owner: req.user })
       : null;
 
     // Check if Day exists
@@ -20,49 +20,56 @@ router.post("/", async (req, res, next) => {
       owner: req.user
     });
 
-    // Save day to task
-    const saveToTask = async task => {
-      // Check if Day exists in task
-      const index = task
-        ? task.days.findIndex(
-            taskDay => JSON.stringify(taskDay) === JSON.stringify(day._id)
-          )
-        : null;
-      if (index === -1) {
-        task.days.push(day);
-        await task.save();
-      }
-    };
+    // Create new event
+    const event = new Event({
+      title: req.body.title,
+      duration: req.body.duration,
+      task: req.body.task ? req.body.task : null,
+      owner: req.user,
+      day: day ? day : ""
+    });
 
     if (day) {
       // If day exists, add new event to its events array
-      day.events.push(req.body.events[0]);
+      day.events.push(event);
       const savedDay = await day.save();
+      const savedEvent = await event.save();
 
-      // Save day to task
-      saveToTask(task);
+      // Fetch Events for response
+      const events = await Event.find({ _id: { $in: day.events } });
 
-      res.json({
-        message: `Event ${req.body.events[0].title} successfully stored!`,
-        event: savedDay
+      // Add events array to Day object for response
+      savedDay.events = events;
+
+      // Save event to task
+      task.events.push(event);
+      await task.save();
+
+      res.status(201).json({
+        message: `Event ${savedEvent.title} successfully stored!`,
+        day: savedDay
       });
     } else {
-      // If day does not exist, create a new day
-      // Create new Day instance
-      const day = new Day(req.body);
+      // If day does not exist, create a new Day
+      const day = new Day({ day: req.body.day, owner: req.user });
 
-      // Add owner
-      day.owner = req.user;
+      // Add event to Day
+      day.events.push(event);
+
+      // Add reference to Day in Event
+      event.day = day;
 
       // Save the Day
       const savedDay = await day.save();
+      const savedEvent = await event.save();
 
-      // Save day to task
-      saveToTask(task);
+      // Save event to task
+      task.events.push(event);
+      await task.save();
 
       res.status(201).json({
-        message: `Event ${req.body.events[0].title} successfully stored!`,
-        event: savedDay
+        message: `Event ${savedEvent.title} successfully stored!`,
+        day: savedDay
       });
     }
   } catch (error) {
