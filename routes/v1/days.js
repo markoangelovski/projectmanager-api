@@ -32,18 +32,19 @@ router.post("/", async (req, res, next) => {
     if (day) {
       // If day exists, add new event to its events array
       day.events.push(event);
-      const savedDay = await day.save();
-      const savedEvent = await event.save();
 
-      // Fetch Events for response
-      const events = await Event.find({ _id: { $in: day.events } });
-
-      // Add events array to Day object for response
-      savedDay.events = events;
+      // Save Day and Event, fetch events for the response
+      const [savedDay, savedEvent] = await Promise.all([
+        day.save(),
+        event.save()
+      ]);
 
       // Save event to task
-      task.events.push(event);
-      await task.save();
+      if (task) {
+        task.events.push(event);
+        await task.save();
+        console.log("3");
+      }
 
       res.status(201).json({
         message: `Event ${savedEvent.title} successfully stored!`,
@@ -79,8 +80,8 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// @route   GET /events
-// @desc    Get events
+// @route   GET /days
+// @desc    Get all days in range
 router.get("/", async (req, res, next) => {
   const start = new Date(req.query.start);
   const end = new Date(req.query.end);
@@ -93,11 +94,35 @@ router.get("/", async (req, res, next) => {
 
     if (days.length > 0) {
       res.json({
-        message: "Event entries successfully found!",
+        message: "Day entries successfully found!",
         days
       });
     } else {
-      throw new RangeError("No event entries found.");
+      throw new RangeError("No day entries found.");
+    }
+  } catch (error) {
+    console.error(error.message);
+    next(error);
+  }
+});
+
+// @route   GET /days/:dayId
+// @desc    Get all events for a certan Day
+router.get("/:dayId", async (req, res, next) => {
+  try {
+    // Find days within the requested timeframe
+    const day = await Day.findOne({
+      _id: req.params.dayId,
+      owner: req.user
+    }).populate("events");
+
+    if (day) {
+      res.json({
+        message: "Day successfully found!",
+        day
+      });
+    } else {
+      throw new RangeError("No day entries found.");
     }
   } catch (error) {
     console.error(error.message);
@@ -111,33 +136,64 @@ router.get("/", async (req, res, next) => {
 
 // @route   DELETE /events/:day/:eventId
 // @desc    Delete events
-router.delete("/:day/:eventId", async (req, res, next) => {
+router.delete("/:dayId/:eventId", async (req, res, next) => {
   try {
-    // Find event's Day
-    const day = await Day.findOne({ day: req.params.day, owner: req.user });
-    if (day) {
-      // Remove Event from Day
+    // Find Day and Event
+    const [day, event] = await Promise.all([
+      Day.findOne({ _id: req.params.dayId, owner: req.user }),
+      Event.findOne({ _id: req.params.eventId, owner: req.user })
+    ]);
+
+    if (day && event) {
+      // Remove Event reference from Task functon
+      const removeEventFromTask = async event => {
+        const task = await Task.findOne({ _id: event.task, owner: req.user });
+
+        // Remove Event reference from Task
+        const index = task.events.findIndex(
+          event => JSON.stringify(event) == JSON.stringify(req.params.eventId)
+        );
+        if (index !== -1) {
+          task.events.splice(index, 1);
+          await task.save();
+        }
+      };
+
+      // Remove Event reference from Day
       const index = day.events.findIndex(
-        event => event._id == req.params.eventId
+        event => JSON.stringify(event) == JSON.stringify(req.params.eventId)
       );
+      console.log("index", index);
       // Check if event exists and remove it
       if (index !== -1) {
-        const eventTitle = day.events[index].title;
         day.events.splice(index, 1);
 
-        // If any events are remaining, save the Day
+        // If any events are remaining, save the Day and Fetch remaining events for response
         if (day.events.length >= 1) {
-          const updatedDay = await day.save();
+          const [updatedDay, deletedEvent] = await Promise.all([
+            day.save(),
+            event.remove()
+          ]);
+
+          // Remove Event reference from Task
+          removeEventFromTask(event);
 
           res.json({
-            message: `Event ${eventTitle} deleted successfully!`,
+            message: `Event ${deletedEvent.title} deleted successfully!`,
             day: updatedDay
           });
-          // If no events are remaining, delete the Day
         } else {
-          const deletedDay = await day.remove();
+          // If no events are remaining, delete the Day
+          const [deletedDay, deletedEvent] = await Promise.all([
+            day.remove(),
+            event.remove()
+          ]);
+
+          // Remove Event reference from Task
+          removeEventFromTask(event);
+
           res.json({
-            message: `Event ${eventTitle} deleted successfully!`,
+            message: `Event ${deletedEvent.title} deleted successfully!`,
             day: deletedDay
           });
         }
