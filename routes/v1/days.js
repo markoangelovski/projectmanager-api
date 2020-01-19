@@ -10,15 +10,13 @@ const { Day, Event } = require("../../models/day");
 router.post("/", async (req, res, next) => {
   try {
     // Get Day's Task if it is passed
-    const task = req.body.task
-      ? await Task.findOne({ _id: req.body.task, owner: req.user })
-      : null;
+    const task =
+      req.body.task == ""
+        ? null
+        : await Task.findOne({ _id: req.body.task, owner: req.user });
 
     // Check if Day exists
-    const day = await Day.findOne({
-      day: req.body.day,
-      owner: req.user
-    });
+    const day = await Day.findOne({ day: req.body.day, owner: req.user });
 
     // Create new event
     const event = new Event({
@@ -65,8 +63,10 @@ router.post("/", async (req, res, next) => {
       const savedEvent = await event.save();
 
       // Save event to task
-      task.events.push(event);
-      await task.save();
+      if (task) {
+        task.events.push(event);
+        await task.save();
+      }
 
       res.status(201).json({
         message: `Event ${savedEvent.title} successfully stored!`,
@@ -80,46 +80,53 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// @route   GET /days
+// @route   GET /days?start=startDate&end=endDate&id=dayId
 // @desc    Get all days in range
 router.get("/", async (req, res, next) => {
-  const start = new Date(req.query.start);
-  const end = new Date(req.query.end);
-  try {
-    // Find days within the requested timeframe
-    const days = await Day.find({
-      date: { $gte: start, $lte: end },
-      owner: req.user
-    }).sort({ date: "desc" });
+  const start =
+    req.query.start && req.query.start.length > 1
+      ? new Date(req.query.start)
+      : null;
+  const end =
+    req.query.end && req.query.end.length > 1 ? new Date(req.query.end) : null;
+  let dayId = null;
+  if (req.query.id && /^[a-f\d]{24}$/i.test(req.query.id)) dayId = req.query.id;
 
-    if (days.length > 0) {
+  // Original Range Querry
+  // const days = await Day.find({
+  //   date: { $gte: start, $lte: end },
+  //   owner: req.user
+  // }).sort({ date: "desc" });
+
+  const query = { owner: req.user };
+
+  try {
+    // Create Range Query for multiple Days request
+    if (start && end) {
+      const rangeQuery = {};
+      rangeQuery.$gte = start;
+      rangeQuery.$lte = end;
+      query.date = rangeQuery;
+    } else if (start) {
+      // Create Start Day Query for Single day request
+      query.date = start;
+    } else if (dayId) {
+      // Create Day ID Query for Single day request
+      query._id = dayId;
+    } else {
+      const error = new Error("Invalid request.");
+      return next(error);
+    }
+
+    // Find days for specific query
+    let days;
+    if (Object.keys(query).length > 1)
+      days = await Day.find(query).sort({ date: "desc" });
+
+    if (days && days.length > 0) {
       res.json({
         message: "Day entries successfully found!",
         days
-      });
-    } else {
-      throw new RangeError("No day entries found.");
-    }
-  } catch (error) {
-    console.error(error.message);
-    next(error);
-  }
-});
-
-// @route   GET /days/:dayId
-// @desc    Get all events for a certan Day
-router.get("/:dayId", async (req, res, next) => {
-  try {
-    // Find days within the requested timeframe
-    const day = await Day.findOne({
-      _id: req.params.dayId,
-      owner: req.user
-    }).populate("events");
-
-    if (day) {
-      res.json({
-        message: "Day successfully found!",
-        day
       });
     } else {
       throw new RangeError("No day entries found.");
@@ -163,12 +170,12 @@ router.delete("/:dayId/:eventId", async (req, res, next) => {
       const index = day.events.findIndex(
         event => JSON.stringify(event) == JSON.stringify(req.params.eventId)
       );
-      console.log("index", index);
+
       // Check if event exists and remove it
       if (index !== -1) {
         day.events.splice(index, 1);
 
-        // If any events are remaining, save the Day and Fetch remaining events for response
+        // If any events are remaining, save the Day
         if (day.events.length >= 1) {
           const [updatedDay, deletedEvent] = await Promise.all([
             day.save(),
