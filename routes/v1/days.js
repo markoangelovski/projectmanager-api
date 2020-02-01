@@ -126,11 +126,13 @@ router.get("/", async (req, res, next) => {
     }
 
     if (days) {
-      if (days.length > 0 || Object.keys(days).length > 1) {
+      if (days.length > 0 || Object.keys(days).length > 0) {
         res.json({
           message: "Day entries successfully found!",
           days
         });
+      } else {
+        throw new RangeError("No day entries found.");
       }
     } else {
       throw new RangeError("No day entries found.");
@@ -161,10 +163,12 @@ router.delete("/:dayId/:eventId", async (req, res, next) => {
         const task = await Task.findOne({ _id: event.task, owner: req.user });
 
         // Remove Event reference from Task
-        const index = task.events.findIndex(
-          event => JSON.stringify(event) == JSON.stringify(req.params.eventId)
-        );
-        if (index !== -1) {
+        const index =
+          task &&
+          task.events.findIndex(
+            event => JSON.stringify(event) == JSON.stringify(req.params.eventId)
+          );
+        if (index != null && index > -1) {
           task.events.splice(index, 1);
           await task.save();
         }
