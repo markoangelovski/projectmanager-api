@@ -68,11 +68,7 @@ router.post("/", async (req, res, next) => {
 // @desc    Get all tasks
 router.get("/", async (req, res, next) => {
   try {
-    const tasks = await Task.find({ owner: req.user._id })
-      .populate("owner", "avatar_url")
-      .populate("project", "title")
-      .populate("links")
-      .populate("notes");
+    const tasks = await Task.find({ owner: req.user._id });
 
     if (tasks.length > 0) {
       res.status(200).json({

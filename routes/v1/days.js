@@ -5,7 +5,7 @@ const router = express.Router();
 const Task = require("../../models/task");
 const { Day, Event } = require("../../models/day");
 
-// @route   POST /events
+// @route   POST /days
 // @desc    Create a new event
 router.post("/", async (req, res, next) => {
   try {
@@ -41,7 +41,6 @@ router.post("/", async (req, res, next) => {
       if (task) {
         task.events.push(event);
         await task.save();
-        console.log("3");
       }
 
       res.status(201).json({
@@ -120,14 +119,19 @@ router.get("/", async (req, res, next) => {
 
     // Find days for specific query
     let days;
-    if (Object.keys(query).length > 1)
+    if (start && end) {
       days = await Day.find(query).sort({ date: "desc" });
+    } else if (start || dayId) {
+      days = await Day.findOne(query).populate("events");
+    }
 
-    if (days && days.length > 0) {
-      res.json({
-        message: "Day entries successfully found!",
-        days
-      });
+    if (days) {
+      if (days.length > 0 || Object.keys(days).length > 1) {
+        res.json({
+          message: "Day entries successfully found!",
+          days
+        });
+      }
     } else {
       throw new RangeError("No day entries found.");
     }
@@ -137,11 +141,11 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// @route   PATCH /events
+// @route   PATCH /days
 // @desc    Edit events
 // router.patch("/", async (req, res, next) => {})
 
-// @route   DELETE /events/:day/:eventId
+// @route   DELETE /days/:dayId/:eventId
 // @desc    Delete events
 router.delete("/:dayId/:eventId", async (req, res, next) => {
   try {
