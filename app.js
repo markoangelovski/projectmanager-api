@@ -48,7 +48,7 @@ app.use(`/${v}/projects`, isLoggedIn, require(`./routes/${v}/projects`));
 app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
 app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));
 app.use(`/${v}/notes`, isLoggedIn, require(`./routes/${v}/notes`));
-app.use(`/${v}/events`, isLoggedIn, require(`./routes/${v}/events`));
+app.use(`/${v}/days`, isLoggedIn, require(`./routes/${v}/days`));
 
 // Error handlers
 function notFound(req, res, next) {
@@ -65,7 +65,8 @@ function errorHandler(error, req, res, next) {
   };
   // If in development, send error stack
   process.env.NODE_ENV === "development" ? (payload.stack = error.stack) : null;
-  res.status(res.statusCode || 500);
+  if (error instanceof RangeError) res.status(404);
+  res.statusCode === 200 ? res.status(500) : res.statusCode;
   res.json(payload);
 }
 

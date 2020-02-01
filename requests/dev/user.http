@@ -21,8 +21,8 @@ POST  http://localhost:3000/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "guest1@guest1.com",
-  "password": "guest1"
+  "email": "marko@angelovski.ga",
+  "password": "maderfaker"
 }
 
 ### Logout user route
