@@ -22,7 +22,8 @@ const eventSchema = new mongoose.Schema({
     min: [0.25, "Minimum booked time must be at least 0.25"],
     max: [7.5, "Maximum booked time must be at least 7.5"]
   },
-  date: { type: Number, default: Date.now }
+  date: { type: Number, default: Date.now },
+  dateModified: Number
 });
 
 const daySchema = new mongoose.Schema({

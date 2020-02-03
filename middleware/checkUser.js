@@ -1,19 +1,31 @@
 const jwt = require("jsonwebtoken");
 
 function checkUser(req, res, next) {
-  const authCookie = req.cookies.auth;
+  try {
+    const authCookie = req.cookies.auth;
 
-  if (authCookie) {
-    const token = authCookie.split(" ")[1];
-    const verified = jwt.verify(token, process.env.JWT);
-    if (verified) {
-      req.user = verified;
-      next();
+    if (authCookie) {
+      const token = authCookie.split(" ")[1];
+      const verified = jwt.verify(token, process.env.JWT);
+
+      if (verified) {
+        req.user = verified;
+        next();
+      } else {
+        next();
+      }
     } else {
       next();
     }
-  } else {
-    next();
+  } catch (error) {
+    // If token is expired, logout user
+    res.clearCookie("auth", {
+      httpOnly: true,
+      sameSite: "None",
+      secure: process.env.NODE_ENV === "development" ? false : true
+    });
+    console.warn(error);
+    next(error);
   }
 }
 
