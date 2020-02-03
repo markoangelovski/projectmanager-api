@@ -143,9 +143,48 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// @route   PATCH /days
+// @route   PATCH /days/:eventId
 // @desc    Edit events
 // router.patch("/", async (req, res, next) => {})
+router.patch("/:eventId", async (req, res, next) => {
+  try {
+    const updateOps = {};
+    req.body.forEach(element => {
+      updateOps[element.propName] = element.propValue;
+    });
+    updateOps.dateModified = parseInt(new Date().getTime());
+
+    const event = await Event.updateOne(
+      { owner: req.user, _id: req.params.eventId },
+      { $set: updateOps }
+    );
+
+    // Update task if task is present
+    if (updateOps.task) {
+      const task = await Task.findById(updateOps.task);
+      task.events.push(req.params.eventId);
+      task.save();
+    }
+
+    if (!event.n) {
+      const error = new RangeError(
+        "Event you are trying to edit was not found!"
+      );
+      next(error);
+    } else if (!event.nModified) {
+      res.status(200).json({
+        message: "No detail modifications detected. No actions taken."
+      });
+    } else if (event.nModified) {
+      res.status(201).json({
+        message: "Event successfully updated!"
+      });
+    }
+  } catch (error) {
+    console.warn(error);
+    next(error);
+  }
+});
 
 // @route   DELETE /days/:dayId/:eventId
 // @desc    Delete events
