@@ -62,9 +62,7 @@ router.post("/", async (req, res, next) => {
 
           res.status(200).json({
             message: `Event ${event.title} successfully booked!`,
-            screenshot: `${req.protocol}://${req.get("host")}/scr-${
-              req.body.username
-            }-${day}-${month}-${year}.jpeg`
+            scr: `${req.protocol}://${req.get("host")}/${booked.scr}.jpeg`
           });
         } else {
           const error = new Error(

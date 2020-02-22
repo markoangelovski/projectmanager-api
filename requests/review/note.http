@@ -1,0 +1,16 @@
+### Create a new note: /notes/:taskId
+POST http://localhost:3000/v1/notes/5ddc2301504af2642c4b5588
+Content-Type: application/json
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRiMmYyYmE0YzkxODNjMzk2OGM2NDkiLCJlbWFpbCI6Imd1ZXN0MUBndWVzdDEuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE1NzQ3MDgyNDksImV4cCI6MTU3NDc5NDY0OX0.q8KUAixZ71nL_vqiy6chmy3P3Y66xbL0eoNUFgN4QRI
+
+{
+  "note": "neš note!"
+}
+
+### Patch a note: /notes/:noteId?note={URI-encoded-values}
+PATCH http://localhost:3000/v1/notes/5ddc29b9d4076b69d0da7543?note=%22nota%20bene%20nova%22
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRiMmYyYmE0YzkxODNjMzk2OGM2NDkiLCJlbWFpbCI6Imd1ZXN0MUBndWVzdDEuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE1NzQ3MDgyNDksImV4cCI6MTU3NDc5NDY0OX0.q8KUAixZ71nL_vqiy6chmy3P3Y66xbL0eoNUFgN4QRI
+
+### Delete a note: /notes/{taskId}/?noteId={noteId}
+DELETE  http://localhost:3000/v1/notes/5ddc2301504af2642c4b5588?noteId=5ddc2cccfc79d06b66121073
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGRiMmYyYmE0YzkxODNjMzk2OGM2NDkiLCJlbWFpbCI6Imd1ZXN0MUBndWVzdDEuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE1NzQ3MDgyNDksImV4cCI6MTU3NDc5NDY0OX0.q8KUAixZ71nL_vqiy6chmy3P3Y66xbL0eoNUFgN4QRI
