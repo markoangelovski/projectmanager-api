@@ -1,13 +1,14 @@
 ### Create a new Task
-POST https://projectmanager-prod.herokuapp.com/v1/tasks
+POST https://pmspa-api.herokuapp.com/v1/tasks
 Content-Type: application/json
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGQzMjE2NmQ0NzdkOTAyYjU1ZjZkYWMiLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE0ODE2MDg3OTA5MDQtNmI0N2M4OGU1YjAwP2l4bGliPXJiLTEuMi4xJnE9ODAmZm09anBnJmNyb3A9ZW50cm9weSZjcz10aW55c3JnYiZ3PTE1MCZoPTE1MCZmaXQ9Y3JvcCZpeGlkPWV5SmhjSEJmYVdRaU9qRjkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1ODA3MTQzNDAsImV4cCI6MTU4MDgwMDc0MH0.OuwuACuHvjMHuklfjM744kTbT28AhZNR958xTExGf8Y; Path=/; HttpOnly; Secure; SameSite=None
 
 {
-  "title": "Task 1",
-  "description": "Opis taska 3",
-  "column": "Completed",
-  "dueDate": 1577836800000,
-  "project": "5db47c710cb5ca35d893a210"
+  "title": "AllGood NA Klaviyo",
+  "description": "Gillette Venus Bazaarvoice",
+  "column": "In Progress",
+  "dueDate": 1585722314000,
+  "project": "5e37cff7d917a500045cf1f9"
 }
 
 ### Get all tasks
