@@ -1,0 +1,9 @@
+POST https://pmspa-api.herokuapp.com/v1/booking
+Content-Type: application/json
+Cookie: auth=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGQzMjE2NmQ0NzdkOTAyYjU1ZjZkYWMiLCJlbWFpbCI6Im1hcmtvQGFuZ2Vsb3Zza2kuZ2EiLCJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9pbWFnZXMudW5zcGxhc2guY29tL3Bob3RvLTE0ODE2MDg3OTA5MDQtNmI0N2M4OGU1YjAwP2l4bGliPXJiLTEuMi4xJnE9ODAmZm09anBnJmNyb3A9ZW50cm9weSZjcz10aW55c3JnYiZ3PTE1MCZoPTE1MCZmaXQ9Y3JvcCZpeGlkPWV5SmhjSEJmYVdRaU9qRjkiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1ODIzODU1ODIsImV4cCI6MTU4MjQ3MTk4Mn0.s_3dbYw2EQ-eeDSDILz-bWgrtiCEcmy6dEpkZBlheLc
+
+{
+      "username": "marko.angelovski@convergent-usa.com",
+      "password": "123456",
+      "event": "5e4cf4e0c449ca0004ac7509"
+}
