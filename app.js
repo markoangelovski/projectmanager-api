@@ -16,6 +16,7 @@ connectDB();
 // Middleware
 app.use(helmet());
 app.use(cookieParser());
+app.use(express.static("screenshots"));
 app.use(
   cors({
     origin: process.env.NODE_ORIGIN,
@@ -49,6 +50,7 @@ app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
 app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));
 app.use(`/${v}/notes`, isLoggedIn, require(`./routes/${v}/notes`));
 app.use(`/${v}/days`, isLoggedIn, require(`./routes/${v}/days`));
+app.use(`/${v}/booking`, isLoggedIn, require(`./routes/${v}/booking`));
 
 // Error handlers
 function notFound(req, res, next) {
