@@ -17,16 +17,19 @@ router.post("/", async (req, res, next) => {
     // Check if Event exists
     if (!event) {
       res.status(404).json({
+        error: "EVENT_NOT_FOUND",
         message: `Event not found!`
       });
       // Check if Event has a Task
     } else if (!event.task) {
       res.status(403).json({
+        error: "EVENT_TASK_NOT_FOUND",
         message: `Event ${event.title} does not have an associated Task. Please add a Task and try again.`
       });
       // Check if Event is already booked
     } else if (event.booked) {
       res.status(403).json({
+        error: "EVENT_ALREADY_BOOKED",
         message: `Event ${event.title} is already booked!`
       });
     } else {
@@ -34,6 +37,7 @@ router.post("/", async (req, res, next) => {
 
       if (!task.kanboard) {
         res.status(403).json({
+          error: "EVENT_KANBOARD_NOT_FOUND",
           message: `Task ${task.title} does not have an associated Kanboard link. Please add the Kanboard link and try again.`
         });
       } else {
