@@ -43,6 +43,30 @@ router.post("/:taskId", async (req, res, next) => {
   }
 });
 
+// @route   GET /notes
+// @desc    Create a new note
+router.get("/", async (req, res, next) => {
+  try {
+    const notes = await Note.find({ owner: req.user });
+
+    if (notes.length > 0) {
+      res.json({
+        message: "Notes susscessfully found!",
+        notes
+      });
+    } else {
+      res.status(404).json({
+        error: "NOTES_NOT_FOUND",
+        message: `Notes not found!`,
+        notes
+      });
+    }
+  } catch (error) {
+    console.warn(error);
+    next(error);
+  }
+});
+
 // notes/:noteId?note={note text}
 // @route   PATCH /notes
 // @desc    Update a note

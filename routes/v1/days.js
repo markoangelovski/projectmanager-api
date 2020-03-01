@@ -79,9 +79,43 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// @route   GET /days?start=startDate&end=endDate&id=dayId
+// @route   GET /days?task=taskId
 // @desc    Get all days in range
-router.get("/", async (req, res, next) => {
+const getTasks = async (req, res, next) => {
+  if (req.query.task) {
+    try {
+      let taskId;
+      taskId = /^[a-f\d]{24}$/i.test(req.query.task) && req.query.task;
+      if (!taskId) throw new Error("Task identifier invalid");
+
+      // Find events for specific task
+      const events =
+        taskId &&
+        (await Event.find({
+          owner: req.user,
+          task: taskId
+        }));
+
+      if (events && events.length > 0) {
+        res.json({
+          message: "Event entries successfully found!",
+          events
+        });
+      } else {
+        throw new RangeError("No event entries found.");
+      }
+    } catch (error) {
+      console.error(error.message);
+      next(error);
+    }
+  } else {
+    next();
+  }
+};
+
+// @route   GET /days?start=startDate&end=endDate&id=dayId&task=taskId
+// @desc    Get all days in range
+router.get("/", getTasks, async (req, res, next) => {
   const start =
     req.query.start && req.query.start.length > 1
       ? new Date(req.query.start)

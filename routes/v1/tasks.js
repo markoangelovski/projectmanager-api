@@ -64,11 +64,45 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// @route   GET /tasks?task=taskId
+// @desc    Get single task
+const getSingleTask = async (req, res, next) => {
+  if (req.query.task) {
+    try {
+      let taskId = /^[a-f\d]{24}$/i.test(req.query.task) && req.query.task;
+      if (!taskId) throw new Error("Task identifier invalid");
+
+      const task = await Task.findOne({
+        owner: req.user,
+        _id: taskId
+      }).populate("links");
+
+      if (Object.keys(task).length > 0) {
+        res.status(200).json({
+          message: `Task ${task.title} successfully found!`,
+          task
+        });
+      } else {
+        res.status(404).json({
+          error: "TASK_NOT_FOUND",
+          message: "Task not found"
+        });
+      }
+    } catch (error) {
+      console.error(error.message);
+      res.status(500);
+      next(error);
+    }
+  } else {
+    next();
+  }
+};
+
 // @route   GET /tasks
 // @desc    Get all tasks
-router.get("/", async (req, res, next) => {
+router.get("/", getSingleTask, async (req, res, next) => {
   try {
-    const tasks = await Task.find({ owner: req.user._id });
+    const tasks = await Task.find({ owner: req.user._id }).populate("links");
 
     if (tasks.length > 0) {
       res.status(200).json({
