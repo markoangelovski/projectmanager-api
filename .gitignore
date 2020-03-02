@@ -2,7 +2,5 @@ node_modules
 db-outline.json
 v0
 .env
-requests/dev/
-requests/stage/
-requests/prod/
+requests/
 screenshots/
