@@ -13,6 +13,7 @@ router.post("/", async (req, res, next) => {
     const project = await Project.findById(req.body.project);
 
     if (project) {
+      req.body.dueDate = parseInt(new Date(req.body.dueDate).getTime());
       const task = new Task(req.body);
       task.owner = req.user;
 
@@ -23,32 +24,9 @@ router.post("/", async (req, res, next) => {
         task.save()
       ]);
 
-      // Adding owner details via savedTask.owner did not work, hence detailes were added manualy
-      resTask = {
-        title: savedTask.title,
-        column: savedTask.column,
-        tags: savedTask.tags,
-        links: savedTask.links,
-        notes: savedTask.notes,
-        subtasks: savedTask.subtasks,
-        done: savedTask.done,
-        _id: savedTask._id,
-        project: savedTask.project,
-        description: savedTask.description,
-        pl: savedTask.pl,
-        kanboard: savedTask.kanboard,
-        nas: savedTask.nas,
-        dueDate: savedTask.dueDate,
-        date: savedTask.date,
-        owner: {
-          email: req.user.email,
-          avatar_url: req.user.avatar_url
-        }
-      };
-
       res.status(201).json({
         message: `Task ${task.title} successfully created!`,
-        task: resTask
+        task: savedTask
       });
     } else {
       res.status(404);
