@@ -1,4 +1,7 @@
 const gtmCompare = (gtmLocal, gtmScan) => {};
 console.log("Testing a worker!");
-
-module.exports = gtmCompare;
+setTimeout(() => {
+  console.log("After 5 seconds.");
+  process.exit(1);
+}, 5000);
+// module.exports = gtmCompare;
