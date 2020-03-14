@@ -80,7 +80,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // @route   GET /days?task=taskId
-// @desc    Get all days in range
+// @desc    Get all events for a requested Task ID
 const getTasks = async (req, res, next) => {
   if (req.query.task) {
     try {
