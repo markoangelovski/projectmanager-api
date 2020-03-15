@@ -26,8 +26,12 @@ const localeSchema = new mongoose.Schema(
     GoogleAnalyticsLocal: String,
     GoogleAnalyticsBrand: String,
     GoogleAnalyticsReportingView: String,
+    GoogleAnalyticsConsentRequired: String,
     SiteLocalContainer: String,
+    ConsentOverlay: String,
     ConsentOverlayID: String,
+    SitePrivacyProtection: String,
+    SiteGDPR: String,
     FacebookRemarketingID: String,
     GTM: Object
   },
