@@ -40,6 +40,6 @@ module.exports = locale => {
     locale.FacebookRemarketingID !== locale.GTM.FacebookRemarketingID
   )
     return new Error(
-      `OT ID does not match. Provided: ${locale.FacebookRemarketingID} vs Current: ${locale.GTM.FacebookRemarketingID}`
+      `FB ID does not match. Provided: ${locale.FacebookRemarketingID} vs Current: ${locale.GTM.FacebookRemarketingID}`
     );
 };

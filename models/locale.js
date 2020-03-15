@@ -8,25 +8,31 @@ const { getMeta } = require("../lib/Meta/getMeta");
 // Validation
 const gtmValidation = require("../validation/gtmAttributes");
 
-const localeSchema = new mongoose.Schema({
-  project: String,
-  title: String,
-  url: {
-    type: String,
-    required: "URL is required.",
-    unique: true
+const localeSchema = new mongoose.Schema(
+  {
+    project: String,
+    title: String,
+    url: {
+      type: String,
+      required: "URL is required.",
+      unique: true
+    },
+    metaTitle: String,
+    metaDescription: String,
+    metaImage: String,
+    favicon: String,
+    SiteTouchpoint: String,
+    GoogleAnalyticsLocal: String,
+    GoogleAnalyticsReportingView: String,
+    SiteLocalContainer: String,
+    ConsentOverlayID: String,
+    FacebookRemarketingID: String,
+    GTM: Object
   },
-  metaTitle: String,
-  metaDescription: String,
-  favicon: String,
-  SiteTouchpoint: String,
-  GoogleAnalyticsLocal: String,
-  GoogleAnalyticsReportingView: String,
-  SiteLocalContainer: String,
-  ConsentOverlayID: String,
-  FacebookRemarketingID: String,
-  GTM: Object
-});
+  {
+    timestamps: true
+  }
+);
 
 localeSchema.pre("save", async function(next) {
   try {
@@ -35,6 +41,7 @@ localeSchema.pre("save", async function(next) {
 
     this.metaTitle = meta.title;
     this.metaDescription = meta.description;
+    this.metaImage = meta.image && meta.image;
     this.favicon = meta.icon;
     this.GTM = await gtmParser(data);
 
