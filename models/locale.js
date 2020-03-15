@@ -17,6 +17,7 @@ const localeSchema = new mongoose.Schema(
       required: "URL is required.",
       unique: true
     },
+    metaUrl: String,
     metaTitle: String,
     metaDescription: String,
     metaImage: String,
@@ -29,21 +30,20 @@ const localeSchema = new mongoose.Schema(
     FacebookRemarketingID: String,
     GTM: Object
   },
-  {
-    timestamps: true
-  }
+  { timestamps: true }
 );
 
-localeSchema.pre("save", async function(next) {
+localeSchema.pre(["save", "updateOne"], async function(next) {
   try {
     const { data } = await axios.get(this.url);
     const meta = await getMeta(data, this.url);
 
+    this.metaUrl = meta.url;
     this.metaTitle = meta.title;
     this.metaDescription = meta.description;
     this.metaImage = meta.image && meta.image;
     this.favicon = meta.icon;
-    this.GTM = await gtmParser(data);
+    this.GTM = gtmParser(data);
 
     // Check if any of the provided attributes does not match with live attributes
     const err = gtmValidation(this);
