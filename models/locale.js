@@ -24,6 +24,7 @@ const localeSchema = new mongoose.Schema(
     favicon: String,
     SiteTouchpoint: String,
     GoogleAnalyticsLocal: String,
+    GoogleAnalyticsBrand: String,
     GoogleAnalyticsReportingView: String,
     SiteLocalContainer: String,
     ConsentOverlayID: String,
