@@ -29,6 +29,7 @@ const localeSchema = new mongoose.Schema(
     SiteLocalContainer: String,
     ConsentOverlayID: String,
     FacebookRemarketingID: String,
+    Segment: String,
     GTM: Object
   },
   { timestamps: true }
