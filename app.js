@@ -24,7 +24,8 @@ app.use(
     optionsSuccessStatus: 204
   })
 );
-app.use(express.json({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(checkUser);
 if (process.env.NODE_ENV === "development") {
   const morgan = require("morgan");
