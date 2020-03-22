@@ -238,7 +238,7 @@ router.patch("/", hasBody, async (req, res, next) => {
         // Iterate over req.query and update the values in locale
         for (const key in req.body) {
           if (req.body.hasOwnProperty(key)) {
-            locale[key] = req.body[key];
+            locale[key] = req.body[key].length > 1 && req.body[key];
           }
         }
 
