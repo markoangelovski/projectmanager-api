@@ -14,6 +14,13 @@ module.exports = locale => {
       `GA does not match. Provided: ${locale.GoogleAnalyticsLocal} vs Current: ${locale.GTM.GoogleAnalyticsLocal}`
     );
   if (
+    locale.GoogleAnalyticsBrand &&
+    locale.GoogleAnalyticsBrand !== locale.GTM.GoogleAnalyticsBrand
+  )
+    return new Error(
+      `GA Brand does not match. Provided: ${locale.GoogleAnalyticsBrand} vs Current: ${locale.GTM.GoogleAnalyticsBrand}`
+    );
+  if (
     locale.GoogleAnalyticsReportingView &&
     locale.GoogleAnalyticsReportingView !==
       locale.GTM.GoogleAnalyticsReportingView

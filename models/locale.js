@@ -26,19 +26,15 @@ const localeSchema = new mongoose.Schema(
     GoogleAnalyticsLocal: String,
     GoogleAnalyticsBrand: String,
     GoogleAnalyticsReportingView: String,
-    GoogleAnalyticsConsentRequired: String,
     SiteLocalContainer: String,
-    ConsentOverlay: String,
     ConsentOverlayID: String,
-    SitePrivacyProtection: String,
-    SiteGDPR: String,
     FacebookRemarketingID: String,
     GTM: Object
   },
   { timestamps: true }
 );
 
-localeSchema.pre(["save", "updateOne"], async function(next) {
+localeSchema.pre("save", async function(next) {
   try {
     const { data } = await axios.get(this.url);
     const meta = await getMeta(data, this.url);
@@ -46,7 +42,7 @@ localeSchema.pre(["save", "updateOne"], async function(next) {
     this.metaUrl = meta.url;
     this.metaTitle = meta.title;
     this.metaDescription = meta.description;
-    this.metaImage = meta.image && meta.image;
+    this.metaImage = meta.image;
     this.favicon = meta.icon;
     this.GTM = gtmParser(data);
 
