@@ -88,7 +88,7 @@ router.patch("/", hasBody, async (req, res, next) => {
       const locale = await Locale.findOne({ url: localeUrl });
 
       if (locale) {
-        // Iterate over req.query and update the values in locale
+        // Iterate over req.body and update the values in locale
         for (const key in req.body) {
           if (req.body.hasOwnProperty(key)) {
             locale[key] =
