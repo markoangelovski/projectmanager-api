@@ -15,27 +15,54 @@ const localeSchema = new mongoose.Schema(
     url: {
       type: String,
       required: "URL is required.",
-      unique: true
+      unique: true,
+      match: [
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+      ],
     },
     metaUrl: String,
     metaTitle: String,
     metaDescription: String,
     metaImage: String,
     favicon: String,
-    SiteTouchpoint: String,
-    GoogleAnalyticsLocal: String,
-    GoogleAnalyticsBrand: String,
-    GoogleAnalyticsReportingView: String,
-    SiteLocalContainer: String,
-    ConsentOverlayID: String,
-    FacebookRemarketingID: String,
-    Segment: String,
-    GTM: Object
+    SiteTouchpoint: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    GoogleAnalyticsLocal: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    GoogleAnalyticsBrand: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    GoogleAnalyticsReportingView: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    SiteLocalContainer: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    ConsentOverlayID: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    FacebookRemarketingID: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    Segment: {
+      type: String,
+      set: (v) => (v.length > 0 ? v : undefined),
+    },
+    GTM: Object,
   },
   { timestamps: true }
 );
 
-localeSchema.pre("save", async function(next) {
+localeSchema.pre("save", async function (next) {
   try {
     const { data } = await axios.get(this.url);
     const meta = await getMeta(data, this.url);
