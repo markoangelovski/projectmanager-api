@@ -16,7 +16,6 @@ const { urlRgx } = require("../../validation/regex");
 // GTM Functions
 const gtmParser = require("../../lib/GTM/gtmParser");
 const gtmCompare = require("../../lib/GTM/gtmCompare");
-const gtmScanner = require("../../lib/GTM/gtmScanner");
 
 // Reporting Functions
 const {
@@ -146,18 +145,54 @@ router.post("/scan", async (req, res, next) => {
       // Generate Scan ID for fetching the scan later
       const scanID = Math.floor(10000 + Math.random() * 90000);
 
-      // Send a scan link to the user
+      // Send a response to the user informing them once the scan is available
       res.json({
-        message: `Scan initiated.`,
+        message: `Scan initiated. Available in approx. ${Math.floor(
+          locales.length / 2
+        )} seconds.`,
         result: `https://${req.get("host")}/v1/locales/scan/${scanID}`
       });
 
-      // Initiate scan
-      const scanResult = await gtmScanner(locales);
+      // Initiate counters
+      let localesScanned = 0;
+      let totalMissingKeys = 0;
+      let totalErrors = 0;
+      const stats = [];
+      const scanStart = new Date();
+
+      // Iterate over each locale and perform scanning
+      for (const locale of locales) {
+        const { title, url, favicon, GTM: previousGtm } = locale;
+
+        const { data } = await axios.get(url);
+
+        const scannedGtm = gtmParser(data);
+        const result = gtmCompare(previousGtm, scannedGtm);
+
+        const res = {
+          title,
+          url,
+          favicon,
+          result
+        };
+
+        if (result.hasMissingKeys || result.hasErrors) {
+          result.hasMissingKeys && totalMissingKeys++;
+          result.hasErrors && totalErrors++;
+          stats.push(res);
+        }
+        localesScanned++;
+      }
+
+      const scanDurationMs = new Date() - scanStart;
 
       const scan = new Scan({
         scanID,
-        ...scanResult
+        localesScanned,
+        totalMissingKeys,
+        totalErrors,
+        scanDurationMs,
+        stats
       });
 
       scan.save();
@@ -168,7 +203,7 @@ router.post("/scan", async (req, res, next) => {
   }
 });
 
-// @route   GET /locales/scan?url=https://www.locale.com || ?start=startDate&end=endDate
+// @route   GET /locales/scan?url=https://www.locale.com
 // @desc    Initiate single locale scan or fetch all scans
 router.get("/scan", async (req, res, next) => {
   const localeUrl = req.query.url;
