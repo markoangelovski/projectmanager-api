@@ -279,10 +279,29 @@ router.get("/scan/:scanID", async (req, res, next) => {
 });
 
 // @route   GET /locales/report
-// @desc    Get locales or scans report in CSV format
+// @desc    Get locales or scans report in CSV, XLSX or JSON format
 router.get("/report", async (req, res, next) => {
   try {
-    if (req.query.type === "scan") {
+    const format = req.query.format && req.query.format.toLowerCase().trim();
+    const type = req.query.type && req.query.type.toLowerCase().trim();
+
+    const sendResponse = report => {
+      if (typeof report === "string") {
+        // Respond with a report in file format
+        res.download(
+          path.resolve(__dirname + "../../../reports/" + report),
+          report
+        );
+      } else {
+        // Respond with a report in JSON format
+        res.json({
+          message: "Report successfully created.",
+          report
+        });
+      }
+    };
+
+    if (type === "scan") {
       const { start, end } = getDates(req.query.start, req.query.end);
 
       const scans = await Scan.find({
@@ -293,18 +312,15 @@ router.get("/report", async (req, res, next) => {
       });
 
       if (scans.length) {
-        const report = createScansReport(scans);
-        res.download(
-          path.resolve(__dirname + "../../../reports/" + report),
-          report
-        );
+        const report = createScansReport(scans, format);
+        sendResponse(report);
       } else {
         res.status(404).json({
           message: "No scans found in given time period.",
           error: "ERR_SCANS_NOT_FOUND"
         });
       }
-    } else if (req.query.type === "locale") {
+    } else if (type === "locale") {
       const query = {};
       if (req.query.projects)
         query.project = {
@@ -314,11 +330,8 @@ router.get("/report", async (req, res, next) => {
       const locales = await Locale.find(query);
 
       if (locales.length) {
-        const report = createLocalesReport(locales, req.query.keys);
-        res.download(
-          path.resolve(__dirname + "../../../reports/" + report),
-          report
-        );
+        const report = createLocalesReport(locales, req.query.keys, format);
+        sendResponse(report);
       } else {
         res.status(404).json({
           message: "No locales found.",
