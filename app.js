@@ -61,7 +61,8 @@ app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
 app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));
 app.use(`/${v}/notes`, isLoggedIn, require(`./routes/${v}/notes`));
 app.use(`/${v}/days`, isLoggedIn, require(`./routes/${v}/days`));
-app.use(`/${v}/locales`, isLoggedIn, require(`./routes/${v}/locales`));
+// app.use(`/${v}/locales`, isLoggedIn, require(`./routes/${v}/locales`));
+app.use(`/`, require(`./src/routes.js`));
 
 // Error handlers
 function notFound(req, res, next) {
@@ -76,8 +77,11 @@ function errorHandler(error, req, res, next) {
     message: error.message,
     error
   };
+  // Handle Axios errors
+  if (error.isAxiosError)
+    payload.message = "An error occurred while fetching the data.";
   // If in development, send error stack
-  process.env.NODE_ENV === "development" ? (payload.stack = error.stack) : null;
+  if (process.env.NODE_ENV === "development") payload.stack = error.stack;
   if (error instanceof RangeError) res.status(404);
   res.statusCode === 200 ? res.status(500) : res.statusCode;
   res.json(payload);

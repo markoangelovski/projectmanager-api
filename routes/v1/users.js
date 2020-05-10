@@ -13,7 +13,7 @@ const { isLoggedIn, isAdmin, hasBody } = require("../../middleware/checkUser");
 const User = require("../../models/user");
 
 // Vlidation imports
-const validateUser = require("../../validation/user");
+const { userSchema } = require("../../src/validation/user");
 
 // @route /auth
 // @desc Check if user it authenticated
@@ -44,7 +44,7 @@ router.get("/", async (req, res) => {
 // @desc register route
 router.post("/register", hasBody, isAdmin, async (req, res, next) => {
   // Validate user input
-  const result = validateUser.validate(req.body);
+  const result = userSchema.validate(req.body);
 
   if (!result.error) {
     // Check if user already exists in DB
@@ -89,7 +89,7 @@ router.post("/register", hasBody, isAdmin, async (req, res, next) => {
 // @desc Login route
 router.post("/login", async (req, res, next) => {
   // validate user input
-  const result = validateUser.validate(req.body);
+  const result = userSchema.validate(req.body);
 
   if (!result.error) {
     try {
@@ -151,27 +151,5 @@ router.get("/logout", isLoggedIn, async (req, res, next) => {
     message: "Logout successfull!"
   });
 });
-
-// @route /auth/update-profile
-// @desc Update profile route
-// router.patch("/update-profile", async (req, res, next) => {
-//   const result = validateUser.validate(req.body);
-//   if (req.user) {
-//     try {
-//       const user = await User.findOne({ email: req.user.email });
-
-//       const setValues = {};
-
-//       res.status(200).json(user);
-//     } catch (error) {
-// console.warn(error);
-//       next(error);
-//     }
-//   } else {
-//     const error = new Error("User not found!");
-//     res.status(422);
-//     next(error);
-//   }
-// });
 
 module.exports = router;
