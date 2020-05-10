@@ -4,3 +4,4 @@ db-outline.json
 requests/
 screenshots/
 reports/
+!src/api/reports

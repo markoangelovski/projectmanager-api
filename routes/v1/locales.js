@@ -4,7 +4,7 @@ const axios = require("axios");
 const moment = require("moment");
 
 // Models
-const Locale = require("../../models/locale");
+const Locale = require("../../src/api/locales/v1/locales.model");
 const Scan = require("../../models/scan");
 
 // Middlewares

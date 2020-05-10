@@ -11,7 +11,11 @@ const userSchema = new mongoose.Schema({
       "Please enter a valid URL."
     ]
   },
-  role: { type: String, default: "user" }
+  role: {
+    type: String,
+    enum: ["admin", "user"],
+    default: "user"
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);
