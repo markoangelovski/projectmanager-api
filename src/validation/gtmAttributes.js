@@ -49,6 +49,10 @@ module.exports = locale => {
     return new Error(
       `FB ID does not match. Provided: ${locale.FacebookRemarketingID} vs Current: ${locale.GTM.FacebookRemarketingID}`
     );
+  if (locale.Lytics && locale.Lytics !== locale.GTM.Lytics)
+    return new Error(
+      `Lytics ID does not match. Provided: ${locale.Lytics} vs Current: ${locale.GTM.Lytics}`
+    );
   if (locale.Segment && locale.Segment !== locale.GTM.Segment)
     return new Error(
       `Segment ID does not match. Provided: ${locale.Segment} vs Current: ${locale.GTM.Segment}`
