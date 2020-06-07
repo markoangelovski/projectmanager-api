@@ -38,6 +38,7 @@ const localeSchema = new mongoose.Schema(
     SiteLocalContainer: gtmType,
     ConsentOverlayID: gtmType,
     FacebookRemarketingID: gtmType,
+    Lytics: gtmType,
     Segment: gtmType,
     GTM: Object
   },
@@ -55,11 +56,9 @@ localeSchema.pre("save", async function (next) {
     this.metaImage = meta.image;
     this.favicon = meta.icon;
     this.GTM = gtmParser(data);
-    console.log("this0", this);
     // Check if any of the provided attributes does not match with live attributes
     const err = gtmValidation(this);
     if (err) throw new Error(err);
-    console.log("this", this);
     next();
   } catch (error) {
     next(error);
