@@ -212,7 +212,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{apiUrl}}/v1.1/auth/api-key?key=74d60cbd2757b087b03550a9bd41986f825a366550c127816291cac8d1358d40",
+							"raw": "{{apiUrl}}/v1.1/auth/api-key?key=74d60cbd2757b087b03550a9bd41986f825a36...",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -224,7 +224,7 @@
 							"query": [
 								{
 									"key": "key",
-									"value": "74d60cbd2757b087b03550a9bd41986f825a366550c127816291cac8d1358d40"
+									"value": "74d60cbd2757b087b03550a9bd41986f825a36..."
 								}
 							]
 						}
@@ -256,17 +256,17 @@
 							"urlencoded": [
 								{
 									"key": "project",
-									"value": "Metamucil",
+									"value": "Aussie",
 									"type": "text"
 								},
 								{
 									"key": "title",
-									"value": "Metamucil pt-br",
+									"value": "Aussie en-us",
 									"type": "text"
 								},
 								{
 									"key": "url",
-									"value": "https://www.metamucil.com.br/pt-br",
+									"value": "https://aussie.com/en-us",
 									"type": "text"
 								},
 								{
@@ -316,6 +316,11 @@
 									"value": "OXJSsZEnH9NJhBMFZOYqiCb6roqcbs1k",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "Lytics",
+									"value": "3818e692efb3bdd462eb2a3b03baddf3",
+									"type": "text"
 								}
 							],
 							"options": {
@@ -352,7 +357,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiUrl}}/v1/locale",
+							"raw": "{{apiUrl}}/v1/locale?project=Aussie",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -363,13 +368,12 @@
 							"query": [
 								{
 									"key": "url",
-									"value": "https://www.metamucil.com.br/pt-br",
+									"value": "https://www.metamucil.com.br/pt-br/",
 									"disabled": true
 								},
 								{
 									"key": "project",
-									"value": "Metamucil",
-									"disabled": true
+									"value": "Aussie"
 								},
 								{
 									"key": "title",
@@ -442,7 +446,7 @@
 							"urlencoded": [
 								{
 									"key": "url",
-									"value": "https://www.metamucil.com.br/pt-br",
+									"value": "https://aussie.com/en-us",
 									"type": "text"
 								},
 								{
@@ -498,6 +502,11 @@
 									"value": " ",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "Lytics",
+									"value": "3818e692efb3bdd462eb2a3b03baddf3",
+									"type": "text"
 								}
 							],
 							"options": {
@@ -750,6 +759,30 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Docs",
+			"item": [
+				{
+					"name": "Get Postman Collection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/docs",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"docs"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -776,13 +809,13 @@
 	],
 	"variable": [
 		{
-			"id": "62edcbfb-8fbd-4ad2-8557-726ec5d25e6a",
+			"id": "ef4ca5ff-7f24-44e0-bf4c-f4eb2f0acb97",
 			"key": "email",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "420f4162-336b-44fd-8abb-fd34924f26af",
+			"id": "d3d9fb9f-9225-4258-9dcc-139545763fd1",
 			"key": "password",
 			"value": "",
 			"type": "string"
