@@ -1,11 +1,11 @@
 const bcrypt = require("bcryptjs");
-const { connectDB, closeDB } = require("../config/db");
+const { connectDB, closeDB } = require("../src/config/db");
 
 // DB connection
 connectDB();
 
 // Model imports
-const User = require("../models/user");
+const User = require("../src/api/users/v1/users.model");
 
 const setAdminUser = async () => {
   try {
