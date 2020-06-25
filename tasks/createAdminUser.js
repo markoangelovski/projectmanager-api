@@ -5,7 +5,7 @@ const { connectDB, closeDB } = require("../src/config/db");
 connectDB();
 
 // Model imports
-const User = require("../src/api/users/v1/users.model");
+const { User } = require("../src/api/users/v1/users.model");
 
 const setAdminUser = async () => {
   try {

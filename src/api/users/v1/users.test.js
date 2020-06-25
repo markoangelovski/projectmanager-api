@@ -3,7 +3,7 @@ const { expect } = require("chai");
 const bcrypt = require("bcryptjs");
 
 const app = require("../../../../app");
-const User = require("./users.model");
+const { User } = require("./users.model");
 
 const user = { email: "test@user.com", password: "testpassword" };
 let cookie;

@@ -20,7 +20,7 @@ const checkScan = async (req, res, next) => {
   console.log("Here0");
 
   if (time < 18 || time > 23) {
-    console.log("Here1");
+    console.log("Here01");
     // If current time is less than 18:00, do nothing
     next();
   } else {
