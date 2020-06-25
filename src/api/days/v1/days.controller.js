@@ -446,7 +446,9 @@ exports.deleteEventLog = async (req, res, next) => {
 
     // Refetch event to recalculate duration,
     // WARNING sometimes does not get triggered and does not recalculate
-    Event.findById(event._id).then(foundEvent => foundEvent.save());
+    Event.findById(event._id).then(foundEvent =>
+      foundEvent.save().then(savedEvent => savedEvent)
+    );
 
     if (event) {
       res.status(200).json({
