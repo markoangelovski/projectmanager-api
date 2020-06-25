@@ -18,7 +18,7 @@ const {
   isLoggedIn,
   isAdmin,
   hasBody
-} = require("../../../../middleware/checkUser");
+} = require("../../../middlewares/users/checkUser");
 
 // @route POST /auth
 // @desc Check if user it authenticated

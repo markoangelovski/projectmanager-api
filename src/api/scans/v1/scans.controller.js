@@ -6,15 +6,15 @@ const Scan = require("./scans.model");
 const Locale = require("../../locales/v1/locales.model");
 
 // Validation
-const { urlRgx } = require("../../../..//validation/regex");
+const { urlRgx } = require("../../../validation/regex");
 
 // GTM Functions
-const gtmParser = require("../../../../lib/GTM/gtmParser");
-const gtmCompare = require("../../../../lib/GTM/gtmCompare");
-const gtmScanner = require("../../../../lib/GTM/gtmScanner");
+const gtmParser = require("../../../lib/GTM/gtmParser");
+const gtmCompare = require("../../../lib/GTM/gtmCompare");
+const gtmScanner = require("../../../lib/GTM/gtmScanner");
 
 // Helper Functions
-const { getDates } = require("../../../../lib/Helpers/getDates");
+const { getCorrectedDates } = require("../../../lib/Helpers/getCorrectedDates");
 
 // @route   POST /locales/scan
 // @desc    Initiate scan
@@ -126,7 +126,7 @@ exports.getScans = async (req, res, next) => {
     });
   } else if (!localeUrl) {
     try {
-      const { start, end } = getDates(req.query.start, req.query.end);
+      const { start, end } = getCorrectedDates(req.query.start, req.query.end);
 
       const scans = await Scan.find({
         createdAt: {

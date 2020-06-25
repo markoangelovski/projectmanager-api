@@ -4,7 +4,7 @@ const router = require("express").Router();
 const { postLocale, getLocale, patchLocale } = require("./locales.controller");
 
 // Middlewares
-const { hasBody } = require("../../../../middleware/checkUser");
+const { hasBody } = require("../../../middlewares/users/checkUser");
 const { isApiAdmin } = require("../../../middlewares/users/checkApiKey");
 
 // @route   POST /locales

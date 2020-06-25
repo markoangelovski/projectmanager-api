@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-const getDates = (startDate, endDate) => {
+const getCorrectedDates = (startDate, endDate) => {
   // Support for "1584223200000" formats.
   const correctTimestamp = date =>
     date && !isNaN(parseFloat(Number(date))) ? new Date(Number(date)) : date;
@@ -49,4 +49,4 @@ const getDates = (startDate, endDate) => {
   }
 };
 
-module.exports = { getDates };
+module.exports = { getCorrectedDates };

@@ -46,12 +46,12 @@ exports.postEvent = async (req, res, next) => {
       logs: [
         {
           title: req.body.title,
-          duration: req.body.duration,
-        },
+          duration: req.body.duration
+        }
       ],
       task: task ? taskId : null,
       owner: req.user,
-      day,
+      day
     });
 
     if (day) {
@@ -64,7 +64,7 @@ exports.postEvent = async (req, res, next) => {
 
       const [savedEvent, savedDay] = await Promise.all([
         event.save(),
-        day.save(),
+        day.save()
       ]);
 
       // TEMPORARY If tasks exists, add Event reference to Task
@@ -76,7 +76,7 @@ exports.postEvent = async (req, res, next) => {
 
       res.status(201).json({
         message: `Event ${savedEvent.title} successfully stored!`,
-        day: savedDay,
+        day: savedDay
       });
     } else {
       // If day does not exist, create a new Day
@@ -84,7 +84,7 @@ exports.postEvent = async (req, res, next) => {
         start,
         day: dayId,
         owner: req.user,
-        events: [event],
+        events: [event]
       });
 
       // Add reference to Day in Event
@@ -93,7 +93,7 @@ exports.postEvent = async (req, res, next) => {
       // Save the Day and Event
       const [savedEvent, savedDay] = await Promise.all([
         event.save(),
-        day.save(),
+        day.save()
       ]);
 
       // TEMPORARY If tasks exists, add Event reference to Task
@@ -105,7 +105,7 @@ exports.postEvent = async (req, res, next) => {
 
       res.status(201).json({
         message: `Event ${savedEvent.title} successfully stored!`,
-        day: savedDay,
+        day: savedDay
       });
     }
   } catch (error) {
@@ -129,7 +129,7 @@ exports.getEventsByTask = async (req, res, next) => {
       if (events && events.length > 0) {
         res.json({
           message: "Event entries successfully found!",
-          events,
+          events
         });
       } else {
         res.status(404);
@@ -159,7 +159,7 @@ exports.getEventsByDay = async (req, res, next) => {
       if (days && Object.keys(days).length > 0) {
         res.json({
           message: "Day entries successfully found!",
-          days,
+          days
         });
       } else {
         res.status(404);
@@ -210,7 +210,7 @@ exports.getEventsByRange = async (req, res, next) => {
     if ((days && days.length > 0) || (days && Object.keys(days).length > 0)) {
       res.json({
         message: "Day entries successfully found!",
-        days,
+        days
       });
     } else {
       throw new RangeError("ERR_NO_DAY_ENTRIES_FOUND");
@@ -249,11 +249,11 @@ exports.patchEvent = async (req, res, next) => {
       next(error);
     } else if (!event.nModified) {
       res.status(200).json({
-        message: "No detail modifications detected. No actions taken.",
+        message: "No detail modifications detected. No actions taken."
       });
     } else if (event.nModified) {
       res.status(200).json({
-        message: "Event successfully updated!",
+        message: "Event successfully updated!"
       });
     }
   } catch (error) {
@@ -272,14 +272,14 @@ exports.deleteEvent = async (req, res, next) => {
           _id: req.params.dayId,
           model: Day,
           invalidMsg: "ERR_DAY_IDENTIFIER_INVALID",
-          notFoundMsg: "ERR_DAY_NOT_FOUND",
+          notFoundMsg: "ERR_DAY_NOT_FOUND"
         },
         {
           _id: req.params.eventId,
           model: Event,
           invalidMsg: "ERR_EVENT_IDENTIFIER_INVALID",
-          notFoundMsg: "ERR_EVENT_NOT_FOUND",
-        },
+          notFoundMsg: "ERR_EVENT_NOT_FOUND"
+        }
       ],
       req
     );
@@ -291,7 +291,7 @@ exports.deleteEvent = async (req, res, next) => {
         { $pull: { events: req.params.eventId } },
         { new: true }
       ),
-      Event.findOneAndDelete({ _id: req.params.eventId, owner: req.user }),
+      Event.findOneAndDelete({ _id: req.params.eventId, owner: req.user })
     ]);
 
     // Update task if it exists
@@ -304,7 +304,7 @@ exports.deleteEvent = async (req, res, next) => {
     if (day && event) {
       res.json({
         message: `Event deleted successfully!`,
-        day,
+        day
       });
     } else {
       const error = new Error("ERR_SERVER_ERROR");
@@ -333,8 +333,8 @@ exports.postLog = async (req, res, next) => {
           _id: req.body.event,
           model: Event,
           invalidMsg: "ERR_EVENT_IDENTIFIER_INVALID",
-          notFoundMsg: "ERR_EVENT_NOT_FOUND",
-        },
+          notFoundMsg: "ERR_EVENT_NOT_FOUND"
+        }
       ],
       req
     );
@@ -342,7 +342,7 @@ exports.postLog = async (req, res, next) => {
     // Create new log
     const newLog = {
       title: req.body.title,
-      duration: req.body.duration,
+      duration: req.body.duration
     };
 
     const event = await Event.updateOne(
@@ -355,11 +355,11 @@ exports.postLog = async (req, res, next) => {
       next(error);
     } else if (!event.nModified) {
       res.status(200).json({
-        message: "No detail modifications detected. No actions taken.",
+        message: "No detail modifications detected. No actions taken."
       });
     } else if (event.nModified) {
       res.status(201).json({
-        message: `Event ${newLog.title} successfully stored!`,
+        message: `Event ${newLog.title} successfully stored!`
       });
     }
   } catch (error) {
@@ -381,8 +381,8 @@ exports.patchEventLog = async (req, res, next) => {
           _id: req.params.logId,
           model: Event,
           invalidMsg: "ERR_LOG_IDENTIFIER_INVALID",
-          notFoundMsg: "ERR_LOG_NOT_FOUND",
-        },
+          notFoundMsg: "ERR_LOG_NOT_FOUND"
+        }
       ],
       req
     );
@@ -408,11 +408,11 @@ exports.patchEventLog = async (req, res, next) => {
       next(error);
     } else if (!event.nModified) {
       res.status(200).json({
-        message: "No detail modifications detected. No actions taken.",
+        message: "No detail modifications detected. No actions taken."
       });
     } else if (event.nModified) {
       res.status(200).json({
-        message: "Log successfully updated!",
+        message: "Log successfully updated!"
       });
     }
   } catch (error) {
@@ -431,8 +431,8 @@ exports.deleteEventLog = async (req, res, next) => {
           _id: req.params.logId,
           model: Event,
           invalidMsg: "ERR_LOG_IDENTIFIER_INVALID",
-          notFoundMsg: "ERR_LOG_NOT_FOUND",
-        },
+          notFoundMsg: "ERR_LOG_NOT_FOUND"
+        }
       ],
       req,
       next
@@ -450,7 +450,7 @@ exports.deleteEventLog = async (req, res, next) => {
 
     if (event) {
       res.status(200).json({
-        message: "Log successfully deleted!",
+        message: "Log successfully deleted!"
       });
     } else {
       const error = new RangeError("ERR_LOG_NOT_FOUND");

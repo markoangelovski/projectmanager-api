@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const axios = require("axios");
 
 // GTM and Metadata parsers
-const gtmParser = require("../../../../lib/GTM/gtmParser");
-const { getMeta } = require("../../../../lib/Meta/getMeta");
+const gtmParser = require("../../../lib/GTM/gtmParser");
+const { getMeta } = require("../../../lib/Meta/getMeta");
 
 // Validation
 const gtmValidation = require("../../../validation/gtmAttributes");

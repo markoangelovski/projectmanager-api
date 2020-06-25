@@ -5,15 +5,13 @@ const Locale = require("../../locales/v1/locales.model");
 const Scan = require("../../scans/v1/scans.model");
 
 // Reporting Functions
-const {
-  createScansReport
-} = require("../../../../lib/Reports/createScansReport");
+const { createScansReport } = require("../../../lib/Reports/createScansReport");
 const {
   createLocalesReport
-} = require("../../../../lib/Reports/createLocalesReport");
+} = require("../../../lib/Reports/createLocalesReport");
 
 // Helper Functions
-const { getDates } = require("../../../../lib/Helpers/getDates");
+const { getCorrectedDates } = require("../../../lib/Helpers/getCorrectedDates");
 
 // @route   GET /report
 // @desc    Get locales or scans report in CSV, XLSX or JSON format
@@ -42,7 +40,7 @@ exports.getReport = async (req, res, next) => {
     };
 
     if (type === "scan") {
-      const { start, end } = getDates(req.query.start, req.query.end);
+      const { start, end } = getCorrectedDates(req.query.start, req.query.end);
 
       const scans = await Scan.find({
         createdAt: {

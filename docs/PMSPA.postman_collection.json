@@ -9,6 +9,30 @@
 			"name": "User",
 			"item": [
 				{
+					"name": "Get users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{apiUrl}}/v1/auth",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Auth",
 					"request": {
 						"method": "POST",
@@ -132,12 +156,12 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{apiUrl}}/v1.1/auth/update?user=guest1@guest1.com&service=add:locale",
+							"raw": "{{apiUrl}}/v1/auth/update?user=guest1@guest1.com&service=remove:locale",
 							"host": [
 								"{{apiUrl}}"
 							],
 							"path": [
-								"v1.1",
+								"v1",
 								"auth",
 								"update"
 							],
@@ -148,7 +172,7 @@
 								},
 								{
 									"key": "service",
-									"value": "add:locale",
+									"value": "remove:locale",
 									"description": "add or remove : scan or report or locale"
 								},
 								{
@@ -167,12 +191,12 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{apiUrl}}/v1.1/auth/api-key?services=scan,report,locale",
+							"raw": "{{apiUrl}}/v1/auth/api-key?services=scan,report,locale",
 							"host": [
 								"{{apiUrl}}"
 							],
 							"path": [
-								"v1.1",
+								"v1",
 								"auth",
 								"api-key"
 							],
@@ -193,12 +217,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{apiUrl}}/v1.1/auth/api-key",
+							"raw": "{{apiUrl}}/v1/auth/api-key",
 							"host": [
 								"{{apiUrl}}"
 							],
 							"path": [
-								"v1.1",
+								"v1",
 								"auth",
 								"api-key"
 							]
@@ -212,19 +236,19 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{apiUrl}}/v1.1/auth/api-key?key=74d60cbd2757b087b03550a9bd41986f825a36...",
+							"raw": "{{apiUrl}}/v1/auth/api-key?key=77539933384595a1932996d589b88a5f50611418b008586e6eeb045e44cb76c4",
 							"host": [
 								"{{apiUrl}}"
 							],
 							"path": [
-								"v1.1",
+								"v1",
 								"auth",
 								"api-key"
 							],
 							"query": [
 								{
 									"key": "key",
-									"value": "74d60cbd2757b087b03550a9bd41986f825a36..."
+									"value": "77539933384595a1932996d589b88a5f50611418b008586e6eeb045e44cb76c4"
 								}
 							]
 						}
@@ -443,7 +467,7 @@
 							"urlencoded": [
 								{
 									"key": "url",
-									"value": "https://herbalessences.com/en-us",
+									"value": "https://herbalessences.co.uk/en-gb",
 									"type": "text"
 								},
 								{
@@ -454,7 +478,7 @@
 								},
 								{
 									"key": "SiteTouchpoint",
-									"value": "44036",
+									"value": "44683",
 									"type": "text"
 								},
 								{
@@ -471,7 +495,7 @@
 								},
 								{
 									"key": "GoogleAnalyticsReportingView",
-									"value": "213015174",
+									"value": "221576360",
 									"type": "text",
 									"disabled": true
 								},
@@ -483,15 +507,14 @@
 								},
 								{
 									"key": "ConsentOverlayID",
-									"value": "htmllang/9bf73cd6-702e-44be-afba-8c8aef06ce31",
+									"value": "14fbed57-90d3-47f5-b7e3-22183a43f987",
 									"type": "text",
 									"disabled": true
 								},
 								{
 									"key": "FacebookRemarketingID",
-									"value": "1072320916488019",
-									"type": "text",
-									"disabled": true
+									"value": "212682460080208",
+									"type": "text"
 								},
 								{
 									"key": "Segment",
@@ -581,7 +604,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiUrl}}/v1/scan?url=https://www.homemadesimple.com/",
+							"raw": "{{apiUrl}}/v1/scan?url=https://herbalessences.com/en-us",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -592,7 +615,7 @@
 							"query": [
 								{
 									"key": "url",
-									"value": "https://www.homemadesimple.com/"
+									"value": "https://herbalessences.com/en-us"
 								}
 							]
 						}
@@ -768,7 +791,7 @@
 							"urlencoded": [
 								{
 									"key": "day",
-									"value": "2020-06-23",
+									"value": "2020-06-24",
 									"description": "Date format YYYY-MM-DD",
 									"type": "text"
 								},
@@ -831,7 +854,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{apiUrl}}/v1/days/event.find?id=5ef12d94e4590d0e5d58dae4",
+							"raw": "{{apiUrl}}/v1/days/event.find?start=2020-06-24",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -843,20 +866,20 @@
 							"query": [
 								{
 									"key": "start",
-									"value": "2020-06-23",
-									"description": "Start date for Day range query or single Day date",
-									"disabled": true
+									"value": "2020-06-24",
+									"description": "Start date for Day range query or single Day date"
 								},
 								{
 									"key": "end",
-									"value": "2020-06-25",
+									"value": "2021-06-25",
 									"description": "End date for Day range query",
 									"disabled": true
 								},
 								{
 									"key": "id",
 									"value": "5ef12d94e4590d0e5d58dae4",
-									"description": "Get Day by id"
+									"description": "Get Day by id",
+									"disabled": true
 								},
 								{
 									"key": "task",
@@ -1109,12 +1132,12 @@
 	],
 	"variable": [
 		{
-			"id": "8ee7b892-9af3-444f-b8b1-8322c1cc4f91",
+			"id": "f0c0f4fa-ab95-4924-b0cb-f342dbb81bf8",
 			"key": "email",
 			"value": ""
 		},
 		{
-			"id": "30414239-7f1d-4825-b7a8-07e2ff2da7b6",
+			"id": "64c3c500-5db4-4ffd-92aa-42a35a750cd5",
 			"key": "password",
 			"value": ""
 		}
