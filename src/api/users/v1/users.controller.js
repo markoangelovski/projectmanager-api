@@ -2,8 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Models
-const User = require("../../../../models/user");
-const { User1, UserSettings, createHash } = require("./users.model");
+const { User, UserSettings, createHash } = require("./users.model");
 
 // Validation
 const {
@@ -13,7 +12,7 @@ const {
 } = require("../../../validation/user");
 
 // Helper functions
-const avatar = require("../../../../lib/avatar");
+const getAvatar = require("../../../lib/Helpers/getAvatar");
 
 // @route POST /auth
 // @desc Check if user it authenticated
@@ -27,7 +26,7 @@ exports.checkAuth = async (req, res) => {
 // @route GET /auth
 // @desc Get all users
 exports.getAllUsers = async (req, res) => {
-  const users = await User1.find();
+  const users = await User.find();
   const userList = users.map(user => {
     return {
       email: user.email,
@@ -48,7 +47,7 @@ exports.register = async (req, res, next) => {
 
   if (!result.error) {
     // Check if user already exists in DB
-    const existingUser = await User1.findOne({ email: req.body.email });
+    const existingUser = await User.findOne({ email: req.body.email });
     if (!existingUser) {
       try {
         // Hash password
@@ -56,7 +55,7 @@ exports.register = async (req, res, next) => {
         const user = new User({
           email: req.body.email,
           password: hash,
-          avatar_url: await avatar()
+          avatar_url: await getAvatar()
         });
         // Save user to db
         const savedUser = await user.save();
@@ -94,7 +93,7 @@ exports.login = async (req, res, next) => {
   if (!result.error) {
     try {
       // check if user exists
-      const findUser = await User1.findOne({ email: req.body.email });
+      const findUser = await User.findOne({ email: req.body.email });
       if (findUser) {
         // Cofirm password
         const hashConfirmed = await bcrypt.compare(
@@ -116,6 +115,7 @@ exports.login = async (req, res, next) => {
             secure: process.env.NODE_ENV === "development" ? false : true
           });
           res.json({
+            message: "Login successful!",
             user
           });
         } else {
@@ -148,13 +148,13 @@ exports.logout = async (req, res, next) => {
     secure: process.env.NODE_ENV === "development" ? false : true
   });
   res.json({
-    message: "Logout successfull!"
+    message: "Logout successful!"
   });
 };
 
-// @route PATCH /auth/update
+// @route PATCH /auth/update?service=(add|remove):(locale|report|scan)&user=other userEmail
 // @desc Update user settings
-exports.update = async (req, res, next) => {
+exports.updateService = async (req, res, next) => {
   // Check if any action is selected
   if (!req.query.service) return next(new Error("Please select an action."));
   // Check if only one action is selected and sanitize input
@@ -165,7 +165,7 @@ exports.update = async (req, res, next) => {
     // Validate query params
     const query = await userUpdate.validateAsync(req.query);
 
-    // Check if User is selected
+    // Check if another User needs to be updated. If not, update requestor.
     let user, role;
     if (query.user) {
       const newUser = await User.findOne({ email: query.user });
@@ -214,12 +214,14 @@ exports.update = async (req, res, next) => {
   }
 };
 
-// @route POST /auth/api-key
+// @route POST /auth/api-key?services=scan,report,locale
 // @desc Create a new API key for requested service
 exports.createApiKey = async (req, res, next) => {
   // Check if services have been sent
-  if (!req.query.services)
+  if (!req.query.services) {
+    res.status(422);
     return next(new Error("Please select at least one service."));
+  }
 
   try {
     const arr = req.query.services && req.query.services.split(",");
@@ -287,26 +289,20 @@ exports.getApiKeys = async (req, res, next) => {
   }
 };
 
-// @route DELETE /auth/api-key
+// @route DELETE /auth/api-key?key=123456
 // @desc Delete API keys
 exports.deleteApiKeys = async (req, res, next) => {
   if (!req.query.key) return next(new Error("Please select a key."));
   try {
     // Hash the key and find the settings
     const key = createHash(req.query.key);
-    const userSettings = await UserSettings.findOne({
-      "service_keys.key": key
-    });
 
-    if (userSettings) {
-      // Filter out the key to be deleted
-      const keys = userSettings.service_keys.filter(
-        service_key => service_key.key !== key
-      );
-      userSettings.service_keys = keys;
+    const userSettings = await UserSettings.updateOne(
+      { "service_keys.key": key },
+      { $pull: { service_keys: { key } } }
+    );
 
-      userSettings.save();
-
+    if (userSettings.nModified) {
       res.json({
         message: "API Key successfully deleted."
       });

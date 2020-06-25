@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 // Middlewares
-const { hasBody } = require("../../../middlewares/checkUser");
+const { hasBody } = require("../../../middlewares/users/checkUser");
 
 // Controllers
 const {

@@ -1,8 +1,8 @@
 const moment = require("moment");
 
 // Model imports
-const Scan = require("../api/scans/v1/scans.model");
-const Locale = require("../api/locales/v1/locales.model");
+const Scan = require("../../api/scans/v1/scans.model");
+const Locale = require("../../api/locales/v1/locales.model");
 
 // GTM Functions
 const gtmScanner = require("../../lib/GTM/gtmScanner");
@@ -60,7 +60,7 @@ const checkScan = async (req, res, next) => {
           {
             $set: { ...scanResult }
           }
-        ).then(scan => scan);
+        ).then(scan => console.log("New Scan created"));
       }
     } catch (error) {
       console.warn(error);

@@ -6,15 +6,16 @@ const rateLimit = require("express-rate-limit");
 
 require("dotenv").config();
 
-const { connectDB } = require("./config/db");
-const { checkUser, isLoggedIn } = require("./middleware/checkUser");
-const checkScan = require("./src/middlewares/checkScan");
+// Connect to Database
+const { connectDB } = require("./src/config/db");
+connectDB();
+
+// Middleware imports
+const { checkUser, isLoggedIn } = require("./src/middlewares/users/checkUser");
+const checkScan = require("./src/middlewares/scans/checkScan");
 
 const app = express();
 app.disable("etag");
-
-// Connect to Database
-connectDB();
 
 // Middleware
 app.use(helmet());
@@ -58,7 +59,6 @@ app.get("/", (req, res, next) => {
 const v = "v1";
 
 // Routes
-app.use(`/${v}/auth`, require(`./routes/${v}/users`));
 app.use(`/${v}/projects`, isLoggedIn, require(`./routes/${v}/projects`));
 app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
 app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));

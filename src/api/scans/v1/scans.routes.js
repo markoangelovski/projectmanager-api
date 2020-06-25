@@ -4,7 +4,7 @@ const router = require("express").Router();
 const { initScan, getScans, getSingleScan } = require("./scans.controller");
 
 // Middlewares
-const { isApiAdmin } = require("../../../middlewares/checkApiKey");
+const { isApiAdmin } = require("../../../middlewares/users/checkApiKey");
 
 // @route   POST /scan
 // @desc    Initiate scan

@@ -10,6 +10,7 @@
     "deploy-pr": "git push -u remote-github development",
     "deploy-pull": "git pull",
     "test": "NODE_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --timeout 5000 --exit",
+    "test-file": "NODE_ENV=test mocha src/api/users/v1/users.test.js --timeout 5000 --exit",
     "heroku-postbuild": "node tasks/createAdminUser"
   },
   "pre-commit": [

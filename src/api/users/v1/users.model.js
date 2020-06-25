@@ -135,7 +135,7 @@ userSettingsSchema.pre("save", async function (next) {
   next();
 });
 
-const User1 = mongoose.model("User1", userSchema);
+const User = mongoose.model("User", userSchema);
 const UserSettings = mongoose.model("UserSettings", userSettingsSchema);
 
-module.exports = { User1, UserSettings, createHash };
+module.exports = { User, UserSettings, createHash };

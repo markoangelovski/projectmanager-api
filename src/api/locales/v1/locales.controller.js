@@ -2,7 +2,7 @@
 const Locale = require("./locales.model");
 
 // Validation
-const { urlRgx } = require("../../../../validation/regex");
+const { urlRgx } = require("../../../validation/regex");
 
 // @route   POST /locales
 // @desc    Create a new locale

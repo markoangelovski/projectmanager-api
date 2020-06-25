@@ -7,7 +7,7 @@ const {
   register,
   login,
   logout,
-  update,
+  updateService,
   createApiKey,
   getApiKeys,
   deleteApiKeys
@@ -18,7 +18,7 @@ const {
   isLoggedIn,
   isAdmin,
   hasBody
-} = require("../../../../middleware/checkUser");
+} = require("../../../middlewares/users/checkUser");
 
 // @route POST /auth
 // @desc Check if user it authenticated
@@ -42,7 +42,7 @@ router.get("/logout", isLoggedIn, logout);
 
 // @route PATCH /auth/update
 // @desc Update user settings
-router.patch("/update", isLoggedIn, isAdmin, update);
+router.patch("/update", isLoggedIn, isAdmin, updateService);
 
 // @route POST /auth/api-key
 // @desc Create a new API key for requested service
