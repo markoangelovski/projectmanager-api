@@ -8,8 +8,10 @@ require("dotenv").config();
 
 const { connectDB } = require("./config/db");
 const { checkUser, isLoggedIn } = require("./middleware/checkUser");
+const checkScan = require("./src/middlewares/checkScan");
 
 const app = express();
+app.disable("etag");
 
 // Connect to Database
 connectDB();
@@ -37,6 +39,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(checkUser);
+app.use(checkScan);
 if (process.env.NODE_ENV === "development") {
   const morgan = require("morgan");
   app.use(morgan("dev"));
@@ -60,8 +63,6 @@ app.use(`/${v}/projects`, isLoggedIn, require(`./routes/${v}/projects`));
 app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
 app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));
 app.use(`/${v}/notes`, isLoggedIn, require(`./routes/${v}/notes`));
-app.use(`/${v}/days`, isLoggedIn, require(`./routes/${v}/days`));
-// app.use(`/${v}/locales`, isLoggedIn, require(`./routes/${v}/locales`));
 app.use(`/`, require(`./src/routes.js`));
 
 // Error handlers

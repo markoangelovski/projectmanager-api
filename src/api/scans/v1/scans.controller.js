@@ -35,11 +35,16 @@ exports.initScan = async (req, res, next) => {
         scan
       });
     } else {
-      // Get locales
-      const locales = await Locale.find().select("title url favicon GTM");
-
       // Generate Scan ID for fetching the scan later
       const scanID = Math.floor(10000 + Math.random() * 90000);
+
+      // Create Scan placeholder
+      const scanPlaceholder = new Scan({
+        scanID
+      });
+
+      // Wait for the Scan placehoder to save in order not to run multiple scans
+      const scan = await scanPlaceholder.save();
 
       // Send a scan link to the user
       res.json({
@@ -47,15 +52,19 @@ exports.initScan = async (req, res, next) => {
         result: `https://${req.get("host")}/v1/scan/${scanID}`
       });
 
+      // Get locales
+      const locales = await Locale.find().select("title url favicon GTM");
+
       // Initiate scan
       const scanResult = await gtmScanner(locales);
 
-      const scan = new Scan({
-        scanID,
-        ...scanResult
-      });
-
-      scan.save();
+      // Update Scan placehoder with results
+      Scan.updateOne(
+        { _id: scan._id },
+        {
+          $set: { ...scanResult }
+        }
+      ).then(scan => scan);
     }
   } catch (error) {
     console.warn(error);
