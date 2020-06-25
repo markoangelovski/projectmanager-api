@@ -35,15 +35,15 @@
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.11",
+    "mongoose": "^5.9.19",
     "page-metadata-parser": "^1.1.4",
     "xlsx": "^0.15.6"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.1",
+    "mocha": "^8.0.1",
     "morgan": "^1.9.1",
-    "nodemon": "^1.19.1",
+    "nodemon": "^2.0.4",
     "pre-commit": "^1.2.2",
     "supertest": "^4.0.2"
   }

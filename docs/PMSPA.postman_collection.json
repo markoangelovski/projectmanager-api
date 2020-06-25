@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2ea82fc4-5254-423c-9002-c32225bfec38",
+		"_postman_id": "ebbbf10a-64f8-4392-b86e-e2ce62d30450",
 		"name": "PMSPA",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -256,30 +256,29 @@
 							"urlencoded": [
 								{
 									"key": "project",
-									"value": "Aussie",
+									"value": "Herbal Essences",
 									"type": "text"
 								},
 								{
 									"key": "title",
-									"value": "Aussie en-us",
+									"value": "Herbal Essences it-it",
 									"type": "text"
 								},
 								{
 									"key": "url",
-									"value": "https://aussie.com/en-us",
+									"value": "https://herbalessences.it/",
 									"type": "text"
 								},
 								{
 									"key": "SiteTouchpoint",
-									"value": "45055",
+									"value": "44728",
 									"type": "text",
 									"disabled": true
 								},
 								{
 									"key": "GoogleAnalyticsLocal",
-									"value": "UA-16046021-4",
-									"type": "text",
-									"disabled": true
+									"value": "UA-5660335-42",
+									"type": "text"
 								},
 								{
 									"key": "GoogleAnalyticsBrand",
@@ -289,25 +288,24 @@
 								},
 								{
 									"key": "GoogleAnalyticsReportingView",
-									"value": "213015174",
+									"value": "202117607",
 									"type": "text",
 									"disabled": true
 								},
 								{
 									"key": "SiteLocalContainer",
-									"value": "GTM-PNMC5QT",
+									"value": "GTM-KK7GPP2",
 									"type": "text",
 									"disabled": true
 								},
 								{
 									"key": "ConsentOverlayID",
-									"value": "c5044e8c-814c-463a-bd75-da159c18e12a",
-									"type": "text",
-									"disabled": true
+									"value": "0a909d70-dc26-4693-9127-8d2a9876509e.js",
+									"type": "text"
 								},
 								{
 									"key": "FacebookRemarketingID",
-									"value": "",
+									"value": "897572113963970",
 									"type": "text",
 									"disabled": true
 								},
@@ -320,13 +318,12 @@
 								{
 									"key": "Lytics",
 									"value": "3818e692efb3bdd462eb2a3b03baddf3",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								}
 							],
 							"options": {
-								"raw": {
-									"language": "json"
-								}
+								"urlencoded": {}
 							}
 						},
 						"url": {
@@ -357,7 +354,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiUrl}}/v1/locale?project=Aussie",
+							"raw": "{{apiUrl}}/v1/locale?project=Being Girl",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -368,16 +365,16 @@
 							"query": [
 								{
 									"key": "url",
-									"value": "https://www.metamucil.com.br/pt-br/",
+									"value": "https://herbalessences.com/en-us",
 									"disabled": true
 								},
 								{
 									"key": "project",
-									"value": "Aussie"
+									"value": "Being Girl"
 								},
 								{
 									"key": "title",
-									"value": "Align en_ca",
+									"value": "Herbal Essences en_us",
 									"disabled": true
 								},
 								{
@@ -387,7 +384,7 @@
 								},
 								{
 									"key": "GoogleAnalyticsLocal",
-									"value": "UA-2875405-12",
+									"value": "UA-5660335-33",
 									"disabled": true
 								},
 								{
@@ -397,17 +394,17 @@
 								},
 								{
 									"key": "SiteLocalContainer",
-									"value": "",
+									"value": "GTM-MQB8VWK",
 									"disabled": true
 								},
 								{
 									"key": "ConsentOverlayID",
-									"value": "",
+									"value": "e01736f1-f96b-40b5-a429-b9da6467b248",
 									"disabled": true
 								},
 								{
 									"key": "FacebookRemarketingID",
-									"value": "",
+									"value": "897572113963970",
 									"disabled": true
 								},
 								{
@@ -446,7 +443,7 @@
 							"urlencoded": [
 								{
 									"key": "url",
-									"value": "https://aussie.com/en-us",
+									"value": "https://herbalessences.com/en-us",
 									"type": "text"
 								},
 								{
@@ -457,13 +454,12 @@
 								},
 								{
 									"key": "SiteTouchpoint",
-									"value": "43393",
-									"type": "text",
-									"disabled": true
+									"value": "44036",
+									"type": "text"
 								},
 								{
 									"key": "GoogleAnalyticsLocal",
-									"value": "UA-2875405-12",
+									"value": "UA-5660335-33",
 									"type": "text",
 									"disabled": true
 								},
@@ -475,19 +471,19 @@
 								},
 								{
 									"key": "GoogleAnalyticsReportingView",
-									"value": "188475551",
+									"value": "213015174",
 									"type": "text",
 									"disabled": true
 								},
 								{
 									"key": "SiteLocalContainer",
-									"value": "GTM-WDVFPFP",
+									"value": "GTM-PZD585R",
 									"type": "text",
 									"disabled": true
 								},
 								{
 									"key": "ConsentOverlayID",
-									"value": "5d41ced0-2642-4d0c-ad39-e3bc5e618683",
+									"value": "htmllang/9bf73cd6-702e-44be-afba-8c8aef06ce31",
 									"type": "text",
 									"disabled": true
 								},
@@ -506,13 +502,12 @@
 								{
 									"key": "Lytics",
 									"value": "3818e692efb3bdd462eb2a3b03baddf3",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								}
 							],
 							"options": {
-								"raw": {
-									"language": "json"
-								}
+								"urlencoded": {}
 							}
 						},
 						"url": {
@@ -586,7 +581,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiUrl}}/v1/scan?url=https://www.metamucil.com.br/pt-br",
+							"raw": "{{apiUrl}}/v1/scan?url=https://www.homemadesimple.com/",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -597,7 +592,7 @@
 							"query": [
 								{
 									"key": "url",
-									"value": "https://www.metamucil.com.br/pt-br"
+									"value": "https://www.homemadesimple.com/"
 								}
 							]
 						}
@@ -761,6 +756,311 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Event",
+			"item": [
+				{
+					"name": "Create new Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "day",
+									"value": "2020-06-23",
+									"description": "Date format YYYY-MM-DD",
+									"type": "text"
+								},
+								{
+									"key": "task",
+									"value": "",
+									"description": "Task id if available",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "New event title",
+									"description": "New event title",
+									"type": "text"
+								},
+								{
+									"key": "duration",
+									"value": "0.25",
+									"description": "Event duration",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "7",
+									"description": "Day start time",
+									"type": "text"
+								}
+							],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/days/event.create",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"days",
+								"event.create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Events",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/days/event.find?id=5ef12d94e4590d0e5d58dae4",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"days",
+								"event.find"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2020-06-23",
+									"description": "Start date for Day range query or single Day date",
+									"disabled": true
+								},
+								{
+									"key": "end",
+									"value": "2020-06-25",
+									"description": "End date for Day range query",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "5ef12d94e4590d0e5d58dae4",
+									"description": "Get Day by id"
+								},
+								{
+									"key": "task",
+									"value": "5de087f5f6be4e686a9d9621",
+									"description": "Get Events bx task id",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"propName\": \"title\",\n        \"propValue\": \"Updated title\"\n    },\n    {\n        \"propName\": \"booked\",\n        \"propValue\": \"false\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/days/event.update/:eventId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"days",
+								"event.update",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "5ef13babe4590d0e5d58daf7",
+									"type": "string",
+									"description": "Event id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"propName\": \"title\",\n        \"propValue\": \"Updated title\"\n    },\n    {\n        \"propName\": \"booked\",\n        \"propValue\": \"true\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/days/event.delete/:dayId/:eventId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"days",
+								"event.delete",
+								":dayId",
+								":eventId"
+							],
+							"variable": [
+								{
+									"key": "dayId",
+									"value": "5ef12d94e4590d0e5d58dae4",
+									"type": "string"
+								},
+								{
+									"key": "eventId",
+									"value": "5ef25b185aa3c2458080bcf8",
+									"type": "string",
+									"description": "Event id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Log",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "event",
+									"value": "5ef13babe4590d0e5d58daf7",
+									"description": "eventId",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "New event title",
+									"description": "New Log title",
+									"type": "text"
+								},
+								{
+									"key": "duration",
+									"value": "0.25",
+									"description": "Log duration",
+									"type": "text"
+								}
+							],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/days/log.create",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"days",
+								"log.create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Log",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"propName\": \"title\",\n        \"propValue\": \"Updated title\"\n    },\n    {\n        \"propName\": \"duration\",\n        \"propValue\": \"0.75\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/days/log.update/:logId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"days",
+								"log.update",
+								":logId"
+							],
+							"variable": [
+								{
+									"key": "logId",
+									"value": "5ef38e3b8a230316a966fbe8",
+									"type": "string"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Log",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/days/log.delete/:logId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"days",
+								"log.delete",
+								":logId"
+							],
+							"variable": [
+								{
+									"key": "logId",
+									"value": "5ef38e3b8a230316a966fbe8",
+									"type": "string"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Docs",
 			"item": [
 				{
@@ -789,7 +1089,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "332393b4-5b81-4214-b81b-5bc675cb51cc",
+				"id": "3c5e8355-ea73-4719-abef-4986badc0a63",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -799,7 +1099,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "f559a357-b126-4734-acb5-a1e9bd2fd85b",
+				"id": "76e21d1e-ad5b-43ab-9e99-d1d8d77860ce",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -809,16 +1109,14 @@
 	],
 	"variable": [
 		{
-			"id": "ef4ca5ff-7f24-44e0-bf4c-f4eb2f0acb97",
+			"id": "8ee7b892-9af3-444f-b8b1-8322c1cc4f91",
 			"key": "email",
-			"value": "",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "d3d9fb9f-9225-4258-9dcc-139545763fd1",
+			"id": "30414239-7f1d-4825-b7a8-07e2ff2da7b6",
 			"key": "password",
-			"value": "",
-			"type": "string"
+			"value": ""
 		}
 	],
 	"protocolProfileBehavior": {}
