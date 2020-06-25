@@ -289,7 +289,7 @@ exports.getApiKeys = async (req, res, next) => {
   }
 };
 
-// @route DELETE /auth/api-key
+// @route DELETE /auth/api-key?key=123456
 // @desc Delete API keys
 exports.deleteApiKeys = async (req, res, next) => {
   if (!req.query.key) return next(new Error("Please select a key."));
