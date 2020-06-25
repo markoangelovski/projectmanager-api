@@ -5,7 +5,7 @@ const { postLocale, getLocale, patchLocale } = require("./locales.controller");
 
 // Middlewares
 const { hasBody } = require("../../../../middleware/checkUser");
-const { isApiAdmin } = require("../../../middlewares/checkApiKey");
+const { isApiAdmin } = require("../../../middlewares/users/checkApiKey");
 
 // @route   POST /locales
 // @desc    Create a new locale

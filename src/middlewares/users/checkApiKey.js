@@ -1,5 +1,5 @@
 // Model imports
-const { UserSettings, createHash } = require("../api/users/v1/users.model");
+const { UserSettings, createHash } = require("../../api/users/v1/users.model");
 
 const nextError = (res, next) => {
   const error = new Error("Un-authorized");
@@ -7,31 +7,38 @@ const nextError = (res, next) => {
   next(error);
 };
 
-const checkUserSettings = (userSettings, req, res, next) => {
+const checkUserSettings = ({ key, req, res, next }) => {
   let approved = false;
-  // Check if user has access to requested Service route
-  userSettings.service_keys.forEach(service_key => {
-    service_key.added_services.forEach(service => {
+  if (key) {
+    // Check if provided key matches requested route
+    const doesKeyMatch = req.userSettings.service_keys.find(
+      service_key => service_key.key === key
+    );
+    doesKeyMatch.added_services.forEach(service => {
       const regEx = new RegExp(service);
 
       if (
         regEx.test(req.baseUrl) &&
-        userSettings.services.indexOf(service) > -1
+        req.userSettings.services.indexOf(service) > -1
       )
         approved = true;
     });
-  });
+  } else {
+    // If key is not provided, check if user is authorized for the requested route
+    req.userSettings.service_keys.forEach(service_key => {
+      service_key.added_services.forEach(service => {
+        const regEx = new RegExp(service);
+
+        if (
+          regEx.test(req.baseUrl) &&
+          req.userSettings.services.indexOf(service) > -1
+        )
+          approved = true;
+      });
+    });
+  }
 
   approved ? next() : nextError(res, next);
-};
-
-const handleUserSettings = (userSettings, req, res, next) => {
-  if (userSettings) {
-    req.userSettings = userSettings;
-    checkUserSettings(userSettings, req, res, next);
-  } else {
-    nextError(res, next);
-  }
 };
 
 const checkApiKey = async (req, res, next) => {
@@ -41,19 +48,20 @@ const checkApiKey = async (req, res, next) => {
       const userSettings = await UserSettings.findOne({
         user: req.user._id
       });
-
-      handleUserSettings(userSettings, req, res, next);
+      req.userSettings = userSettings;
+      checkUserSettings({ req, res, next });
     } else {
-      // Hash the key and find the settings
+      // Check if the key exists, hash the key and find the settings
       const apiKey = req.get("X-Service-Key");
+      if (!apiKey) nextError(res, next);
       const key = apiKey && createHash(apiKey);
       const userSettings =
         key &&
         (await UserSettings.findOne({
           "service_keys.key": key
         }));
-
-      handleUserSettings(userSettings, req, res, next);
+      req.userSettings = userSettings;
+      checkUserSettings({ key, req, res, next });
     }
   } catch (error) {
     console.warn(error);

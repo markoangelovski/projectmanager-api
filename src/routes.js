@@ -1,11 +1,11 @@
 const router = require("express").Router();
 
 // Middleware imports
-const { checkApiKey } = require("./middlewares/checkApiKey");
-const { isLoggedIn } = require("./middlewares/checkUser");
+const { checkApiKey } = require("./middlewares/users/checkApiKey");
+const { isLoggedIn } = require("./middlewares/users/checkUser");
 
 // Users
-router.use("/v1.1/auth", require("./api/users/v1/users.routes"));
+router.use("/v1/auth", require("./api/users/v1/users.routes"));
 
 // Days & Events
 router.use("/v1/days", isLoggedIn, require("./api/days/v1/days.routes"));
