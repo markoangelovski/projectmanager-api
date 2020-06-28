@@ -18,8 +18,8 @@ const checkScan = async (req, res, next) => {
       0
     );
 
-  if (time < 18 || time > 23) {
-    // If current time is less than 18:00, do nothing
+  if (time < 16 || time > 22) {
+    // If current time is less than 18:00 (16:00 UTC), do nothing
     next();
   } else {
     try {
