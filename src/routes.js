@@ -7,6 +7,13 @@ const { isLoggedIn } = require("./middlewares/users/checkUser");
 // Users
 router.use("/v1/auth", require("./api/users/v1/users.routes"));
 
+// Projects
+router.use(
+  "/v1/projects",
+  isLoggedIn,
+  require("./api/projects/v1/projects.routes")
+);
+
 // Days & Events
 router.use("/v1/days", isLoggedIn, require("./api/days/v1/days.routes"));
 

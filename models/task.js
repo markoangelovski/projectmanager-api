@@ -52,17 +52,15 @@ const taskSchema = new mongoose.Schema({
   done: { type: Boolean, default: false }
 });
 
-// Create pre.remove hook to delete links
-taskSchema.pre("remove", async function(next) {
-  try {
-    await Promise.all([
-      Link.remove({ task: this._id }),
-      Note.remove({ task: this._id })
-    ]);
-    next();
-  } catch (error) {
-    next(error);
-  }
+// Create pre.remove hook to delete Notes and Links
+taskSchema.pre("remove", async function (next) {
+  Promise.all([
+    Link.remove({ task: this._id }),
+    Note.remove({ task: this._id })
+  ])
+    .then(res => console.log("Deleted! ", res))
+    .catch(err => console.warn(err));
+  next();
 });
 
 module.exports = mongoose.model("Task", taskSchema);
