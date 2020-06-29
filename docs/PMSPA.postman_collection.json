@@ -156,7 +156,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{apiUrl}}/v1/auth/update?user=guest1@guest1.com&service=remove:locale",
+							"raw": "{{apiUrl}}/v1/auth/update?service=add:locale",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -168,11 +168,12 @@
 							"query": [
 								{
 									"key": "user",
-									"value": "guest1@guest1.com"
+									"value": "guest1@guest1.com",
+									"disabled": true
 								},
 								{
 									"key": "service",
-									"value": "remove:locale",
+									"value": "add:locale",
 									"description": "add or remove : scan or report or locale"
 								},
 								{
@@ -734,6 +735,83 @@
 			"name": "Project",
 			"item": [
 				{
+					"name": "Create new Project",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "",
+									"description": "Project title",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "Project description",
+									"type": "text"
+								},
+								{
+									"key": "pl",
+									"value": "",
+									"description": "Program Lead name",
+									"type": "text"
+								},
+								{
+									"key": "kanboard",
+									"value": "",
+									"description": "Kandboard link",
+									"type": "text"
+								},
+								{
+									"key": "dev",
+									"value": "",
+									"description": "Development link",
+									"type": "text"
+								},
+								{
+									"key": "stage",
+									"value": "",
+									"description": "Staging link",
+									"type": "text"
+								},
+								{
+									"key": "prod",
+									"value": "",
+									"description": "Production link",
+									"type": "text"
+								},
+								{
+									"key": "live",
+									"value": "",
+									"description": "Live link",
+									"type": "text"
+								},
+								{
+									"key": "nas",
+									"value": "",
+									"description": "NAS path",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/projects",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Fetch Projects",
 					"request": {
 						"method": "GET",
@@ -746,6 +824,66 @@
 							"path": [
 								"v1",
 								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"propName\": \"title\",\n        \"propValue\": \"Updated title\"\n    },\n    {\n        \"propName\": \"description\",\n        \"propValue\": \"Updated Description\"\n    },\n    {\n        \"propName\": \"done\",\n        \"propValue\": \"true\"\n    },\n    {\n        \"propName\": \"pl\",\n        \"propValue\": \"Updated PL\"\n    },\n    {\n        \"propName\": \"kanboard\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"dev\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"stage\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"prod\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"live\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"nas\",\n        \"propValue\": \"\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/projects/:projectId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"projects",
+								":projectId"
+							],
+							"variable": [
+								{
+									"key": "projectId",
+									"value": "",
+									"description": "Project ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/projects/:projectId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"projects",
+								":projectId"
+							],
+							"variable": [
+								{
+									"key": "projectId",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -770,6 +908,30 @@
 							"path": [
 								"v1",
 								"tasks"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Note",
+			"item": [
+				{
+					"name": "Fetch Notes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/notes",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"notes"
 							]
 						}
 					},
@@ -1132,12 +1294,12 @@
 	],
 	"variable": [
 		{
-			"id": "f0c0f4fa-ab95-4924-b0cb-f342dbb81bf8",
+			"id": "7f5b06f8-f485-4caa-97f3-fc6a6428cabd",
 			"key": "email",
 			"value": ""
 		},
 		{
-			"id": "64c3c500-5db4-4ffd-92aa-42a35a750cd5",
+			"id": "b118307b-c9b3-45c3-8b0f-8c7938ba8490",
 			"key": "password",
 			"value": ""
 		}

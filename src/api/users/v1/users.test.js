@@ -69,12 +69,12 @@ describe("POST /v1/auth/login", () => {
 });
 
 describe("GET /v1/auth", () => {
-  it("shoud respond with a message", async () => {
+  it("should respond with a message", async () => {
     const response = await request(app).get("/v1/auth").expect(401);
     expect(response.body.message).to.equal("Un-authorized");
   });
 
-  it("shoud respond with a message", async () => {
+  it("should respond with a message", async () => {
     const response = await request(app)
       .get("/v1/auth")
       .set("Cookie", cookie)
@@ -137,7 +137,7 @@ describe("POST /v1/auth/register", () => {
 });
 
 describe("GET /v1/auth/logout", () => {
-  it("shoud respond with a message", async () => {
+  it("should respond with a message", async () => {
     const response = await request(app)
       .get("/v1/auth/logout")
       .set("Cookie", cookie)
@@ -147,7 +147,7 @@ describe("GET /v1/auth/logout", () => {
 });
 
 describe("PATCH /v1/auth/update", () => {
-  it("shoud add a service", async () => {
+  it("should add a service", async () => {
     const response = await request(app)
       .patch("/v1/auth/update?service=add:locale")
       .set("Cookie", cookie)
@@ -155,7 +155,7 @@ describe("PATCH /v1/auth/update", () => {
     expect(response.body.message).to.equal("Settings successfully stored.");
   });
 
-  it("shoud add a service", async () => {
+  it("should add a service", async () => {
     const response = await request(app)
       .patch("/v1/auth/update?service=add:scan")
       .set("Cookie", cookie)
@@ -163,7 +163,7 @@ describe("PATCH /v1/auth/update", () => {
     expect(response.body.message).to.equal("Settings successfully stored.");
   });
 
-  it("shoud remove a service", async () => {
+  it("should remove a service", async () => {
     const response = await request(app)
       .patch("/v1/auth/update?service=remove:locale")
       .set("Cookie", cookie)
@@ -173,7 +173,7 @@ describe("PATCH /v1/auth/update", () => {
 });
 
 describe(" POST /auth/api-key?services=locale", () => {
-  it("shoud create API key", async () => {
+  it("should create API key", async () => {
     const response = await request(app)
       .post("/v1/auth/api-key?services=scan")
       .set("Cookie", cookie)
@@ -184,7 +184,7 @@ describe(" POST /auth/api-key?services=locale", () => {
 });
 
 describe(" GET /auth/api-key", () => {
-  it("shoud fetch API keys", async () => {
+  it("should fetch API keys", async () => {
     const response = await request(app)
       .get("/v1/auth/api-key")
       .set("Cookie", cookie)
@@ -198,7 +198,7 @@ describe(" DELETE /auth/api-key?key=123456", () => {
     await UserSettings.collection.drop();
   });
 
-  it("shoud delete API key", async () => {
+  it("should delete API key", async () => {
     const response = await request(app)
       .delete(`/v1/auth/api-key?key=${key}`)
       .set("Cookie", cookie)

@@ -9,7 +9,7 @@
 // let cookie;
 
 // describe("GET /v1/auth", () => {
-//   it("shoud respond with a message", async () => {
+//   it("should respond with a message", async () => {
 //     const response = await request(app)
 //       .get("/v1/auth")
 //       .expect(200);
