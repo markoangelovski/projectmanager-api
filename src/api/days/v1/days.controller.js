@@ -1,7 +1,7 @@
 // Models
 const Day = require("./days.model");
 const Event = require("./days.events.model");
-const Task = require("../../../../models/task");
+const Task = require("../../tasks/v1/tasks.model");
 
 // Validation
 const dbModelCheck = require("../../../validation/dbModelCheck");
@@ -36,7 +36,7 @@ exports.postEvent = async (req, res, next) => {
     const taskId = mongoIdRgx.test(req.body.task) && req.body.task;
     if (req.body.task && !taskId)
       throw new Error("ERR_TASK_IDENTIFIER_INVALID");
-    if (taskId) dbQuery.push(Task.exists({ _id: taskId, owner: req.user }));
+    if (taskId) dbQuery.push(Task.findOne({ _id: taskId, owner: req.user }));
 
     let [day, task] = await Promise.all(dbQuery);
 
@@ -67,17 +67,17 @@ exports.postEvent = async (req, res, next) => {
         day.save()
       ]);
 
-      // TEMPORARY If tasks exists, add Event reference to Task
-      if (task)
-        Task.updateOne(
-          { _id: taskId, owner: req.user },
-          { $addToSet: { events: event } }
-        ).then(task => console.log("Existing day task", task.n));
-
       res.status(201).json({
         message: `Event ${savedEvent.title} successfully stored!`,
         day: savedDay
       });
+
+      // Trigger Task.save() to recalculate the number of events in the task
+      if (task)
+        task
+          .save()
+          .then(res => null)
+          .catch(err => console.warn(err));
     } else {
       // If day does not exist, create a new Day
       const day = new Day({
@@ -96,21 +96,20 @@ exports.postEvent = async (req, res, next) => {
         day.save()
       ]);
 
-      // TEMPORARY If tasks exists, add Event reference to Task
-      if (task)
-        Task.updateOne(
-          { _id: taskId, owner: req.user },
-          { $addToSet: { events: event } }
-        ).then(task => console.log("New day task", task.n));
-
       res.status(201).json({
         message: `Event ${savedEvent.title} successfully stored!`,
         day: savedDay
       });
+
+      // Trigger Task.save() to recalculate the number of events in the task
+      if (task)
+        task
+          .save()
+          .then(res => null)
+          .catch(err => console.warn(err));
     }
   } catch (error) {
-    console.error(error.message);
-    res.status(500);
+    console.error(error);
     next(error);
   }
 };
@@ -162,11 +161,10 @@ exports.getEventsByDay = async (req, res, next) => {
           days
         });
       } else {
-        res.status(404);
         throw new RangeError("ERR_NO_DAYS_FOUND");
       }
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       next(error);
     }
   } else {
@@ -195,8 +193,7 @@ exports.getEventsByRange = async (req, res, next) => {
       // Create Start Day Query for Single day request
       query.day = checkDayId(start);
     } else {
-      const error = new Error("ERR_INVALID_REQUEST");
-      return next(error);
+      throw new Error("ERR_INVALID_REQUEST");
     }
 
     // Find days for specific query
@@ -216,7 +213,7 @@ exports.getEventsByRange = async (req, res, next) => {
       throw new RangeError("ERR_NO_DAY_ENTRIES_FOUND");
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
     next(error);
   }
 };
@@ -238,15 +235,8 @@ exports.patchEvent = async (req, res, next) => {
       { $set: updateOps }
     );
 
-    // Update task if task is present
-    // ZA SAD OSTAVI ALI MAKNI KAD BUDEŠ PREBACIVAO TASKOVE
-    // DODAJ POLJE eventCount I PRERAČUNAJ BROJ EVENATA NA SVAKI SAVE
-    if (updateOps.task)
-      Task.findByIdAndUpdate(updateOps.task, { $addToSet: { events: event } });
-
     if (!event.n) {
-      const error = new RangeError("ERR_EVENT_NOT_FOUND");
-      next(error);
+      throw new RangeError("ERR_EVENT_NOT_FOUND");
     } else if (!event.nModified) {
       res.status(200).json({
         message: "No detail modifications detected. No actions taken."
@@ -294,18 +284,21 @@ exports.deleteEvent = async (req, res, next) => {
       Event.findOneAndDelete({ _id: req.params.eventId, owner: req.user })
     ]);
 
-    // Update task if it exists
-    if (event && event.task)
-      Task.updateOne(
-        { _id: event.task, owner: req.user },
-        { $pull: { events: req.params.eventId } }
-      ).then(task => task);
-
     if (day && event) {
       res.json({
-        message: `Event deleted successfully!`,
+        message: `Event ${event.title} deleted successfully!`,
         day
       });
+
+      // Trigger Task.save() to recalculate the number of events in the task
+      Task.findById(event.task)
+        .then(task =>
+          task
+            .save()
+            .then(res => null)
+            .catch(err => console.warn(err))
+        )
+        .catch(err => console.warn(err));
     } else {
       const error = new Error("ERR_SERVER_ERROR");
       next(error);
@@ -317,7 +310,7 @@ exports.deleteEvent = async (req, res, next) => {
 };
 
 // @route   POST /days/log.create
-// @desc    Create a new event
+// @desc    Create a new log
 // Request JSON body:
 // {
 //     "event": "eventId",
@@ -351,15 +344,14 @@ exports.postLog = async (req, res, next) => {
     );
 
     if (!event.n) {
-      const error = new RangeError("ERR_LOG_SAVE_FAILED");
-      next(error);
+      throw new RangeError("ERR_EVENT_NOT_FOUND");
     } else if (!event.nModified) {
       res.status(200).json({
         message: "No detail modifications detected. No actions taken."
       });
     } else if (event.nModified) {
       res.status(201).json({
-        message: `Event ${newLog.title} successfully stored!`
+        message: `Log ${newLog.title} successfully stored!`
       });
     }
   } catch (error) {
@@ -404,8 +396,7 @@ exports.patchEventLog = async (req, res, next) => {
     );
 
     if (!event.n) {
-      const error = new RangeError("ERR_EVENT_NOT_FOUND");
-      next(error);
+      throw new RangeError("ERR_EVENT_NOT_FOUND");
     } else if (!event.nModified) {
       res.status(200).json({
         message: "No detail modifications detected. No actions taken."
@@ -422,7 +413,7 @@ exports.patchEventLog = async (req, res, next) => {
 };
 
 // @route   DELETE /days/log.delete/:logId
-// @desc    Delete events
+// @desc    Delete Log
 exports.deleteEventLog = async (req, res, next) => {
   try {
     await dbModelCheck(
@@ -445,18 +436,22 @@ exports.deleteEventLog = async (req, res, next) => {
     );
 
     // Refetch event to recalculate duration,
-    // WARNING sometimes does not get triggered and does not recalculate
-    Event.findById(event._id).then(foundEvent =>
-      foundEvent.save().then(savedEvent => savedEvent)
-    );
+    // MOVE THIS SECTION TO POST FINDONEANDUPDATE
+    Event.findById(event._id)
+      .then(foundEvent =>
+        foundEvent
+          .save()
+          .then(savedEvent => null)
+          .catch(err => console.warn(err))
+      )
+      .catch(err => console.warn(err));
 
     if (event) {
       res.status(200).json({
         message: "Log successfully deleted!"
       });
     } else {
-      const error = new RangeError("ERR_LOG_NOT_FOUND");
-      next(error);
+      throw new RangeError("ERR_LOG_NOT_FOUND");
     }
   } catch (error) {
     console.error(error);

@@ -36,7 +36,11 @@ daySchema.pre("save", async function (next) {
 daySchema.post("findOneAndUpdate", async function () {
   // Post update find the document and remove if no events are found
   const day = await this.model.findOne(this.getQuery());
-  if (day && !day.events.length) day.remove();
+  if (day && !day.events.length)
+    day
+      .remove()
+      .then(res => null)
+      .catch(err => console.warn(err));
 });
 
 module.exports = mongoose.model("Day", daySchema);

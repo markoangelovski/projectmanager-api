@@ -1,8 +1,8 @@
 const Joi = require("@hapi/joi");
 
-// Validate Register and Login User
+// Validate create new Project request body
 const projectSchema = Joi.object({
-  title: Joi.string().max(150),
+  title: Joi.string().max(150).required(),
   description: Joi.string().empty("").max(350),
   done: Joi.string().empty("").max(5),
   pl: Joi.string().empty("").max(350),

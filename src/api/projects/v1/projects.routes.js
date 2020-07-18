@@ -6,6 +6,7 @@ const { hasBody } = require("../../../middlewares/users/checkUser");
 // Controllers
 const {
   postProject,
+  getSingleProject,
   getProjects,
   patchProject,
   deleteProject
@@ -14,6 +15,10 @@ const {
 // @route   POST /projects
 // @desc    Create a new project
 router.post("/", hasBody, postProject);
+
+// @route   GET /projects/:projectId
+// @desc    Get all projects
+router.get("/:projectId", getSingleProject);
 
 // @route   GET /projects
 // @desc    Get all projects
