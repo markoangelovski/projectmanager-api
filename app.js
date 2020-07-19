@@ -11,7 +11,7 @@ const { connectDB } = require("./src/config/db");
 connectDB();
 
 // Middleware imports
-const { checkUser, isLoggedIn } = require("./src/middlewares/users/checkUser");
+const { checkUser } = require("./src/middlewares/users/checkUser");
 const checkScan = require("./src/middlewares/scans/checkScan");
 
 const app = express();
@@ -48,16 +48,13 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Home route
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   res.json({
     status: "OK",
     statusCode: 200,
     user: req.user
   });
 });
-
-// Current api version in use
-const v = "v1";
 
 // Routes
 app.use(`/`, require(`./src/routes.js`));
