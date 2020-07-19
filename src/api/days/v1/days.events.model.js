@@ -55,7 +55,15 @@ eventSchema.pre("save", function (next) {
 
 eventSchema.post("updateOne", async function () {
   // Post update find the document and call .save() to recalculate duration
-  /* await  */ this.model.findOne(this.getQuery()).then(event => event.save());
+  this.model
+    .findOne(this.getQuery())
+    .then(event =>
+      event
+        .save()
+        .then(res => null)
+        .catch(err => console.warn(err))
+    )
+    .catch(err => console.warn(err));
 });
 
 module.exports = mongoose.model("Event", eventSchema);

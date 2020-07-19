@@ -11,11 +11,12 @@ const { connectDB } = require("./src/config/db");
 connectDB();
 
 // Middleware imports
-const { checkUser, isLoggedIn } = require("./src/middlewares/users/checkUser");
+const { checkUser } = require("./src/middlewares/users/checkUser");
 const checkScan = require("./src/middlewares/scans/checkScan");
 
 const app = express();
 app.disable("etag");
+app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
 
 // Middleware
 app.use(helmet());
@@ -47,7 +48,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Home route
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   res.json({
     status: "OK",
     statusCode: 200,
@@ -55,14 +56,7 @@ app.get("/", (req, res, next) => {
   });
 });
 
-// Current api version in use
-const v = "v1";
-
 // Routes
-app.use(`/${v}/projects`, isLoggedIn, require(`./routes/${v}/projects`));
-app.use(`/${v}/tasks`, isLoggedIn, require(`./routes/${v}/tasks`));
-app.use(`/${v}/links`, isLoggedIn, require(`./routes/${v}/links`));
-app.use(`/${v}/notes`, isLoggedIn, require(`./routes/${v}/notes`));
 app.use(`/`, require(`./src/routes.js`));
 
 // Error handlers

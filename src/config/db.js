@@ -13,7 +13,11 @@ async function connectDB() {
         useCreateIndex: true,
         useFindAndModify: false
       },
-      () => console.log("MongoDB Connected!")
+      () =>
+        console.log(
+          "MongoDB connected to: ",
+          mongoose.connections[0].host.split(".")[0]
+        )
     );
   } catch (error) {
     console.error(error);

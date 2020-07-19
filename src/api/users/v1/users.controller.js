@@ -317,5 +317,3 @@ exports.deleteApiKeys = async (req, res, next) => {
     next(error);
   }
 };
-
-// Napiši provjeru na middleware za dolazeće requestove ako je dobar api key
