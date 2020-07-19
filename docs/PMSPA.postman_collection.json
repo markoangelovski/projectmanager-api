@@ -468,7 +468,7 @@
 							"urlencoded": [
 								{
 									"key": "url",
-									"value": "https://herbalessences.co.uk/en-gb",
+									"value": "https://www.homemadesimple.com/",
 									"type": "text"
 								},
 								{
@@ -480,7 +480,8 @@
 								{
 									"key": "SiteTouchpoint",
 									"value": "44683",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "GoogleAnalyticsLocal",
@@ -515,7 +516,8 @@
 								{
 									"key": "FacebookRemarketingID",
 									"value": "212682460080208",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "Segment",
@@ -812,18 +814,67 @@
 					"response": []
 				},
 				{
+					"name": "Fetch single Project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/projects/:projectId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"projects",
+								":projectId"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "projectId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Fetch Projects",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{apiUrl}}/v1/projects",
+							"raw": "{{apiUrl}}/v1/projects?limit=&skip=&sort=",
 							"host": [
 								"{{apiUrl}}"
 							],
 							"path": [
 								"v1",
 								"projects"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Limit, ex. 5. Default: 10, max 10."
+								},
+								{
+									"key": "skip",
+									"value": "",
+									"description": "Offset, ex. 10. Default: 0."
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "+/- prefixed, comma separated sort options, ex. title,-date. Dfault: title"
+								}
 							]
 						}
 					},
@@ -896,10 +947,63 @@
 			"name": "Task",
 			"item": [
 				{
-					"name": "Fetch Tasks",
+					"name": "Create new Task",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "",
+									"description": "Task title",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"description": "Task description",
+									"type": "text"
+								},
+								{
+									"key": "column",
+									"value": "",
+									"description": "Column: Upcoming, In Progress or Completed",
+									"type": "text"
+								},
+								{
+									"key": "pl",
+									"value": "",
+									"description": "Program Lead name",
+									"type": "text"
+								},
+								{
+									"key": "kanboard",
+									"value": "",
+									"description": "Kandboard link",
+									"type": "text"
+								},
+								{
+									"key": "nas",
+									"value": "",
+									"description": "NAS path",
+									"type": "text"
+								},
+								{
+									"key": "dueDate",
+									"value": "",
+									"description": "Due date YYYY-MM-DD",
+									"type": "text"
+								},
+								{
+									"key": "project",
+									"value": "",
+									"description": "Project ID",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/tasks",
 							"host": [
@@ -908,6 +1012,150 @@
 							"path": [
 								"v1",
 								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch single Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/tasks?task=",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "task",
+									"value": "",
+									"description": "Task ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Tasks by Project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/tasks?project=",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "project",
+									"value": "",
+									"description": "Project ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/tasks?limit=&skip=&sort=",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Limit, ex. 5. Default: 10, max 10."
+								},
+								{
+									"key": "skip",
+									"value": "",
+									"description": "Offset, ex. 10. Default: 0."
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "+/- prefixed, comma separated sort options, ex. title,-date. Dfault: title"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"propName\": \"title\",\n        \"propValue\": \"Updated Title\"\n    },\n    {\n        \"propName\": \"description\",\n        \"propValue\": \"Updated Description\"\n    },\n    {\n        \"propName\": \"done\",\n        \"propValue\": \"false\"\n    },\n    {\n        \"propName\": \"column\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"pl\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"kanboard\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"nas\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"dueDate\",\n        \"propValue\": \"\"\n    },\n    {\n        \"propName\": \"project\",\n        \"propValue\": \"\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/tasks/:taskId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								":taskId"
+							],
+							"variable": [
+								{
+									"key": "taskId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/tasks/:taskId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"tasks",
+								":taskId"
+							],
+							"variable": [
+								{
+									"key": "taskId",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -925,6 +1173,83 @@
 						"method": "GET",
 						"header": [],
 						"url": {
+							"raw": "{{apiUrl}}/v1/notes?limit=&skip=&sort=",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"notes"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "",
+									"description": "Limit, ex. 5. Default: 10, max 10."
+								},
+								{
+									"key": "skip",
+									"value": "",
+									"description": "Offset, ex. 10. Default: 0."
+								},
+								{
+									"key": "sort",
+									"value": "",
+									"description": "+/- prefixed, comma separated sort options, ex. title,-date. Dfault: title"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Notes by Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/notes?task",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"notes"
+							],
+							"query": [
+								{
+									"key": "task",
+									"value": null,
+									"description": "Task ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Note",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "note",
+									"value": "New note text",
+									"description": "Note text",
+									"type": "text"
+								},
+								{
+									"key": "task",
+									"value": "5efa439c2e622100043259ef",
+									"description": "Task ID",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
 							"raw": "{{apiUrl}}/v1/notes",
 							"host": [
 								"{{apiUrl}}"
@@ -932,6 +1257,67 @@
 							"path": [
 								"v1",
 								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Note",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"note\": \"Updated Note\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/v1/notes/:noteId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"notes",
+								":noteId"
+							],
+							"variable": [
+								{
+									"key": "noteId",
+									"value": "",
+									"description": "Note ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Note",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/notes/:noteId",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"notes",
+								":noteId"
+							],
+							"variable": [
+								{
+									"key": "noteId",
+									"value": "",
+									"description": "Note ID"
+								}
 							]
 						}
 					},
@@ -1120,12 +1506,13 @@
 							"variable": [
 								{
 									"key": "dayId",
-									"value": "5ef12d94e4590d0e5d58dae4",
-									"type": "string"
+									"value": "",
+									"type": "string",
+									"description": "Day id"
 								},
 								{
 									"key": "eventId",
-									"value": "5ef25b185aa3c2458080bcf8",
+									"value": "",
 									"type": "string",
 									"description": "Event id"
 								}
@@ -1294,12 +1681,12 @@
 	],
 	"variable": [
 		{
-			"id": "7f5b06f8-f485-4caa-97f3-fc6a6428cabd",
+			"id": "5e876341-732c-4cd1-b8b4-1f3e637b5131",
 			"key": "email",
 			"value": ""
 		},
 		{
-			"id": "b118307b-c9b3-45c3-8b0f-8c7938ba8490",
+			"id": "30af1f36-28d5-4081-8ecf-5833a0dd0bea",
 			"key": "password",
 			"value": ""
 		}

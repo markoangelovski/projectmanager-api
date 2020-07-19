@@ -5,8 +5,25 @@ const Project = require("./projects.model");
 const { mongoIdRgx } = require("../../../validation/regex");
 const { projectSchema } = require("../../../validation/project");
 
+// Helper functions
+const {
+  getQueryConditions
+} = require("../../../lib/Helpers/getQueryConditions");
+
 // @route   POST /projects
 // @desc    Create a new project
+// Request JSON body:
+// {
+//   "title": "New Project"
+//   "description":
+//   "pl":
+//   "kanboard":
+//   "dev":
+//   "stage":
+//   "prod":
+//   "live":
+//   "nas":
+// }
 exports.postProject = async (req, res, next) => {
   try {
     const result = projectSchema.validate(req.body);
@@ -28,24 +45,47 @@ exports.postProject = async (req, res, next) => {
   }
 };
 
+// @route   GET /projects/:projectId
+// @desc    Get all projects
+exports.getSingleProject = async (req, res, next) => {
+  try {
+    const projectId =
+      mongoIdRgx.test(req.params.projectId) && req.params.projectId;
+    if (!projectId) throw new Error("ERR_PROJECT_IDENTIFIER_INVALID");
+
+    const project = await Project.findOne({
+      _id: projectId,
+      owner: req.user._id
+    });
+
+    if (project) {
+      res.status(200).json({
+        message: "Project successfully fetched!",
+        project
+      });
+    } else {
+      throw new RangeError("ERR_PROJECT_NOT_FOUND");
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
 // @route   GET /projects
 // @desc    Get all projects
 exports.getProjects = async (req, res, next) => {
   try {
-    const projects = await Project.find({ owner: req.user._id });
+    const { stats, docs } = await getQueryConditions(req, Project);
 
-    if (projects.length) {
+    if (stats && stats.total) {
       res.status(200).json({
         message: "Projects successfully fetched!",
-        count: projects.length,
-        projects
+        stats,
+        projects: docs
       });
     } else {
-      res.status(404).json({
-        message: "Projects not found!",
-        error: "ERR_PROJECTS_NOT_FOUND",
-        projects: []
-      });
+      throw new RangeError("ERR_PROJECTS_NOT_FOUND");
     }
   } catch (error) {
     console.error(error);
@@ -65,9 +105,11 @@ exports.patchProject = async (req, res, next) => {
     if (!projectId) throw new Error("ERR_PROJECT_IDENTIFIER_INVALID");
 
     const updateOps = {};
-    req.body.forEach(element => {
-      updateOps[element.propName] = element.propValue;
-    });
+    req.body.forEach(element =>
+      element.propValue
+        ? (updateOps[element.propName] = element.propValue)
+        : null
+    );
 
     const result = projectSchema.validate(updateOps);
     if (result.error) throw new Error(result.error);

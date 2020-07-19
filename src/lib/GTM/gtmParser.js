@@ -8,7 +8,7 @@ const gtmParser = data => {
   $("script").each(function (i, elem) {
     $(this)
       .html()
-      .match(/GTM(":|':|:|=| =)/g)
+      .match(/GTM(":|':|:|=| =)/g) && !starts.length // take only first instance of GTM occurring
       ? (starts = $(this)
           .html()
           .split(/GTM(":|':|:|=| =)({| {)/))

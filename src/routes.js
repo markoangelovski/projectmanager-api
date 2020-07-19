@@ -3,6 +3,7 @@ const router = require("express").Router();
 // Middleware imports
 const { checkApiKey } = require("./middlewares/users/checkApiKey");
 const { isLoggedIn } = require("./middlewares/users/checkUser");
+const { checkRateLimit } = require("./middlewares/docs/checkRateLimit");
 
 // Users
 router.use("/v1/auth", require("./api/users/v1/users.routes"));
@@ -13,6 +14,12 @@ router.use(
   isLoggedIn,
   require("./api/projects/v1/projects.routes")
 );
+
+// Tasks
+router.use("/v1/tasks", isLoggedIn, require("./api/tasks/v1/tasks.routes"));
+
+// Notes
+router.use("/v1/notes", isLoggedIn, require("./api/notes/v1/notes.routes"));
 
 // Days & Events
 router.use("/v1/days", isLoggedIn, require("./api/days/v1/days.routes"));
@@ -35,6 +42,6 @@ router.use(
 router.use("/v1/scan", checkApiKey, require("./api/scans/v1/scans.routes"));
 
 // Docs
-router.use("/v1/docs", require("./api/docs/v1/docs.routes"));
+router.use("/v1/docs", checkRateLimit, require("./api/docs/v1/docs.routes"));
 
 module.exports = router;
