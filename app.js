@@ -4,7 +4,12 @@ const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
-require("dotenv").config();
+// Config
+const {
+  NODE_ENV,
+  corsOptions,
+  rateLimitOptions
+} = require("./src/config/config.js");
 
 // Connect to Database
 const { connectDB } = require("./src/config/db");
@@ -20,29 +25,14 @@ app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
 
 // Middleware
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.NODE_ORIGIN,
-    credentials: true,
-    optionsSuccessStatus: 204
-  })
-);
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs,
-    message: {
-      error: "ERR_RATE_LIMIT_REACHED",
-      message: `Rate limit reached, please try again later.`
-    }
-  })
-);
+app.use(cors(corsOptions()));
+app.use(rateLimit(rateLimitOptions()));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(checkUser);
 app.use(checkScan);
-if (process.env.NODE_ENV === "development") {
+if (NODE_ENV() === "development") {
   const morgan = require("morgan");
   app.use(morgan("dev"));
 }
@@ -76,7 +66,7 @@ function errorHandler(error, req, res, next) {
   if (error.isAxiosError)
     payload.message = "An error occurred while fetching the data.";
   // If in development, send error stack
-  if (process.env.NODE_ENV === "development") payload.stack = error.stack;
+  if (NODE_ENV() === "development") payload.stack = error.stack;
   if (error instanceof RangeError) res.status(404);
   res.statusCode === 200 ? res.status(500) : res.statusCode;
   res.json(payload);
