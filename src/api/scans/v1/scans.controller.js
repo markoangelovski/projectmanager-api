@@ -9,9 +9,7 @@ const Locale = require("../../locales/v1/locales.model");
 const { urlRgx } = require("../../../validation/regex");
 
 // GTM Functions
-const gtmParser = require("../../../lib/GTM/gtmParser");
-const gtmCompare = require("../../../lib/GTM/gtmCompare");
-const gtmScanner = require("../../../lib/GTM/gtmScanner");
+const GTM = require("../../../lib/GTM");
 
 // Helper Functions
 const { getCorrectedDates } = require("../../../lib/Helpers/getCorrectedDates");
@@ -56,7 +54,7 @@ exports.initScan = async (req, res, next) => {
       const locales = await Locale.find().select("title url favicon GTM");
 
       // Initiate scan
-      const scanResult = await gtmScanner(locales);
+      const scanResult = await GTM.scan(locales);
 
       // Update Scan placehoder with results
       Scan.updateOne(
@@ -64,7 +62,7 @@ exports.initScan = async (req, res, next) => {
         {
           $set: { ...scanResult }
         }
-      ).then(scan => scan);
+      ).then(scan => null);
     }
   } catch (error) {
     console.warn(error);
@@ -72,61 +70,13 @@ exports.initScan = async (req, res, next) => {
   }
 };
 
-// @route   GET /locales/scan?url=https://www.locale.com || ?start=startDate&end=endDate
-// @desc    Initiate single locale scan or fetch all scans
+// @route   GET /locales/scan?start=startDate&end=endDate
+// @desc    Fetch all scans
 exports.getScans = async (req, res, next) => {
-  const localeUrl = req.query.url;
-
-  if (localeUrl && urlRgx.test(localeUrl)) {
-    try {
-      const locale = await Locale.findOne({ url: localeUrl });
-
-      if (locale) {
-        const { data } = await axios.get(locale.url);
-
-        const scannedGtm = gtmParser(data);
-        const result = gtmCompare(locale.GTM, scannedGtm);
-
-        const scanResult = {
-          url: locale.url,
-          hasMissingKeys: result.hasMissingKeys,
-          hasErrors: result.hasErrors,
-          diff: result,
-          currentGtm: locale.GTM,
-          scannedGtm
-        };
-
-        res.json({
-          message: "Locale found.",
-          result: scanResult
-        });
-      } else {
-        const { data } = await axios.get(localeUrl);
-
-        const scannedGtm = gtmParser(data);
-
-        const scanResult = {
-          url: localeUrl,
-          scannedGtm
-        };
-
-        res.json({
-          message: "Locale not found. New scan performed.",
-          result: scanResult
-        });
-      }
-    } catch (error) {
-      console.warn(error);
-      next(error);
-    }
-  } else if (localeUrl && !urlRgx.test(localeUrl)) {
-    res.status(400).json({
-      message: "Please enter valid locale URL.",
-      error: "ERR_INVALID_URL"
-    });
-  } else if (!localeUrl) {
+  if (req.query.start) {
     try {
       const { start, end } = getCorrectedDates(req.query.start, req.query.end);
+      if (!start || !end) throw new Error("ERR_DATE_FORMAT_INVALID");
 
       const scans = await Scan.find({
         createdAt: {
@@ -151,6 +101,57 @@ exports.getScans = async (req, res, next) => {
       console.warn(error);
       next(error);
     }
+  } else {
+    next();
+  }
+};
+
+// @route   GET /locales/scan?url=https://www.locale.com
+// @desc    Initiate single locale scan
+exports.initScanSingle = async (req, res, next) => {
+  try {
+    const localeUrl = urlRgx.test(req.query.url) && req.query.url;
+    if (!localeUrl) throw new Error("ERR_URL_FORMAT_INVALID");
+
+    const locale = await Locale.findOne({ url: localeUrl });
+
+    if (locale) {
+      const { data } = await axios.get(locale.url);
+
+      const scannedGtm = GTM.parse(data);
+      const result = GTM.compare(locale.GTM, scannedGtm);
+
+      const scanResult = {
+        url: locale.url,
+        hasMissingKeys: result.hasMissingKeys,
+        hasErrors: result.hasErrors,
+        diff: result,
+        currentGtm: locale.GTM,
+        scannedGtm
+      };
+
+      res.json({
+        message: "Locale found.",
+        result: scanResult
+      });
+    } else {
+      const { data } = await axios.get(localeUrl);
+
+      const scannedGtm = GTM.parse(data);
+
+      const scanResult = {
+        url: localeUrl,
+        scannedGtm
+      };
+
+      res.json({
+        message: "Locale not found. New scan performed.",
+        result: scanResult
+      });
+    }
+  } catch (error) {
+    console.warn(error);
+    next(error);
   }
 };
 

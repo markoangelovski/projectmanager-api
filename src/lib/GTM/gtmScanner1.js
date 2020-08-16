@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 // GTM Functions
-const { gtmParser } = require("./gtmParser");
-const { gtmCompare } = require("./gtmCompare");
+const { gtmParser, globalGtmParser } = require("./gtmParser");
+const { gtmCompare, gtmGlobalCompare } = require("./gtmCompare");
 
 const gtmScanner = async locales => {
   const scanPromises = [];
@@ -11,7 +11,7 @@ const gtmScanner = async locales => {
 
   // Create a new promise for each new scan
   locales.forEach(locale => {
-    const { title, url, favicon, GTM: previousGtm } = locale;
+    const { title, url, favicon, globalGTM, GTM: previousGtm } = locale;
     scanPromises.push(
       new Promise((resolve, reject) => {
         axios
@@ -19,11 +19,17 @@ const gtmScanner = async locales => {
           .then(({ data }) => {
             const scannedGtm = gtmParser(data);
             const result = gtmCompare(previousGtm, scannedGtm);
-            resolve({
-              title,
-              url,
-              favicon,
-              result
+            globalGtmParser(data).then(scnGlbGTM => {
+              const globalRes = gtmGlobalCompare(globalGTM, scnGlbGTM);
+              resolve({
+                title,
+                url,
+                favicon,
+                result: {
+                  ...globalRes,
+                  ...result
+                }
+              });
             });
           })
           .catch(err => reject(err));
@@ -38,11 +44,17 @@ const gtmScanner = async locales => {
   // Filter scan results for scans with errors
   let totalMissingKeys = 0;
   let totalErrors = 0;
+  let totalGlGtmErrors = 0;
   const stats = [];
   scanResults.forEach(res => {
-    if (res.result.hasMissingKeys || res.result.hasErrors) {
+    if (
+      res.result.hasMissingKeys ||
+      res.result.hasErrors ||
+      res.result.hasGlobalGtmErrors
+    ) {
       res.result.hasMissingKeys && totalMissingKeys++;
       res.result.hasErrors && totalErrors++;
+      res.result.hasGlobalGtmErrors && totalGlGtmErrors++;
       stats.push(res);
     }
   });
@@ -53,6 +65,7 @@ const gtmScanner = async locales => {
     localesScanned,
     totalMissingKeys,
     totalErrors,
+    totalGlGtmErrors,
     scanDurationMs,
     stats
   };

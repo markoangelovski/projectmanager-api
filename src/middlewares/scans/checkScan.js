@@ -5,7 +5,7 @@ const Scan = require("../../api/scans/v1/scans.model");
 const Locale = require("../../api/locales/v1/locales.model");
 
 // GTM Functions
-const gtmScanner = require("../../lib/GTM/gtmScanner");
+const GTM = require("../../lib/GTM");
 
 const checkScan = async (req, res, next) => {
   let time = moment()
@@ -52,7 +52,7 @@ const checkScan = async (req, res, next) => {
         const locales = await Locale.find().select("title url favicon GTM");
 
         // Initiate scan
-        const scanResult = await gtmScanner(locales);
+        const scanResult = await GTM.scan(locales);
 
         // Update Scan placehoder with results
         Scan.updateOne(

@@ -83,7 +83,7 @@ exports.patchLocale = async (req, res, next) => {
       } else {
         res.status(404).json({
           message: "Locale not found.",
-          error: "LOCALE_NOT_FOUND"
+          error: "ERR_LOCALE_NOT_FOUND"
         });
       }
     } catch (error) {
@@ -93,7 +93,7 @@ exports.patchLocale = async (req, res, next) => {
   } else if (localeUrl && !urlRgx.test(localeUrl)) {
     res.status(400).json({
       message: "Please enter valid locale URL.",
-      error: "INVALID_URL"
+      error: "ERR_INVALID_URL"
     });
   }
 };
