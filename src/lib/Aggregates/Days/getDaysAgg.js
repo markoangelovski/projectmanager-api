@@ -1,6 +1,6 @@
-const Day = require("../../api/days/v1/days.model");
+const Day = require("../../../api/days/v1/days.model");
 
-const byDay = async (start, end, total = false) => {
+const getDaysAgg = async (start, end, total = false) => {
   const aggregate = Day.aggregate([
     {
       $match: {
@@ -150,4 +150,4 @@ const byDay = async (start, end, total = false) => {
   return await aggregate;
 };
 
-module.exports = byDay;
+module.exports = getDaysAgg;

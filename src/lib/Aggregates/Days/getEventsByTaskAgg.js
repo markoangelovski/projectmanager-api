@@ -1,7 +1,7 @@
-const Event = require("../../api/days/v1/days.events.model");
+const Event = require("../../../api/days/v1/days.events.model");
 const mongoose = require("mongoose");
 
-const byTask = async (start, end, taskId) => {
+const getEventsByTaskAgg = async (start, end, taskId) => {
   const aggregate = Event.aggregate([
     // Get events for specific task
     {
@@ -97,4 +97,4 @@ const byTask = async (start, end, taskId) => {
   return await aggregate;
 };
 
-module.exports = byTask;
+module.exports = getEventsByTaskAgg;
