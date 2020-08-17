@@ -11,6 +11,14 @@ const getTasksAggrCond = async (cond, aggregateCall) => {
   let remaining = count - (skip + 20);
   remaining = remaining > 0 ? remaining : 0;
 
+  const sortedDocs = docs.sort((prev, next) => {
+    if (prev.tasks[0].createdAt > next.tasks[0].createdAt) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+
   const stats = {
     total: count,
     remaining,
@@ -18,7 +26,7 @@ const getTasksAggrCond = async (cond, aggregateCall) => {
     results: docs.reduce((acc, cur) => (acc += cur.tasks.length), 0)
   };
 
-  return { stats, docs };
+  return { stats, docs: sortedDocs };
 };
 
 module.exports = { getTasksAggrCond };
