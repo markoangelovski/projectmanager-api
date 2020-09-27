@@ -1,9 +1,9 @@
 const Task = require("../../../api/tasks/v1/tasks.model.js");
 const mongoose = require("mongoose");
 
-const getTasksAgg = async ({ ownerId, skip }) => {
+const getTasksAgg = async (skip, query) => {
   const aggregate = Task.aggregate([
-    { $match: { owner: mongoose.Types.ObjectId(ownerId) } },
+    { $match: query },
     {
       $lookup: {
         from: "projects",
