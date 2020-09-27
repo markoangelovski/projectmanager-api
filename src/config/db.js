@@ -3,6 +3,12 @@ const mongoose = require("mongoose");
 const dbURL =
   process.env.NODE_ENV === "test" ? process.env.TEST_DB : process.env.DB;
 
+//   let dbURL;
+
+// dbURL = process.env.NODE_ENV === "test" ? process.env.TEST_DB : process.env.DB;
+// dbURL =
+//   process.env.NODE_ENV === "development" ? process.env.DEV_DB : process.env.DB;
+
 async function connectDB() {
   try {
     await mongoose.connect(

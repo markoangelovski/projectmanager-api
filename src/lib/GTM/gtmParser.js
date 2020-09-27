@@ -1,4 +1,5 @@
 const cheerio = require("cheerio");
+const axios = require("axios");
 
 const gtmParser = data => {
   const $ = cheerio.load(data);
@@ -102,4 +103,43 @@ const gtmParser = data => {
   return finalGTM;
 };
 
-module.exports = gtmParser;
+const globalGtmParser = async data => {
+  const $ = cheerio.load(data);
+
+  const rgxManager = new RegExp(/googletagmanager/g);
+  const rgxGTM = new RegExp(/GTM-[a-zA-Z0-9]{7}/g);
+  const rgxLocale = new RegExp(/\/[a-z]{2}-[a-z]{2}\/$/);
+
+  // Parse canonical link and remove trailing slash and locale folder/extension, ie. /en-us/
+  let canonical = $('link[rel="canonical"]').attr("href");
+  if (rgxLocale.test(canonical)) canonical = canonical.replace(rgxLocale, "");
+
+  if (canonical && canonical[canonical.length - 1] === "/")
+    canonical = canonical.slice(0, canonical.length - 1);
+
+  let gtmInline, gtmSrc, gtmExtSrc;
+
+  // Iterate through <script> tags, find the one containing the global GTM script and extract local GTM from PGDL
+  $("script").each(function (i, elem) {
+    if ($(this).html().match(rgxManager))
+      gtmInline = $(this).html().match(rgxGTM);
+
+    if (this.attribs.src && this.attribs.src.match(/gtm/g))
+      gtmSrc = this.attribs.src;
+  });
+
+  // Create proper URL for external GTM script
+  if (gtmSrc && gtmSrc[0] !== "h") gtmExtSrc = canonical + gtmSrc;
+
+  if (gtmInline) {
+    // If global GTM script is internal, return GTM property
+    return gtmInline.join();
+  } else {
+    // If global GTM script is external, fetch the gtm script and return GTM property
+    const res = await axios.get(gtmExtSrc);
+    const gtmExternal = res.data.match(rgxGTM);
+    return gtmExternal.join();
+  }
+};
+
+module.exports = { gtmParser, globalGtmParser };

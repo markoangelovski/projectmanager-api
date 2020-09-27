@@ -111,7 +111,7 @@ exports.login = async (req, res, next) => {
           const token = jwt.sign(user, process.env.JWT, { expiresIn: "1d" });
           res.cookie("auth", `Bearer ${token}`, {
             httpOnly: true,
-            sameSite: "None",
+            sameSite: process.env.NODE_ENV === "development" ? "Lax" : "None",
             secure: process.env.NODE_ENV === "development" ? false : true
           });
           res.json({
@@ -152,7 +152,7 @@ exports.logout = async (req, res, next) => {
   });
 };
 
-// @route PATCH /auth/update?service=(add|remove):(locale|report|scan)&user=other userEmail
+// @route PATCH /auth/update?service=(add|remove):(locale|report|scan)&user=otherUserEmail
 // @desc Update user settings
 exports.updateService = async (req, res, next) => {
   // Check if any action is selected

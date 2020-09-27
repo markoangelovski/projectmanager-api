@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const axios = require("axios");
 
 // GTM and Metadata parsers
-const gtmParser = require("../../../lib/GTM/gtmParser");
+const GTM = require("../../../lib/GTM");
 const { getMeta } = require("../../../lib/Meta/getMeta");
 
 // Validation
@@ -40,6 +40,7 @@ const localeSchema = new mongoose.Schema(
     FacebookRemarketingID: gtmType,
     Lytics: gtmType,
     Segment: gtmType,
+    globalGTM: gtmType,
     GTM: Object
   },
   { timestamps: true }
@@ -55,7 +56,8 @@ localeSchema.pre("save", async function (next) {
     this.metaDescription = meta.description;
     this.metaImage = meta.image;
     this.favicon = meta.icon;
-    this.GTM = gtmParser(data);
+    this.globalGTM = await GTM.parseGlobal(data);
+    this.GTM = GTM.parse(data);
     // Check if any of the provided attributes does not match with live attributes
     const err = gtmValidation(this);
     if (err) throw new Error(err);

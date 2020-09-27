@@ -47,4 +47,21 @@ const gtmCompare = (previousGtm, scannedGtm) => {
   };
 };
 
-module.exports = gtmCompare;
+const gtmGlobalCompare = (previousGlobalGtm, scannedGlobalGtm) => {
+  const hasGlobalGtmErrors = previousGlobalGtm !== scannedGlobalGtm;
+
+  let globalGtmDiff = {};
+
+  if (hasGlobalGtmErrors)
+    globalGtmDiff = {
+      previousGlobalGtm,
+      scannedGlobalGtm
+    };
+
+  return {
+    hasGlobalGtmErrors,
+    globalGtmDiff
+  };
+};
+
+module.exports = { gtmCompare, gtmGlobalCompare };
