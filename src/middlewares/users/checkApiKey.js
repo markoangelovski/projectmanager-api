@@ -48,6 +48,9 @@ const checkApiKey = async (req, res, next) => {
       const userSettings = await UserSettings.findOne({
         user: req.user._id
       });
+      // Logged in user does not have any services added
+      if (!userSettings) nextError(res, next);
+
       req.userSettings = userSettings;
       checkUserSettings({ req, res, next });
     } else {

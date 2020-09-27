@@ -24,7 +24,6 @@ const rateLimitOptions = {
 
 module.exports = Object.freeze({
   NODE_ENV: () => NODE_ENV,
-  NODE_ORIGIN: () => NODE_ORIGIN,
   DB: () => DB,
   TEST_DB: () => TEST_DB,
   JWT: () => JWT,

@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "deploy-pr": "git push -u remote-github development",
     "deploy-pull": "git pull",
-    "test": "NODE_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --timeout 5000 --exit",
+    "test": "NODE_ENV=test mocha './{,!(node_modules,requests)/**}/*.test.js' --timeout 5000 --exit",
     "test-file": "NODE_ENV=test mocha src/api/tasks/v1/tasks.test.js --timeout 5000 --exit",
     "heroku-postbuild": "node tasks/createAdminUser"
   },
