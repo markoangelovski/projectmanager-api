@@ -26,13 +26,18 @@ const gtmCompare = (previousGtm, scannedGtm) => {
 
   // Compare previous GTM keys with scanned GTM keys and store the differences
   for (const gtmKey of previousGtmKeys) {
-    // Check if the key exists in the scanned GTM and log only diffs for existing keys
-    if (
-      scannedGtm[gtmKey] !== undefined &&
-      previousGtm[gtmKey] !== scannedGtm[gtmKey]
-    ) {
+    if (previousGtm[gtmKey] !== scannedGtm[gtmKey]) {
       diff[gtmKey] = {};
       diff[gtmKey]["previous"] = previousGtm[gtmKey];
+      diff[gtmKey]["scanned"] = scannedGtm[gtmKey] || "{key-removed}";
+    }
+  }
+
+  // Compare scanned GTM keys with previous GTM keys and store the difference if any new key has been added
+  for (const gtmKey of scannedGtmKeys) {
+    if (!diff[gtmKey] && previousGtm[gtmKey] !== scannedGtm[gtmKey]) {
+      diff[gtmKey] = {};
+      diff[gtmKey]["previous"] = previousGtm[gtmKey] || "{key-added}";
       diff[gtmKey]["scanned"] = scannedGtm[gtmKey];
     }
   }
