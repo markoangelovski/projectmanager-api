@@ -74,7 +74,10 @@
 									"value": "",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1.1/auth/register",
@@ -108,7 +111,10 @@
 									"value": "{{password}}",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/auth/login",
@@ -379,7 +385,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{apiUrl}}/v1/locale?project=Being Girl",
+							"raw": "{{apiUrl}}/v1/locale?globalGTM=GTM-PW4NS3V",
 							"host": [
 								"{{apiUrl}}"
 							],
@@ -395,7 +401,8 @@
 								},
 								{
 									"key": "project",
-									"value": "Being Girl"
+									"value": "Gillette Venus",
+									"disabled": true
 								},
 								{
 									"key": "title",
@@ -431,6 +438,16 @@
 									"key": "FacebookRemarketingID",
 									"value": "897572113963970",
 									"disabled": true
+								},
+								{
+									"key": "Lytics",
+									"value": "2cae79a7e22f8be74a4a187800aa9c62",
+									"disabled": true
+								},
+								{
+									"key": "globalGTM",
+									"value": "GTM-PW4NS3V",
+									"description": "GTM-N94XXFB or GTM-PW4NS3V"
 								},
 								{
 									"key": "GTM.SitePrivacyProtection",
@@ -557,6 +574,38 @@
 			"item": [
 				{
 					"name": "Fetch Scans",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec6ad06c-d355-4521-b5d5-c50cadfc192c",
+								"exec": [
+									"var template = `",
+									"   <table bgcolor=\"#FFFFFF\">",
+									"        <tr>",
+									"            <th>Date</th>",
+									"            <th>Duration</th>",
+									"        </tr>",
+									"",
+									"        {{#each response.scans}}",
+									"            <tr>",
+									"                <td>{{createdAt}}</td>",
+									"                <td>{{scanDurationMs}}</td>",
+									"            </tr>",
+									"        {{/each}}",
+									"    </table>",
+									"`;",
+									"",
+									"// Set visualizer",
+									"pm.visualizer.set(template, {",
+									"    // Pass the response body parsed as JSON as `data`",
+									"    response: pm.response.json()",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -798,7 +847,10 @@
 									"description": "NAS path",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/projects",
@@ -838,7 +890,8 @@
 							"variable": [
 								{
 									"key": "projectId",
-									"value": ""
+									"value": "",
+									"type": "string"
 								}
 							]
 						}
@@ -908,6 +961,7 @@
 								{
 									"key": "projectId",
 									"value": "",
+									"type": "string",
 									"description": "Project ID"
 								}
 							]
@@ -933,7 +987,8 @@
 							"variable": [
 								{
 									"key": "projectId",
-									"value": ""
+									"value": "",
+									"type": "string"
 								}
 							]
 						}
@@ -1002,7 +1057,10 @@
 									"description": "Project ID",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/tasks",
@@ -1129,7 +1187,8 @@
 							"variable": [
 								{
 									"key": "taskId",
-									"value": ""
+									"value": "",
+									"type": "string"
 								}
 							]
 						}
@@ -1154,7 +1213,8 @@
 							"variable": [
 								{
 									"key": "taskId",
-									"value": ""
+									"value": "",
+									"type": "string"
 								}
 							]
 						}
@@ -1228,6 +1288,24 @@
 					"response": []
 				},
 				{
+					"name": "Fetch Notes Copy Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1.1/notes",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1.1",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create new Note",
 					"request": {
 						"method": "POST",
@@ -1247,7 +1325,10 @@
 									"description": "Task ID",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/notes",
@@ -1290,6 +1371,7 @@
 								{
 									"key": "noteId",
 									"value": "",
+									"type": "string",
 									"description": "Note ID"
 								}
 							]
@@ -1316,6 +1398,7 @@
 								{
 									"key": "noteId",
 									"value": "",
+									"type": "string",
 									"description": "Note ID"
 								}
 							]
@@ -1633,6 +1716,122 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Stats",
+			"item": [
+				{
+					"name": "Get booking stats by Day",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/stats/day?start=2020-01-01&end=2020-07-30&total=true",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"stats",
+								"day"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2020-01-01",
+									"description": "Start date"
+								},
+								{
+									"key": "end",
+									"value": "2020-07-30",
+									"description": "End date"
+								},
+								{
+									"key": "total",
+									"value": "true",
+									"description": "true or false, returns total events/logs and hours worked/booked"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get booking stats by Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/stats/task?start=2020-01-01&end=2020-07-30&id=5de087f5f6be4e686a9d9621",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"stats",
+								"task"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2020-01-01",
+									"description": "Start date"
+								},
+								{
+									"key": "end",
+									"value": "2020-07-30",
+									"description": "End date"
+								},
+								{
+									"key": "id",
+									"value": "5de087f5f6be4e686a9d9621",
+									"description": "Task id"
+								},
+								{
+									"key": "total",
+									"value": "true",
+									"description": "true or false, returns total events/logs and hours worked/booked",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tasks stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/v1/stats/tasks?done=false",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"v1",
+								"stats",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "20",
+									"description": "Number of documents to skip, increments of 20",
+									"disabled": true
+								},
+								{
+									"key": "done",
+									"value": "false",
+									"description": "Fetch done tasks, true or false, nothing for all tasks"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Docs",
 			"item": [
 				{
@@ -1681,12 +1880,12 @@
 	],
 	"variable": [
 		{
-			"id": "5e876341-732c-4cd1-b8b4-1f3e637b5131",
+			"id": "c9c686b4-8693-44c9-8581-ad9c781a1de2",
 			"key": "email",
 			"value": ""
 		},
 		{
-			"id": "30af1f36-28d5-4081-8ecf-5833a0dd0bea",
+			"id": "3fd75bdd-400d-4ad2-a1be-c9016d0999e5",
 			"key": "password",
 			"value": ""
 		}
