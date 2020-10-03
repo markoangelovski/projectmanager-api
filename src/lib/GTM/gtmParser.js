@@ -134,11 +134,13 @@ const globalGtmParser = async data => {
   if (gtmInline) {
     // If global GTM script is internal, return GTM property
     return gtmInline.join();
-  } else {
+  } else if (gtmExtSrc) {
     // If global GTM script is external, fetch the gtm script and return GTM property
     const res = await axios.get(gtmExtSrc);
     const gtmExternal = res.data.match(rgxGTM);
     return gtmExternal.join();
+  } else {
+    return "No Global GTM found";
   }
 };
 
