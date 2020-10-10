@@ -11,7 +11,7 @@
     "deploy-pull": "git pull",
     "test": "NODE_ENV=test mocha './{,!(node_modules,requests)/**}/*.test.js' --timeout 5000 --exit",
     "test-file": "NODE_ENV=test mocha src/api/tasks/v1/tasks.test.js --timeout 5000 --exit",
-    "heroku-postbuild": "node tasks/createAdminUser && node widget-prod",
+    "heroku-postbuild": "node tasks/createAdminUser && npm run widget-prod",
     "widget-dev": "NODE_ENV=development webpack",
     "widget-prod": "NODE_ENV=production webpack"
   },
