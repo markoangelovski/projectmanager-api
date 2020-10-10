@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -36,6 +37,9 @@ if (NODE_ENV() === "development") {
   const morgan = require("morgan");
   app.use(morgan("dev"));
 }
+
+// Widget route
+app.use("/v1/w", express.static(path.join(__dirname, "src/widget/build")));
 
 // Home route
 app.get("/", (req, res) => {

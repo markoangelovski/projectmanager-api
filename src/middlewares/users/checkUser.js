@@ -21,7 +21,7 @@ function checkUser(req, res, next) {
     // If token is expired, logout user
     res.clearCookie("auth", {
       httpOnly: true,
-      sameSite: "None",
+      sameSite: process.env.NODE_ENV === "development" ? "Lax" : "None",
       secure: process.env.NODE_ENV === "development" ? false : true
     });
     console.warn(error);
