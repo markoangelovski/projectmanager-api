@@ -22,9 +22,9 @@ console.log("[AGA Library] - Library loaded.");
 //     };
 //   }
 //   aga.queue = [];
-//   aga.version = "1",
-//   aga.loaded = false,
-//   aga.rootUrl = scr.split("/v")[0],
+//   aga.version = "1";
+//   aga.loaded = false;
+//   aga.rootUrl = url.split("/v")[0];
 //   var a = doc.createElement(scr);
 //   a.async = true;
 //   a.src = url;

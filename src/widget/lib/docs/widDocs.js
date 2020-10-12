@@ -6,7 +6,7 @@ export function widDocs() {
   console.log("aga('auth')", {
     description: "Checks if user is authenticated."
   });
-  console.log("aga('login', {pl}, cb(err,res)", {
+  console.log("aga('login', {pl}, cb(err,res))", {
     description: "Log in.",
     payload: { body: { email: "user@email.com", password: "password" } }
   });
@@ -140,5 +140,6 @@ export function widDocs() {
     description: "Deletes task.",
     payload: { params: "log _id" }
   });
+  console.groupEnd();
   console.groupEnd();
 }
