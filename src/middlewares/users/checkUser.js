@@ -80,7 +80,8 @@ function hasBody(req, res, next) {
 // }
 
 function getClientIp(req, res, next) {
-  req.ip = requestIp.getClientIp(req);
+  const ip = requestIp.getClientIp(req);
+  req.ip = ip;
   next();
 }
 

@@ -27,13 +27,18 @@ const checkScan = require("./src/middlewares/scans/checkScan");
 // const { checkSource } = require("./src/middlewares/analyitcs/checkSource.js"); // Analyitcs middleware
 
 const app = express();
+app.use((req, res, next) => {
+  const ip_before = requestIp.getClientIp(req);
+  req.ip_before = ip_before;
+  next();
+});
 
 app.disable("etag");
+app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
 app.use(function (req, res, next) {
   req.ip = requestIp.getClientIp(req);
   next();
 });
-app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
 
 // Middleware
 // app.use(responseTime());// intended for Analyitics functionality
@@ -45,7 +50,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Custom middlewares
 app.use(checkUser);
-// app.use(getClientIp);
+app.use(getClientIp);
 app.use(checkScan);
 // app.use(checkSource); // Analyitcs middleware for setting agaId cookie on Postman
 if (NODE_ENV() === "development") {
@@ -62,7 +67,8 @@ app.get("/", (req, res) => {
     status: "OK",
     statusCode: 200,
     user: req.user,
-    ip: req.ip
+    ip: req.ip,
+    ip_before: req.ip_before
   });
 });
 
