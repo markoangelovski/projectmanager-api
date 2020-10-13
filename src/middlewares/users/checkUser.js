@@ -80,7 +80,7 @@ function hasBody(req, res, next) {
 // }
 
 function getClientIp(req, res, next) {
-  req.ip_after = requestIp.getClientIp(req);
+  req.ip = requestIp.getClientIp(req);
   next();
 }
 

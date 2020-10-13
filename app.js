@@ -27,14 +27,11 @@ const checkScan = require("./src/middlewares/scans/checkScan");
 // const { checkSource } = require("./src/middlewares/analyitcs/checkSource.js"); // Analyitcs middleware
 
 const app = express();
-app.use((req, res, next) => {
-  const ip_before = requestIp.getClientIp(req);
-  req.ip_before = ip_before;
-  next();
-});
 
 app.disable("etag");
-app.use(getClientIp);
+
+// app.use(getClientIp); // Get req.ip address middleware. Needs to be set up before "trust-proxy" to catch actual client ip and not the proxy ip
+
 app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
 
 // Middleware
@@ -64,8 +61,12 @@ app.get("/", (req, res) => {
     status: "OK",
     statusCode: 200,
     user: req.user,
-    ip_after: req.ip_after,
-    ip_before: req.ip_before
+    ip: req.ip,
+    ips: req.ips,
+    hostname: req.hostname,
+    forwardedHost: req.get("X-Forwarded-Host"),
+    forwardedProto: req.get("X-Forwarded-Proto"),
+    protocol: req.protocol
   });
 });
 
