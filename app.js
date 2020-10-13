@@ -61,13 +61,7 @@ app.get("/", (req, res) => {
     status: "OK",
     statusCode: 200,
     user: req.user,
-    _ip: req._ip,
-    ip: req.ip,
-    ips: req.ips,
-    hostname: req.hostname,
-    forwardedHost: req.get("X-Forwarded-Host"),
-    forwardedProto: req.get("X-Forwarded-Proto"),
-    protocol: req.protocol
+    ip: req._ip
   });
 });
 

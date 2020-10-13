@@ -16,6 +16,10 @@ const corsOptions = {
 const rateLimitOptions = {
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs,
+  keyGenerator: function (req /*, res*/) {
+    // Switched from default req.ip to req._ip to bypass proxy's ip
+    return req._ip;
+  },
   message: {
     error: "ERR_RATE_LIMIT_REACHED",
     message: `Rate limit reached, please try again later.`
