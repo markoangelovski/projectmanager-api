@@ -32,6 +32,10 @@ app.disable("etag");
 app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
 
 // Middleware
+app.use(function (req, res, next) {
+  req.ip = requestIp.getClientIp(req);
+  next();
+});
 // app.use(responseTime());// intended for Analyitics functionality
 app.use(helmet());
 app.use(cors(corsOptions()));
@@ -42,10 +46,6 @@ app.use(express.urlencoded({ extended: true }));
 // Custom middlewares
 app.use(checkUser);
 // app.use(getClientIp);
-app.use(function (req, res, next) {
-  req.ip = requestIp.getClientIp(req);
-  next();
-});
 app.use(checkScan);
 // app.use(checkSource); // Analyitcs middleware for setting agaId cookie on Postman
 if (NODE_ENV() === "development") {
