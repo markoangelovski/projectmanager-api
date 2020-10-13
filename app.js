@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const requestIp = require("@supercharge/request-ip");
 
 // Config
 const {
@@ -40,7 +41,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Custom middlewares
 app.use(checkUser);
-app.use(getClientIp);
+// app.use(getClientIp);
+app.use(function (req, res, next) {
+  req.ip = requestIp.getClientIp(req);
+  next();
+});
 app.use(checkScan);
 // app.use(checkSource); // Analyitcs middleware for setting agaId cookie on Postman
 if (NODE_ENV() === "development") {
