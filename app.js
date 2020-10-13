@@ -64,7 +64,7 @@ app.get("/", (req, res) => {
     status: "OK",
     statusCode: 200,
     user: req.user,
-    ip: req.ip,
+    ip_after: req.ip_after,
     ip_before: req.ip_before
   });
 });
