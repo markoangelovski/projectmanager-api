@@ -12,7 +12,7 @@
     "test": "NODE_ENV=test mocha './{,!(node_modules,requests)/**}/*.test.js' --timeout 5000 --exit",
     "test-file": "NODE_ENV=test mocha src/api/tasks/v1/tasks.test.js --timeout 5000 --exit",
     "heroku-postbuild": "node tasks/createAdminUser && npm run widget-prod",
-    "widget-dev": "NODE_ENV=development webpack",
+    "widget-dev": "NODE_ENV=development webpack-dev-server",
     "widget-prod": "NODE_ENV=production webpack"
   },
   "pre-commit": [
@@ -26,6 +26,7 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^16.1.7",
+    "@supercharge/request-ip": "^1.1.2",
     "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",
@@ -39,7 +40,6 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.9.19",
-    "node-cron": "^2.0.3",
     "page-metadata-parser": "^1.1.4",
     "xlsx": "^0.15.6"
   },
@@ -51,6 +51,7 @@
     "pre-commit": "^1.2.2",
     "supertest": "^4.0.2",
     "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }

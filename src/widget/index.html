@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Widget Tester</title>
+</head>
+
+<body>
+    <h1>AGA Widget Tester</h1>
+    <div>
+        <label for="widget-input" style="display: block;">Type a widget command:</label>
+
+        <textarea id="widget-input" name="widget-input" rows="5" cols="33" placeholder="aga('hello')"></textarea>
+
+        <pre id="widget-output"
+            style="vertical-align: top;padding-left: 15px;width: 50%;display: inline-block;margin: 0 10px;"></pre>
+
+    </div>
+    <div>
+        <p>Endpoints:</p>
+        <ul>
+            <li>aga("<strong>hello</strong>")</li>
+            <li>aga("<strong>init</strong>", "http://localhost:3000")</li>
+            <li>aga("<strong>ping</strong>")</li>
+            <li>aga("<strong>auth</strong>")</li>
+            <li>aga("<strong>login</strong>", {body:{email:"guest1@guest1.com",password:"guest1"}},(err,res)=>{res =
+                JSON.stringify(res,
+                null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";})</li>
+            <p><strong>Projects</strong></p>
+            <li>aga("<strong>createProject</strong>",{ body: { title: "From Widget 1" } },(err, res) => {res =
+                JSON.stringify(res, null,
+                2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>getSingleProject</strong>",{ params: "5f838a2c28963c15f737a3f1" },(err, res) => {res =
+                JSON.stringify(res,
+                null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>getProjects</strong>",{ query: {limit:"10",skip:"0",sort:"title"} },(err, res) => {res =
+                JSON.stringify(res,
+                null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>updateProject</strong>",{params: "5f838a2c28963c15f737a3f1",body: [{propName:
+                "title",propValue: "Updated
+                title"},{propName: "description",propValue: "Updated Description"},{propName: "done",propValue:
+                "true"},{propName: "pl",propValue: "Updated PL"},{propName: "kanboard",propValue: ""},{propName:
+                "dev",propValue: ""},{propName: "stage",propValue: ""},{propName: "prod",propValue: ""},{propName:
+                "live",propValue: ""},{propName: "nas",propValue: ""}]},(err, res) => {res = JSON.stringify(res, null,
+                2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>deleteProject</strong>", { params: "5f838a2c28963c15f737a3f1" }, (err, res) => {res =
+                JSON.stringify(res,
+                null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <p><strong>Tasks</strong></p>
+            <li>aga("<strong>createTask</strong>", { body: { title: "Widget made",project:"" } }, (err, res) => {res =
+                JSON.stringify(res, null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";})</li>
+            <li>aga("<strong>getSingleTask</strong>", { query: {task:""} }, (err, res) => {res = JSON.stringify(res,
+                null,
+                2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>getTasksByProject</strong>",{ query: { project: "" } },(err, res) => {res =
+                JSON.stringify(res, null,
+                2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>getTasks</strong>",{ query: { limit: "10", skip: "0", sort: "title" } },(err, res) => {res
+                =
+                JSON.stringify(res, null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>updateTask</strong>",{params: "",body: [{propName: "title",propValue: "Updated
+                Title"},{propName:
+                "description",propValue: "Updated Description"},{propName: "done",propValue: "false"},{propName:
+                "column",propValue: ""},{propName: "pl",propValue: ""},{propName: "kanboard",propValue: ""},{propName:
+                "nas",propValue: ""},{propName: "dueDate",propValue: ""},{propName: "project",propValue: ""}]},(err,
+                res) => {res = JSON.stringify(res, null, 2);outputField.innerHTML += inputField.value + ": " + res +
+                "\n";});</li>
+            <li>aga("<strong>deleteTask</strong>", { params: "" }, (err, res) => {res = JSON.stringify(res, null,
+                2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <p><strong>Events</strong></p>
+            <li>aga("<strong>createEvent</strong>", { body: { day: "2020-10-12",task:"", title:"New event from Widget",
+                duration:"1.75",start:"8"} }, (err, res) => {res = JSON.stringify(res, null, 2);outputField.innerHTML +=
+                inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>getEvents</strong>", { query: {start:"2020-01-01",end:"2021-01-01",id:"",task:""} }, (err,
+                res) => {res =
+                JSON.stringify(res, null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>updateEvent</strong>",{ params:"",body:[{propName: "title",propValue: "Updated
+                title"},{propName:
+                "booked",propValue: "false"}] },(err, res) => {res = JSON.stringify(res, null, 2);outputField.innerHTML
+                += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>deleteEvent</strong>",{params: ""},(err, res) => {res = JSON.stringify(res, null,
+                2);outputField.innerHTML
+                += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>createLog</strong>", { body: {event:"",title:"Log from Widget",duration:"0.75"} }, (err,
+                res) => {res =
+                JSON.stringify(res, null, 2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>updateLog</strong>", { params: "",body:[{propName: "title",propValue: "Updated
+                title"},{propName:
+                "duration",propValue: "0.75"}] }, (err, res) => {res = JSON.stringify(res, null,
+                2);outputField.innerHTML += inputField.value + ": " + res + "\n";});</li>
+            <li>aga("<strong>deleteLog</strong>", { params: "" }, (err, res) => {res = JSON.stringify(res, null,
+                2);outputField.innerHTML
+                += inputField.value + ": " + res + "\n";});</li>
+
+        </ul>
+    </div>
+    <script>
+        if (window.location.port === "8080") {
+            // Webpack DEV Server
+            !(function (win, doc, scr, url, aga) {
+                if (!win.aga) {
+                    aga = win.aga = function () {
+                        aga.start ? aga.start.apply(aga, arguments) : aga.queue.push(arguments);
+                    };
+                }
+                aga.queue = [];
+                aga.version = "1";
+                aga.loaded = false;
+                aga.rootUrl = "http://localhost:3000";
+                var a = doc.createElement(scr);
+                a.async = true;
+                a.src = url;
+                var b = doc.getElementsByTagName(scr)[0];
+                b.parentNode.insertBefore(a, b);
+            })(window, document, "script", "http://localhost:8080/aga.js");
+        }
+    </script>
+
+    <script>
+        if (window.location.port === "5500") {
+            // VSCode Live Server, prod build
+            !(function (win, doc, scr, url, aga) {
+                if (!win.aga) {
+                    aga = win.aga = function () {
+                        aga.start ? aga.start.apply(aga, arguments) : aga.queue.push(arguments);
+                    };
+                }
+                aga.queue = [];
+                aga.version = "1";
+                aga.loaded = false;
+                aga.rootUrl = scr.split("w")[0]
+                var a = doc.createElement(scr);
+                a.async = true;
+                a.src = url;
+                var b = doc.getElementsByTagName(scr)[0];
+                b.parentNode.insertBefore(a, b);
+            })(window, document, "script", "http://localhost:5500/src/widget/build/aga.js");
+            aga("init", "http://localhost:3000");
+        } 
+    </script>
+
+    <script>
+        var inputField = document.getElementById("widget-input");
+        var outputField = document.getElementById("widget-output");
+        var outputLog = document.getElementById("output-log");
+
+        inputField.addEventListener("keypress", async function (e) {
+            if (e.keyCode === 13) {
+                var result;
+
+                try {
+                    result = eval(inputField.value);
+                    result = await result
+                    console.log('eval result: ', result);
+
+                } catch (err) {
+                    console.log("from html", err)
+                    if (err.message) result = err.message
+                    result = err
+                    console.warn(err)
+                }
+
+                if (typeof result === "object") {
+                    result = JSON.stringify(result, null, 2);
+                }
+
+                outputField.innerHTML += inputField.value + ": " + result + "\n";
+
+                inputField.value = "";
+            }
+        })
+    </script>
+</body>
+
+</html>

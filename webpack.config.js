@@ -6,5 +6,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "src/widget/build"),
     filename: "aga.js"
+  },
+  devServer: {
+    port: 8080,
+    contentBase: path.resolve(__dirname, "src/widget")
   }
 };
