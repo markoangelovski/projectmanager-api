@@ -34,11 +34,8 @@ app.use((req, res, next) => {
 });
 
 app.disable("etag");
+app.use(getClientIp);
 app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
-app.use(function (req, res, next) {
-  req.ip = requestIp.getClientIp(req);
-  next();
-});
 
 // Middleware
 // app.use(responseTime());// intended for Analyitics functionality
