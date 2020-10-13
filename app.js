@@ -29,13 +29,13 @@ const checkScan = require("./src/middlewares/scans/checkScan");
 const app = express();
 
 app.disable("etag");
-app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
-
-// Middleware
 app.use(function (req, res, next) {
   req.ip = requestIp.getClientIp(req);
   next();
 });
+app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
+
+// Middleware
 // app.use(responseTime());// intended for Analyitics functionality
 app.use(helmet());
 app.use(cors(corsOptions()));
