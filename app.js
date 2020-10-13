@@ -32,7 +32,7 @@ app.disable("etag");
 
 // app.use(getClientIp); // Get req.ip address middleware. Needs to be set up before "trust-proxy" to catch actual client ip and not the proxy ip
 
-app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
+app.set("trust-proxy", true); // Enable rate limit behind proxies such as Heroku
 
 // Middleware
 // app.use(responseTime());// intended for Analyitics functionality
