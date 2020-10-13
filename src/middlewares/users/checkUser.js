@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const requestIp = require("@supercharge/request-ip");
 
 function checkUser(req, res, next) {
   try {
@@ -78,9 +79,15 @@ function hasBody(req, res, next) {
 //   };
 // }
 
+function getClientIp(req, res, next) {
+  req.ip = requestIp.getClientIp(req);
+  next();
+}
+
 module.exports = {
   checkUser,
   isLoggedIn,
   isAdmin,
-  hasBody /* , responseTime */
+  hasBody,
+  /* responseTime, */ getClientIp
 };
