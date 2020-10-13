@@ -2,12 +2,13 @@ import { makeGenericCall } from "../factory/factory.js";
 
 var a = window.aga;
 
-export const ping = makeGenericCall({ method: "get" });
+export const ping = makeGenericCall({ method: "get", plOptional: true });
 
 // Users
 export const auth = makeGenericCall({
   method: "post",
-  endpoint: `/v${a.version}/auth/`
+  endpoint: `/v${a.version}/auth/`,
+  plOptional: true
 });
 
 export const login = makeGenericCall({
@@ -17,7 +18,8 @@ export const login = makeGenericCall({
 
 export const logout = makeGenericCall({
   method: "get",
-  endpoint: `/v${a.version}/auth/logout/`
+  endpoint: `/v${a.version}/auth/logout/`,
+  plOptional: true
 });
 
 // Projects
@@ -33,7 +35,8 @@ export const getSingleProject = makeGenericCall({
 
 export const getProjects = makeGenericCall({
   method: "get",
-  endpoint: `/v${a.version}/projects/`
+  endpoint: `/v${a.version}/projects/`,
+  plOptional: true
 });
 
 export const updateProject = makeGenericCall({
@@ -64,7 +67,8 @@ export const getTasksByProject = makeGenericCall({
 
 export const getTasks = makeGenericCall({
   method: "get",
-  endpoint: `/v${a.version}/tasks/`
+  endpoint: `/v${a.version}/tasks/`,
+  plOptional: true
 });
 
 export const updateTask = makeGenericCall({
@@ -111,4 +115,44 @@ export const updateLog = makeGenericCall({
 export const deleteLog = makeGenericCall({
   method: "delete",
   endpoint: `/v${a.version}/days/log.delete/`
+});
+
+// Locales
+export const createLocale = makeGenericCall({
+  method: "post",
+  endpoint: `/v${a.version}/locale/`
+});
+
+export const getLocales = makeGenericCall({
+  method: "get",
+  endpoint: `/v${a.version}/locale/`,
+  plOptional: true
+});
+
+export const updateLocale = makeGenericCall({
+  method: "patch",
+  endpoint: `/v${a.version}/locale/`
+});
+
+// Scans
+export const getScans = makeGenericCall({
+  method: "get",
+  endpoint: `/v${a.version}/scan/`
+});
+
+export const scanLocale = makeGenericCall({
+  method: "get",
+  endpoint: `/v${a.version}/scan/`
+});
+
+export const scanLocales = makeGenericCall({
+  method: "post",
+  endpoint: `/v${a.version}/scan/`,
+  plOptional: true
+});
+
+// Reports
+export const createReport = makeGenericCall({
+  method: "get",
+  endpoint: `/v${a.version}/report/`
 });

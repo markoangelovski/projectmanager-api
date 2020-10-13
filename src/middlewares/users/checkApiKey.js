@@ -48,23 +48,28 @@ const checkApiKey = async (req, res, next) => {
       const userSettings = await UserSettings.findOne({
         user: req.user._id
       });
-      // Logged in user does not have any services added
-      if (!userSettings) nextError(res, next);
-
-      req.userSettings = userSettings;
-      checkUserSettings({ req, res, next });
+      if (!userSettings) {
+        // For logged in user that does not have any services added
+        nextError(res, next);
+      } else {
+        req.userSettings = userSettings;
+        checkUserSettings({ req, res, next });
+      }
     } else {
       // Check if the key exists, hash the key and find the settings
       const apiKey = req.get("X-Service-Key");
-      if (!apiKey) nextError(res, next);
-      const key = apiKey && createHash(apiKey);
-      const userSettings =
-        key &&
-        (await UserSettings.findOne({
-          "service_keys.key": key
-        }));
-      req.userSettings = userSettings;
-      checkUserSettings({ key, req, res, next });
+      if (!apiKey) {
+        nextError(res, next);
+      } else {
+        const key = apiKey && createHash(apiKey);
+        const userSettings =
+          key &&
+          (await UserSettings.findOne({
+            "service_keys.key": key
+          }));
+        req.userSettings = userSettings;
+        checkUserSettings({ key, req, res, next });
+      }
     }
   } catch (error) {
     console.warn(error);

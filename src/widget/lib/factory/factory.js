@@ -1,14 +1,23 @@
 import axios from "axios";
 
-import { methods } from "./apiInterface.js";
-
-export function makeGenericCall({ method, endpoint }) {
+export function makeGenericCall({ method, endpoint, plOptional }) {
   // payload -> pl = {body:{bodyKey:"bodyValue"},params:"req.param",headers:{headerKey:"headerValue"},query:{queryKey:"queryValue"}}
   // callback -> cb = (err, ress) => "handle api response"
   return async function (pl, cb) {
+    // If payload is not passed and callback is, replace payload variable with callback variable
+    if (typeof pl === "function") (cb = pl), (pl = null);
+
+    // Handle case if payload is required and not provided
+    if (!plOptional && !pl) {
+      console.warn(
+        "[AGA Library] - You need to provide a payload. Check aga('docs') for more details"
+      );
+      return;
+    }
+
     // Check if passed payload is an object and if attributes exist
     function isPlOk(attribute) {
-      return typeof pl === "object" && pl[attribute] != undefined;
+      return pl && typeof pl === "object" && pl[attribute] != undefined;
     }
 
     try {

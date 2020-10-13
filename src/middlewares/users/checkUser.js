@@ -65,4 +65,22 @@ function hasBody(req, res, next) {
   }
 }
 
-module.exports = { checkUser, isLoggedIn, isAdmin, hasBody };
+// function responseTime() {
+//   return function (req, res, next) {
+//     var start = Date.now();
+//     if (res._responseTime) return next();
+//     res._responseTime = true;
+//     res.on("finish", function () {
+//       var duration = Date.now() - start;
+//       res.responseTime = duration;
+//     });
+//     next();
+//   };
+// }
+
+module.exports = {
+  checkUser,
+  isLoggedIn,
+  isAdmin,
+  hasBody /* , responseTime */
+};

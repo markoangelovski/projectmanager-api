@@ -44,6 +44,9 @@ router.use("/v1/scan", checkApiKey, require("./api/scans/v1/scans.routes"));
 // Stats
 router.use("/v1/stats", isLoggedIn, require("./api/stats/v1/stats.routes"));
 
+// Analyitcs
+// router.use("/v1/track", require("./api/analyitcs/v1/analyitcs.routes"));
+
 // Docs
 router.use("/v1/docs", checkRateLimit, require("./api/docs/v1/docs.routes"));
 
