@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ebbbf10a-64f8-4392-b86e-e2ce62d30450",
+		"_postman_id": "f3d05d40-8991-443c-a057-abff2f646bb0",
 		"name": "PMSPA",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -74,10 +74,7 @@
 									"value": "",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1.1/auth/register",
@@ -111,10 +108,7 @@
 									"value": "{{password}}",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/auth/login",
@@ -262,8 +256,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Locale",
@@ -352,10 +345,7 @@
 									"type": "text",
 									"disabled": true
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/locale",
@@ -489,6 +479,12 @@
 									"type": "text"
 								},
 								{
+									"key": "newUrl",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
 									"key": "title",
 									"value": "Align en_ca",
 									"type": "text",
@@ -548,10 +544,7 @@
 									"type": "text",
 									"disabled": true
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/locale",
@@ -566,8 +559,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Scan",
@@ -578,7 +570,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ec6ad06c-d355-4521-b5d5-c50cadfc192c",
 								"exec": [
 									"var template = `",
 									"   <table bgcolor=\"#FFFFFF\">",
@@ -701,8 +692,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Report",
@@ -779,8 +769,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Project",
@@ -847,10 +836,7 @@
 									"description": "NAS path",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/projects",
@@ -890,8 +876,7 @@
 							"variable": [
 								{
 									"key": "projectId",
-									"value": "",
-									"type": "string"
+									"value": ""
 								}
 							]
 						}
@@ -961,7 +946,6 @@
 								{
 									"key": "projectId",
 									"value": "",
-									"type": "string",
 									"description": "Project ID"
 								}
 							]
@@ -987,16 +971,14 @@
 							"variable": [
 								{
 									"key": "projectId",
-									"value": "",
-									"type": "string"
+									"value": ""
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Task",
@@ -1057,10 +1039,7 @@
 									"description": "Project ID",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/tasks",
@@ -1187,8 +1166,7 @@
 							"variable": [
 								{
 									"key": "taskId",
-									"value": "",
-									"type": "string"
+									"value": ""
 								}
 							]
 						}
@@ -1213,16 +1191,14 @@
 							"variable": [
 								{
 									"key": "taskId",
-									"value": "",
-									"type": "string"
+									"value": ""
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Note",
@@ -1325,10 +1301,7 @@
 									"description": "Task ID",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/notes",
@@ -1371,7 +1344,6 @@
 								{
 									"key": "noteId",
 									"value": "",
-									"type": "string",
 									"description": "Note ID"
 								}
 							]
@@ -1398,7 +1370,6 @@
 								{
 									"key": "noteId",
 									"value": "",
-									"type": "string",
 									"description": "Note ID"
 								}
 							]
@@ -1406,8 +1377,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Event",
@@ -1450,10 +1420,7 @@
 									"description": "Day start time",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/days/event.create",
@@ -1479,10 +1446,7 @@
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
-							"urlencoded": [],
-							"options": {
-								"urlencoded": {}
-							}
+							"urlencoded": []
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/days/event.find?start=2020-06-24",
@@ -1552,7 +1516,6 @@
 								{
 									"key": "eventId",
 									"value": "5ef13babe4590d0e5d58daf7",
-									"type": "string",
 									"description": "Event id"
 								}
 							]
@@ -1590,13 +1553,11 @@
 								{
 									"key": "dayId",
 									"value": "",
-									"type": "string",
 									"description": "Day id"
 								},
 								{
 									"key": "eventId",
 									"value": "",
-									"type": "string",
 									"description": "Event id"
 								}
 							]
@@ -1630,10 +1591,7 @@
 									"description": "Log duration",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/v1/days/log.create",
@@ -1677,8 +1635,7 @@
 							"variable": [
 								{
 									"key": "logId",
-									"value": "5ef38e3b8a230316a966fbe8",
-									"type": "string"
+									"value": "5ef38e3b8a230316a966fbe8"
 								}
 							]
 						}
@@ -1704,16 +1661,14 @@
 							"variable": [
 								{
 									"key": "logId",
-									"value": "5ef38e3b8a230316a966fbe8",
-									"type": "string"
+									"value": "5ef38e3b8a230316a966fbe8"
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Stats",
@@ -1828,8 +1783,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Docs",
@@ -1852,15 +1806,13 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3c5e8355-ea73-4719-abef-4986badc0a63",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1870,7 +1822,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "76e21d1e-ad5b-43ab-9e99-d1d8d77860ce",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1880,15 +1831,12 @@
 	],
 	"variable": [
 		{
-			"id": "c9c686b4-8693-44c9-8581-ad9c781a1de2",
 			"key": "email",
 			"value": ""
 		},
 		{
-			"id": "3fd75bdd-400d-4ad2-a1be-c9016d0999e5",
 			"key": "password",
 			"value": ""
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

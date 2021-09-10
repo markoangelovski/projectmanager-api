@@ -17,11 +17,13 @@ const createScansReport = (scans, format) => {
         // In case that diffs object does not exist, initate new empty object
         const diffs = stat.result.diff || {};
         // Check which error has the most counts and create a row for each missing GTM key
-        // or a difference in GTM key/attribute values
+        // or a difference in GTM key/attribute values or if there were any errors with fetching the website data or parsing the GTM
         const iterations = Math.max(
-          stat.result.missingKeysInPrevious.length,
-          stat.result.missingKeysInScanned.length,
-          Object.keys(diffs).length
+          stat.result.missingKeysInPrevious?.length,
+          stat.result.missingKeysInScanned?.length,
+          Object.keys(diffs).length,
+          stat.result.isAxiosError ? 1 : 0,
+          stat.result.isGtmParserError ? 1 : 0
         );
 
         // Create a new row for each error
@@ -40,6 +42,8 @@ const createScansReport = (scans, format) => {
             stat.result.missingKeysInScanned[i]
               ? stat.result.missingKeysInScanned[i]
               : "",
+            stat.result.isAxiosError ? stat.result.message : "",
+            stat.result.isGtmParserError ? stat.result.message : "",
             Math.round((scan.scanDurationMs / 1000) * 100) / 100
           ]);
         }
@@ -56,6 +60,8 @@ const createScansReport = (scans, format) => {
     "Scanned",
     "Missing keys prev.",
     "Missing keys scanned",
+    "Fetch error",
+    "Parsing error",
     "Scan duration (s)"
   ];
 

@@ -40,6 +40,8 @@ const localeSchema = new mongoose.Schema(
     FacebookRemarketingID: gtmType,
     Lytics: gtmType,
     Segment: gtmType,
+    Dynatrace: gtmType,
+    GoogleAnalyticsGA4MeasurementID: gtmType,
     globalGTM: gtmType,
     GTM: Object
   },

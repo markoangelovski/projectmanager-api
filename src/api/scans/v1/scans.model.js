@@ -6,6 +6,8 @@ const scanSchema = new mongoose.Schema(
     localesScanned: Number,
     totalMissingKeys: Number,
     totalErrors: Number,
+    totalGtmParserErrors: Number,
+    totalFetchLocaleErrors: Number,
     scanDurationMs: Number,
     stats: Array
   },
