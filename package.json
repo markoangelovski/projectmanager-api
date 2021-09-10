@@ -38,7 +38,7 @@
     "moment": "^2.24.0",
     "mongoose": "^5.9.19",
     "page-metadata-parser": "^1.1.4",
-    "xlsx": "^0.15.6"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
