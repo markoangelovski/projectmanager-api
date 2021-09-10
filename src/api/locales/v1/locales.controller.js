@@ -59,11 +59,22 @@ exports.getLocale = async (req, res, next) => {
 // @route   PATCH /locales
 // @desc    Update single Locale values
 exports.patchLocale = async (req, res, next) => {
-  const localeUrl = req.body.url;
+  const newUrl = req.body.newUrl;
+  const newUrlKeyExists = req.body.hasOwnProperty("newUrl");
+  const newUrlIsok = newUrlKeyExists && urlRgx.test(newUrl);
 
-  if (localeUrl && urlRgx.test(localeUrl)) {
+  const message = {
+    message: "Please enter valid locale URL.",
+    error: "ERR_INVALID_URL"
+  };
+
+  if (!urlRgx.test(req.body.url)) {
+    res.status(400).json(message);
+  } else if (newUrlKeyExists && !newUrlIsok) {
+    res.status(400).json(message);
+  } else {
     try {
-      const locale = await Locale.findOne({ url: localeUrl });
+      const locale = await Locale.findOne({ url: req.body.url });
 
       if (locale) {
         // Iterate over req.body and update the values in locale
@@ -72,6 +83,11 @@ exports.patchLocale = async (req, res, next) => {
             locale[key] =
               req.body[key].length > 1 ? req.body[key] : delete locale[key];
           }
+        }
+
+        // If the Locale URL has been update, overwrite the old url with the new one
+        if (newUrlIsok) {
+          locale.url = req.body.newUrl;
         }
 
         const savedLocale = await locale.save();
@@ -87,13 +103,50 @@ exports.patchLocale = async (req, res, next) => {
         });
       }
     } catch (error) {
-      console.warn(error);
+      console.warn("Error updating locale: ", error);
       next(error);
     }
-  } else if (localeUrl && !urlRgx.test(localeUrl)) {
-    res.status(400).json({
-      message: "Please enter valid locale URL.",
-      error: "ERR_INVALID_URL"
-    });
   }
 };
+
+// // @route   PATCH /locales
+// // @desc    Update single Locale values
+// exports.patchLocale = async (req, res, next) => {
+//   const localeUrl = req.body.url;
+
+//   if (localeUrl && urlRgx.test(localeUrl)) {
+//     try {
+//       const locale = await Locale.findOne({ url: localeUrl });
+
+//       if (locale) {
+//         // Iterate over req.body and update the values in locale
+//         for (const key in req.body) {
+//           if (req.body.hasOwnProperty(key)) {
+//             locale[key] =
+//               req.body[key].length > 1 ? req.body[key] : delete locale[key];
+//           }
+//         }
+
+//         const savedLocale = await locale.save();
+
+//         res.json({
+//           message: `Locale ${savedLocale.title} updated successfully!`,
+//           locale: savedLocale
+//         });
+//       } else {
+//         res.status(404).json({
+//           message: "Locale not found.",
+//           error: "ERR_LOCALE_NOT_FOUND"
+//         });
+//       }
+//     } catch (error) {
+//       console.warn(error);
+//       next(error);
+//     }
+//   } else if (localeUrl && !urlRgx.test(localeUrl)) {
+//     res.status(400).json({
+//       message: "Please enter valid locale URL.",
+//       error: "ERR_INVALID_URL"
+//     });
+//   }
+// };
