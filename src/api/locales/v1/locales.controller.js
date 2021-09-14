@@ -36,7 +36,24 @@ exports.postLocale = async (req, res, next) => {
 // @desc    Get locales by query params
 exports.getLocale = async (req, res, next) => {
   try {
-    const locales = await Locale.find(req.query);
+    const query = {};
+    console.log(`req.query: `, req.query);
+
+    for (const key in req.query) {
+      if (Object.hasOwnProperty.call(req.query, key)) {
+        const value = req.query[key];
+
+        // Maps standard key:value pairs to Query object (for standard query params: ?title="Project title")
+        query[key] = value;
+
+        if (value.includes("$")) {
+          // Maps Mongo-specific queries to Query object, for example ?title={"$exists":"true"}
+          query[key] = JSON.parse(value);
+        }
+      }
+    }
+
+    const locales = await Locale.find(query);
 
     if (locales.length) {
       res.status(200).json({
@@ -85,7 +102,7 @@ exports.patchLocale = async (req, res, next) => {
           }
         }
 
-        // If the Locale URL has been update, overwrite the old url with the new one
+        // If the Locale URL has been updated, overwrite the old url with the new one
         if (newUrlIsok) {
           locale.url = req.body.newUrl;
         }
@@ -108,45 +125,3 @@ exports.patchLocale = async (req, res, next) => {
     }
   }
 };
-
-// // @route   PATCH /locales
-// // @desc    Update single Locale values
-// exports.patchLocale = async (req, res, next) => {
-//   const localeUrl = req.body.url;
-
-//   if (localeUrl && urlRgx.test(localeUrl)) {
-//     try {
-//       const locale = await Locale.findOne({ url: localeUrl });
-
-//       if (locale) {
-//         // Iterate over req.body and update the values in locale
-//         for (const key in req.body) {
-//           if (req.body.hasOwnProperty(key)) {
-//             locale[key] =
-//               req.body[key].length > 1 ? req.body[key] : delete locale[key];
-//           }
-//         }
-
-//         const savedLocale = await locale.save();
-
-//         res.json({
-//           message: `Locale ${savedLocale.title} updated successfully!`,
-//           locale: savedLocale
-//         });
-//       } else {
-//         res.status(404).json({
-//           message: "Locale not found.",
-//           error: "ERR_LOCALE_NOT_FOUND"
-//         });
-//       }
-//     } catch (error) {
-//       console.warn(error);
-//       next(error);
-//     }
-//   } else if (localeUrl && !urlRgx.test(localeUrl)) {
-//     res.status(400).json({
-//       message: "Please enter valid locale URL.",
-//       error: "ERR_INVALID_URL"
-//     });
-//   }
-// };
