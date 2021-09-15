@@ -37,7 +37,6 @@ exports.postLocale = async (req, res, next) => {
 exports.getLocale = async (req, res, next) => {
   try {
     const query = {};
-    console.log(`req.query: `, req.query);
 
     for (const key in req.query) {
       if (Object.hasOwnProperty.call(req.query, key)) {

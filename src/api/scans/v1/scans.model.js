@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const scanSchema = new mongoose.Schema(
   {
     scanID: String,
+    localesTotal: Number,
     localesScanned: Number,
     totalMissingKeys: Number,
     totalErrors: Number,

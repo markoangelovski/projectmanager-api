@@ -41,7 +41,9 @@ const checkScan = async (req, res, next) => {
         const scan = await scanPlaceholder.save();
 
         // Get locales
-        const locales = await Locale.find().select("title url favicon GTM");
+        const locales = await Locale.find().select(
+          "title url favicon scanPaused GTM"
+        );
 
         // Initiate scan
         const scanResult = await GTM.scan(locales);
