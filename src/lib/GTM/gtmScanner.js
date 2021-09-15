@@ -28,7 +28,7 @@ const gtmScanner = async locales => {
     };
 
     // Initiates a locale scan if locale is not paused.
-    !locale?.scanPaused &&
+    if (!locale.scanPaused) {
       scanPromises.push(
         new Promise(resolve => {
           axios
@@ -88,7 +88,8 @@ const gtmScanner = async locales => {
             });
         })
       );
-    localesScanned++;
+      localesScanned++;
+    }
   });
 
   // Resolve all scan promises
@@ -120,6 +121,7 @@ const gtmScanner = async locales => {
   const scanDurationMs = new Date() - scanStart;
 
   return {
+    localesTotal: locales.length,
     localesScanned,
     totalMissingKeys,
     totalErrors,
