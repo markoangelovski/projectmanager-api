@@ -108,10 +108,13 @@ const gtmParser = data => {
   const finalGTM = JSON.parse(GTM);
   delete finalGTM.GoogleReCaptcha;
 
-  // For instances where GTM parsing inserts empty keys with undefined values into final GTM, ie. "":"undefined"
   for (const key in finalGTM) {
     if (Object.hasOwnProperty.call(finalGTM, key)) {
+      // For instances where GTM parsing inserts empty keys with undefined values into final GTM, ie. "":"undefined"
       if (!key.length) delete finalGTM[key];
+      // If objects are inserted as values in GTM by mistake, stringify the object. Because comparing two objects is always false and locale gets false positive in the scan.
+      if (typeof finalGTM[key] === "object")
+        finalGTM[key] = JSON.stringify(finalGTM[key]);
     }
   }
 
