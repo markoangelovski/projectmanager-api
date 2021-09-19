@@ -82,13 +82,18 @@ exports.getEventsByTask = async (req, res, next) => {
 exports.getTasks = async (req, res, next) => {
   try {
     const skip = parseInt(req.query.skip) || 0;
-    if (skip % 20) throw new Error("ERR_INVALID_SKIP_VALUE");
+    if (skip % 50) throw new Error("ERR_INVALID_SKIP_VALUE");
     // Include done query param if included, otherwise omit it
     const done =
       typeof req.query.done === "string" ? req.query.done == "true" : null;
 
     const { stats, docs } = await getTasksAggrCond(
-      { skip, ownerId: mongoose.Types.ObjectId(req.user._id), done },
+      {
+        skip,
+        ownerId: mongoose.Types.ObjectId(req.user._id),
+        done,
+        column: req.query.column
+      },
       getTasksAgg
     );
 
