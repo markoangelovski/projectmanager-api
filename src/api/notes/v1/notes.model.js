@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const noteSchema = new mongoose.Schema(
   {
-    note: String,
+    data: {
+      time: Number,
+      blocks: Array,
+      version: String
+    },
     date: { type: Number, default: Date.now },
     order: Number,
     task: {

@@ -14,7 +14,11 @@ const {
 // @desc    Create a new note
 // Request JSON body:
 // {
-//    "note": "New note",
+//    "data": { // Saved object from Editor.js
+//      time: Number,
+//      blocks: Array,
+//      version: String
+// }
 //    "task": "TaskId",
 // }
 exports.postNote = async (req, res, next) => {
@@ -22,7 +26,7 @@ exports.postNote = async (req, res, next) => {
     const taskId = mongoIdRgx.test(req.body.task) && req.body.task;
     if (!taskId) throw new Error("ERR_TASK_IDENTIFIER_INVALID");
 
-    if (!req.body.note) throw new Error("ERR_NOTE_CONTENT_REQUIRED");
+    if (!req.body.data) throw new Error("ERR_NOTE_CONTENT_REQUIRED");
 
     const task = await Task.findById(taskId);
 
@@ -31,7 +35,7 @@ exports.postNote = async (req, res, next) => {
       const savedNote = await note.save();
 
       res.status(201).json({
-        message: `Note ${savedNote.note} successfully created!`,
+        message: `Note successfully created!`,
         note: savedNote
       });
 
@@ -162,12 +166,12 @@ exports.deleteNote = async (req, res, next) => {
 
     if (note) {
       // Trigger Task.save() to recalculate the number of notes in the task
-      const task = await Task.findById(note.task);
-      const savedTask = await task.save();
+      Task.findById(note.task)
+        .then(task => task.save().then())
+        .catch(console.log);
 
       res.status(200).json({
-        message: `Note ${note.note} successfully deleted!`,
-        task: savedTask
+        message: `Note successfully deleted!`
       });
     } else {
       throw new RangeError("ERR_NOTE_NOT_FOUND");
