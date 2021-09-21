@@ -114,7 +114,7 @@ exports.getNotes = async (req, res, next) => {
 // @route   PATCH /notes/:noteId
 // @desc    Update a note
 // Request JSON body:
-// {"note": "Updated note"}
+// {"data": "Updated editorjs data object"}
 exports.patchNote = async (req, res, next) => {
   try {
     const noteId = mongoIdRgx.test(req.params.noteId) && req.params.noteId;
@@ -124,21 +124,11 @@ exports.patchNote = async (req, res, next) => {
 
     const note = await Note.findByIdAndUpdate(
       { _id: noteId, owner: req.user._id },
-      { $set: { note: req.body.note } },
+      { $set: { data: req.body.data } },
       { new: true }
     );
 
     if (note) {
-      // Trigger Task.save() to recalculate the number of notes in the task
-      Task.findById(note.task)
-        .then(task =>
-          task
-            .save()
-            .then(tas => null)
-            .catch(err => console.warn(err))
-        )
-        .catch(err => console.warn(err));
-
       res.status(201).json({
         message: `Note ${note.title} successfully updated!`,
         note
