@@ -120,7 +120,7 @@ exports.patchNote = async (req, res, next) => {
     const noteId = mongoIdRgx.test(req.params.noteId) && req.params.noteId;
     if (!noteId) throw new Error("ERR_NOTE_IDENTIFIER_INVALID");
 
-    if (!req.body.note) throw new Error("ERR_NOTE_IDENTIFIER_INVALID");
+    if (!req.body.data) throw new Error("ERR_NOTE_PAYLOAD_INVALID");
 
     const note = await Note.findByIdAndUpdate(
       { _id: noteId, owner: req.user._id },
@@ -130,8 +130,14 @@ exports.patchNote = async (req, res, next) => {
 
     if (note) {
       res.status(201).json({
-        message: `Note ${note.title} successfully updated!`,
-        note
+        message: `Note successfully updated!`,
+        note: {
+          _id: note._id,
+          task: note.task,
+          data: note.data,
+          createdAt: note.createdAt,
+          updatedAt: note.updatedAt
+        }
       });
     } else {
       throw new RangeError("ERR_NOTE_NOT_FOUND");
