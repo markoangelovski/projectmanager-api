@@ -8,15 +8,7 @@ const Locale = require("../../api/locales/v1/locales.model");
 const GTM = require("../../lib/GTM");
 
 const checkScan = async (req, res, next) => {
-  let time = moment()
-    .format("HH:mm")
-    .split(":")
-    .map(item => parseInt(item))
-    .reduce(
-      (acc, current, i, arr) =>
-        current === arr[0] ? current + acc : current / 60 + acc,
-      0
-    );
+  let time = new Date().getHours();
 
   if (time < 16 || time > 22) {
     // If current time is less than 18:00 (16:00 UTC), do nothing
@@ -49,7 +41,9 @@ const checkScan = async (req, res, next) => {
         const scan = await scanPlaceholder.save();
 
         // Get locales
-        const locales = await Locale.find().select("title url favicon GTM");
+        const locales = await Locale.find().select(
+          "title url favicon scanPaused GTM"
+        );
 
         // Initiate scan
         const scanResult = await GTM.scan(locales);

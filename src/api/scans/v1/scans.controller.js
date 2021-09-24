@@ -51,7 +51,9 @@ exports.initScan = async (req, res, next) => {
       });
 
       // Get locales
-      const locales = await Locale.find().select("title url favicon GTM");
+      const locales = await Locale.find().select(
+        "title url favicon scanPaused GTM"
+      );
 
       // Initiate scan
       const scanResult = await GTM.scan(locales);
@@ -65,7 +67,7 @@ exports.initScan = async (req, res, next) => {
       ).then(scan => null);
     }
   } catch (error) {
-    console.warn(error);
+    console.warn("Error in initScan: ", error);
     next(error);
   }
 };
@@ -98,7 +100,7 @@ exports.getScans = async (req, res, next) => {
         });
       }
     } catch (error) {
-      console.warn(error);
+      console.warn("Error in getScans: ", error);
       next(error);
     }
   } else {
@@ -150,7 +152,7 @@ exports.initScanSingle = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.warn(error);
+    console.warn("Error in initScanSingle: ", error);
     next(error);
   }
 };
@@ -174,7 +176,7 @@ exports.getSingleScan = async (req, res, next) => {
         });
       }
     } catch (error) {
-      console.warn(error);
+      console.warn("Error in getSingleScan: ", error);
       next(error);
     }
   } else {

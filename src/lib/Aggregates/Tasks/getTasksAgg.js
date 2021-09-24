@@ -1,15 +1,23 @@
 const Task = require("../../../api/tasks/v1/tasks.model.js");
 const mongoose = require("mongoose");
 
-const getTasksAgg = async ({ ownerId, skip }) => {
+const getTasksAgg = async (skip, query) => {
   const aggregate = Task.aggregate([
-    { $match: { owner: mongoose.Types.ObjectId(ownerId) } },
+    { $match: query },
     {
       $lookup: {
         from: "projects",
         localField: "project",
         foreignField: "_id",
         as: "project"
+      }
+    },
+    {
+      $lookup: {
+        from: "notes",
+        localField: "_id",
+        foreignField: "task",
+        as: "notes"
       }
     },
     {
@@ -28,47 +36,19 @@ const getTasksAgg = async ({ ownerId, skip }) => {
         dueDate: "$dueDate",
         eventsCount: "$eventsCount",
         notesCount: "$notesCount",
+        notes: {
+          _id: 1,
+          data: 1,
+          createdAt: 1,
+          updatedAt: 1
+        },
         createdAt: "$createdAt",
         updatedAt: "$updatedAt"
       }
     },
-    { $sort: { createdAt: -1 } },
+    { $sort: { updatedAt: 1 } },
     { $skip: skip },
-    { $limit: 20 },
-    {
-      $group: {
-        _id: {
-          project: "$project",
-          projectId: "$projectId"
-        },
-        tasks: {
-          $push: {
-            _id: "$_id",
-            title: "$title",
-            description: "$description",
-            pl: "$pl",
-            kanboard: "$kanboard",
-            nas: "$nas",
-            column: "$column",
-            done: "$done",
-            date: "$date",
-            dueDate: "$dueDate",
-            eventsCount: "$eventsCount",
-            notesCount: "$notesCount",
-            createdAt: "$createdAt",
-            updatedAt: "$updatedAt"
-          }
-        }
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        project: "$_id.project",
-        projectId: "$_id.projectId",
-        tasks: "$tasks"
-      }
-    }
+    { $limit: 50 }
   ]);
 
   return await aggregate;

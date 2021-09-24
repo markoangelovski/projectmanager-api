@@ -14,7 +14,11 @@ const {
 // @desc    Create a new note
 // Request JSON body:
 // {
-//    "note": "New note",
+//    "data": { // Saved object from Editor.js
+//      time: Number,
+//      blocks: Array,
+//      version: String
+// }
 //    "task": "TaskId",
 // }
 exports.postNote = async (req, res, next) => {
@@ -22,7 +26,7 @@ exports.postNote = async (req, res, next) => {
     const taskId = mongoIdRgx.test(req.body.task) && req.body.task;
     if (!taskId) throw new Error("ERR_TASK_IDENTIFIER_INVALID");
 
-    if (!req.body.note) throw new Error("ERR_NOTE_CONTENT_REQUIRED");
+    if (!req.body.data) throw new Error("ERR_NOTE_CONTENT_REQUIRED");
 
     const task = await Task.findById(taskId);
 
@@ -31,7 +35,7 @@ exports.postNote = async (req, res, next) => {
       const savedNote = await note.save();
 
       res.status(201).json({
-        message: `Note ${savedNote.note} successfully created!`,
+        message: `Note successfully created!`,
         note: savedNote
       });
 
@@ -110,34 +114,30 @@ exports.getNotes = async (req, res, next) => {
 // @route   PATCH /notes/:noteId
 // @desc    Update a note
 // Request JSON body:
-// {"note": "Updated note"}
+// {"data": "Updated editorjs data object"}
 exports.patchNote = async (req, res, next) => {
   try {
     const noteId = mongoIdRgx.test(req.params.noteId) && req.params.noteId;
     if (!noteId) throw new Error("ERR_NOTE_IDENTIFIER_INVALID");
 
-    if (!req.body.note) throw new Error("ERR_NOTE_IDENTIFIER_INVALID");
+    if (!req.body.data) throw new Error("ERR_NOTE_PAYLOAD_INVALID");
 
     const note = await Note.findByIdAndUpdate(
       { _id: noteId, owner: req.user._id },
-      { $set: { note: req.body.note } },
+      { $set: { data: req.body.data } },
       { new: true }
     );
 
     if (note) {
-      // Trigger Task.save() to recalculate the number of notes in the task
-      Task.findById(note.task)
-        .then(task =>
-          task
-            .save()
-            .then(tas => null)
-            .catch(err => console.warn(err))
-        )
-        .catch(err => console.warn(err));
-
       res.status(201).json({
-        message: `Note ${note.title} successfully updated!`,
-        note
+        message: `Note successfully updated!`,
+        note: {
+          _id: note._id,
+          task: note.task,
+          data: note.data,
+          createdAt: note.createdAt,
+          updatedAt: note.updatedAt
+        }
       });
     } else {
       throw new RangeError("ERR_NOTE_NOT_FOUND");
@@ -162,12 +162,12 @@ exports.deleteNote = async (req, res, next) => {
 
     if (note) {
       // Trigger Task.save() to recalculate the number of notes in the task
-      const task = await Task.findById(note.task);
-      const savedTask = await task.save();
+      Task.findById(note.task)
+        .then(task => task.save().then())
+        .catch(console.log);
 
       res.status(200).json({
-        message: `Note ${note.note} successfully deleted!`,
-        task: savedTask
+        message: `Note successfully deleted!`
       });
     } else {
       throw new RangeError("ERR_NOTE_NOT_FOUND");

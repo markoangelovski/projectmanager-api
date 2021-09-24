@@ -25,7 +25,7 @@ const gtmParser = data => {
     start.match(/Site/)
       ? (GTMraw = start
           .replace(/\r?\n|\r|\s/g, "")
-          .split(/("}|" }|'}|' }|}})/)[0]
+          .split(/("}|" }|'}|' }|}}|},)/)[0]
           .trim()
           .concat("", '"'))
       : null;
@@ -96,9 +96,27 @@ const gtmParser = data => {
     GTM = `{${newGTM}}`;
   }
 
+  // For edge cases where there are some mistakes in the GTM object, like another object is added.
+  // Example on metamucil.com.br, user object was added in the GTM object (at the very end of the object) instead beside. In the end, the last } was missing, hence adding it here.
+  const noOfCurlyBracesMatch =
+    GTM.match(/{/g).length === GTM.match(/}/g).length;
+  if (!noOfCurlyBracesMatch) {
+    GTM = GTM + "}";
+  }
+
   // Remove GoogleReCaptcha key from GTM due to errors with scanning
   const finalGTM = JSON.parse(GTM);
   delete finalGTM.GoogleReCaptcha;
+
+  for (const key in finalGTM) {
+    if (Object.hasOwnProperty.call(finalGTM, key)) {
+      // For instances where GTM parsing inserts empty keys with undefined values into final GTM, ie. "":"undefined"
+      if (!key.length) delete finalGTM[key];
+      // If objects are inserted as values in GTM by mistake, stringify the object. Because comparing two objects is always false and locale gets false positive in the scan.
+      if (typeof finalGTM[key] === "object")
+        finalGTM[key] = JSON.stringify(finalGTM[key]);
+    }
+  }
 
   return finalGTM;
 };
@@ -134,11 +152,13 @@ const globalGtmParser = async data => {
   if (gtmInline) {
     // If global GTM script is internal, return GTM property
     return gtmInline.join();
-  } else {
+  } else if (gtmExtSrc) {
     // If global GTM script is external, fetch the gtm script and return GTM property
     const res = await axios.get(gtmExtSrc);
     const gtmExternal = res.data.match(rgxGTM);
     return gtmExternal.join();
+  } else {
+    return "No Global GTM found";
   }
 };
 

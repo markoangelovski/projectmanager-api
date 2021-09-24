@@ -5,3 +5,5 @@ requests/
 screenshots/
 reports/
 !src/api/reports
+*_environment.json
+src/widget/build/*

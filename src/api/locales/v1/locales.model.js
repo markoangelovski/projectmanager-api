@@ -31,6 +31,8 @@ const localeSchema = new mongoose.Schema(
     metaDescription: String,
     metaImage: String,
     favicon: String,
+    scanPaused: { type: Boolean, default: false },
+    scanPausedComment: gtmType,
     SiteTouchpoint: gtmType,
     GoogleAnalyticsLocal: gtmType,
     GoogleAnalyticsBrand: gtmType,
@@ -40,6 +42,8 @@ const localeSchema = new mongoose.Schema(
     FacebookRemarketingID: gtmType,
     Lytics: gtmType,
     Segment: gtmType,
+    Dynatrace: gtmType,
+    GoogleAnalyticsGA4MeasurementID: gtmType,
     globalGTM: gtmType,
     GTM: Object
   },
@@ -48,6 +52,12 @@ const localeSchema = new mongoose.Schema(
 
 localeSchema.pre("save", async function (next) {
   try {
+    // Set updatedAt timestamp regardless of whether the GTM was fetched and validated or not
+    this.updatedAt = new Date();
+
+    // Skips fetching and validating GTM on the locale
+    if (this.skipValidation === "true") return next();
+
     const { data } = await axios.get(this.url);
     const meta = await getMeta(data, this.url);
 
@@ -59,8 +69,12 @@ localeSchema.pre("save", async function (next) {
     this.globalGTM = await GTM.parseGlobal(data);
     this.GTM = GTM.parse(data);
     // Check if any of the provided attributes does not match with live attributes
-    const err = gtmValidation(this);
-    if (err) throw new Error(err);
+    const gtmComparison = gtmValidation(this._doc);
+    if (gtmComparison.hasErrors)
+      return next({
+        message: "A validation error occurred.",
+        error: gtmComparison.result
+      });
     next();
   } catch (error) {
     next(error);

@@ -144,7 +144,7 @@ exports.login = async (req, res, next) => {
 exports.logout = async (req, res, next) => {
   res.clearCookie("auth", {
     httpOnly: true,
-    sameSite: "None",
+    sameSite: process.env.NODE_ENV === "development" ? "Lax" : "None",
     secure: process.env.NODE_ENV === "development" ? false : true
   });
   res.json({

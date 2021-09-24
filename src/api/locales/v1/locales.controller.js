@@ -36,7 +36,23 @@ exports.postLocale = async (req, res, next) => {
 // @desc    Get locales by query params
 exports.getLocale = async (req, res, next) => {
   try {
-    const locales = await Locale.find(req.query);
+    const query = {};
+
+    for (const key in req.query) {
+      if (Object.hasOwnProperty.call(req.query, key)) {
+        const value = req.query[key];
+
+        // Maps standard key:value pairs to Query object (for standard query params: ?title="Project title")
+        query[key] = value;
+
+        if (value.includes("$")) {
+          // Maps Mongo-specific queries to Query object, for example ?title={"$exists":"true"}
+          query[key] = JSON.parse(value);
+        }
+      }
+    }
+
+    const locales = await Locale.find(query);
 
     if (locales.length) {
       res.status(200).json({
@@ -59,11 +75,22 @@ exports.getLocale = async (req, res, next) => {
 // @route   PATCH /locales
 // @desc    Update single Locale values
 exports.patchLocale = async (req, res, next) => {
-  const localeUrl = req.body.url;
+  const newUrl = req.body.newUrl;
+  const newUrlKeyExists = req.body.hasOwnProperty("newUrl");
+  const newUrlIsok = newUrlKeyExists && urlRgx.test(newUrl);
 
-  if (localeUrl && urlRgx.test(localeUrl)) {
+  const message = {
+    message: "Please enter valid locale URL.",
+    error: "ERR_INVALID_URL"
+  };
+
+  if (!urlRgx.test(req.body.url)) {
+    res.status(400).json(message);
+  } else if (newUrlKeyExists && !newUrlIsok) {
+    res.status(400).json(message);
+  } else {
     try {
-      const locale = await Locale.findOne({ url: localeUrl });
+      const locale = await Locale.findOne({ url: req.body.url });
 
       if (locale) {
         // Iterate over req.body and update the values in locale
@@ -72,6 +99,11 @@ exports.patchLocale = async (req, res, next) => {
             locale[key] =
               req.body[key].length > 1 ? req.body[key] : delete locale[key];
           }
+        }
+
+        // If the Locale URL has been updated, overwrite the old url with the new one
+        if (newUrlIsok) {
+          locale.url = req.body.newUrl;
         }
 
         const savedLocale = await locale.save();
@@ -87,13 +119,8 @@ exports.patchLocale = async (req, res, next) => {
         });
       }
     } catch (error) {
-      console.warn(error);
+      console.warn("Error updating locale: ", error);
       next(error);
     }
-  } else if (localeUrl && !urlRgx.test(localeUrl)) {
-    res.status(400).json({
-      message: "Please enter valid locale URL.",
-      error: "ERR_INVALID_URL"
-    });
   }
 };

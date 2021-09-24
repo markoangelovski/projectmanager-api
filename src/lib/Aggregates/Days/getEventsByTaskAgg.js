@@ -21,7 +21,7 @@ const getEventsByTaskAgg = async (start, end, taskId) => {
       }
     },
 
-    // Shape the event object format and include task title and kanboard
+    // Shape the event object format and include task title, kanboard and description
     {
       $project: {
         title: "$title",
@@ -30,6 +30,7 @@ const getEventsByTaskAgg = async (start, end, taskId) => {
         day: { $toDate: "$date" },
         booked: "$booked",
         task: { $arrayElemAt: ["$task.title", 0] },
+        description: { $arrayElemAt: ["$task.description", 0] },
         kanboard: { $arrayElemAt: ["$task.kanboard", 0] },
         logs: { $ifNull: ["$logs", []] }
       }
@@ -46,7 +47,8 @@ const getEventsByTaskAgg = async (start, end, taskId) => {
       $group: {
         _id: {
           task: "$task",
-          kanboard: "$kanboard"
+          kanboard: "$kanboard",
+          description: "$description"
         },
         totalHoursWorked: { $sum: "$duration" },
         totalHoursBooked: {
@@ -79,6 +81,7 @@ const getEventsByTaskAgg = async (start, end, taskId) => {
         _id: 0,
         task: "$_id.task",
         kanboard: "$_id.kanboard",
+        description: "$_id.description",
         totalEvents: { $size: "$events" },
         totalHoursWorked: "$totalHoursWorked",
         totalHoursBooked: "$totalHoursBooked",

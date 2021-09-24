@@ -1,8 +1,10 @@
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const requestIp = require("@supercharge/request-ip");
 
 // Config
 const {
@@ -16,33 +18,50 @@ const { connectDB } = require("./src/config/db");
 connectDB();
 
 // Middleware imports
-const { checkUser } = require("./src/middlewares/users/checkUser");
+const {
+  checkUser,
+  getClientIp /*
+  responseTime, // intended for Analyitics functionality*/
+} = require("./src/middlewares/users/checkUser");
 const checkScan = require("./src/middlewares/scans/checkScan");
+// const { checkSource } = require("./src/middlewares/analyitcs/checkSource.js"); // Analyitcs middleware
 
 const app = express();
+
 app.disable("etag");
+
+app.use(getClientIp); // Get req.ip address middleware. Needs to be set up before "trust-proxy" to catch actual client ip and not the proxy ip
+
 app.set("trust-proxy", 1); // Enable rate limit behind proxies such as Heroku
 
 // Middleware
+// app.use(responseTime());// intended for Analyitics functionality
 app.use(helmet());
 app.use(cors(corsOptions()));
 app.use(rateLimit(rateLimitOptions()));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Custom middlewares
 app.use(checkUser);
+app.use(getClientIp);
 app.use(checkScan);
+// app.use(checkSource); // Analyitcs middleware for setting agaId cookie on Postman
 if (NODE_ENV() === "development") {
   const morgan = require("morgan");
   app.use(morgan("dev"));
 }
+
+// Widget route
+app.use("/v1/w", express.static(path.join(__dirname, "src/widget/build")));
 
 // Home route
 app.get("/", (req, res) => {
   res.json({
     status: "OK",
     statusCode: 200,
-    user: req.user
+    user: req.user,
+    ip: req._ip
   });
 });
 
