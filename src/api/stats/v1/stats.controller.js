@@ -83,6 +83,17 @@ exports.getTasks = async (req, res, next) => {
   try {
     const skip = parseInt(req.query.skip) || 0;
     if (skip % 50) throw new Error("ERR_INVALID_SKIP_VALUE");
+
+    const sortOptions = ["title", "pl", "createdAt", "updatedAt", "dueDate"];
+    const sort = { dueDate: 1 };
+    if (req.query.sort) {
+      const [sortOption, sortValue] = req.query.sort.split(":");
+      if (sortOptions.indexOf(sortOption) > -1) {
+        delete sort.dueDate;
+        sort[sortOption] = parseInt(sortValue);
+      }
+    }
+
     // Include done query param if included, otherwise omit it
     const done =
       typeof req.query.done === "string" ? req.query.done == "true" : null;
@@ -90,6 +101,7 @@ exports.getTasks = async (req, res, next) => {
     const { stats, docs } = await getTasksAggrCond(
       {
         skip,
+        sort,
         ownerId: mongoose.Types.ObjectId(req.user._id),
         done,
         column: req.query.column

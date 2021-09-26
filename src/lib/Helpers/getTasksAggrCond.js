@@ -1,7 +1,7 @@
 const Task = require("../../api/tasks/v1/tasks.model");
 
 const getTasksAggrCond = async (cond, aggregateCall) => {
-  let { skip, ownerId, done, column } = cond;
+  let { skip, sort, ownerId, done, column } = cond;
 
   let query = { owner: ownerId };
 
@@ -10,7 +10,7 @@ const getTasksAggrCond = async (cond, aggregateCall) => {
 
   const [count, docs] = await Promise.all([
     Task.countDocuments(query),
-    aggregateCall(skip, query)
+    aggregateCall(skip, sort, query)
   ]);
 
   let remaining = count - (skip + 50);
