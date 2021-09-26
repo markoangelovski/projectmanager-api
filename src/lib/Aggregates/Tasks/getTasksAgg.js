@@ -1,7 +1,7 @@
 const Task = require("../../../api/tasks/v1/tasks.model.js");
 const mongoose = require("mongoose");
 
-const getTasksAgg = async (skip, query) => {
+const getTasksAgg = async (skip, sort, query) => {
   const aggregate = Task.aggregate([
     { $match: query },
     {
@@ -46,7 +46,8 @@ const getTasksAgg = async (skip, query) => {
         updatedAt: "$updatedAt"
       }
     },
-    { $sort: { updatedAt: 1 } },
+    // { $sort: { updatedAt: 1 } },
+    { $sort: sort },
     { $skip: skip },
     { $limit: 50 }
   ]);
