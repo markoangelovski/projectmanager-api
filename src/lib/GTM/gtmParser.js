@@ -9,10 +9,10 @@ const gtmParser = data => {
   $("script").each(function (i, elem) {
     $(this)
       .html()
-      .match(/GTM(":|':|:|=| =)/g) && !starts.length // take only first instance of GTM occurring
+      .match(/GTM(":|':|:|=| =|'] = )/g) && !starts.length // take only first instance of GTM occurring
       ? (starts = $(this)
           .html()
-          .split(/GTM(":|':|:|=| =)({| {)/))
+          .split(/GTM(":|':|:|=| =|'] = )({| {)/))
       : null;
   });
   if (starts.length === 0) {
@@ -40,7 +40,13 @@ const gtmParser = data => {
     : GTMraw;
 
   // Split GTM data into array and trim extra spacings
-  let GTMarray = GTMraw.split(",").map(key => key.trim());
+  let GTMarray = GTMraw.split(",").map(keyValue =>
+    keyValue
+      .trim()
+      .split(":")
+      .map(item => (item[0] === '"' ? item : `"${item}"`)) // Sometimes the keys in PGDL JSON object will be added without double quotes. This checks if double quotes exist and adds them if not.
+      .join(":")
+  );
   let tempKey = [];
   let GTM;
 
