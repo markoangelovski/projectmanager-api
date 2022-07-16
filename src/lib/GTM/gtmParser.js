@@ -44,12 +44,12 @@ const gtmParser = data => {
     keyValue
       .trim()
       .split(":")
-      .map(item => (item[0] === '"' ? item : `"${item}"`)) // Sometimes the keys in PGDL JSON object will be added without double quotes. This checks if double quotes exist and adds them if not.
+      .map(item => (item[0] === "{" || item[0] === '"' ? item : `"${item}"`)) // Sometimes the keys in PGDL JSON object will be added without double quotes. This checks if double quotes exist and adds them if not. Check for { is added for Meta.com.br and its random addition of "user" to PGDL.
       .join(":")
   );
   let tempKey = [];
   let GTM;
-
+  console.log("GTMarray", GTMarray);
   // Check if GTM data is valid JSON and convert if not
   if (GTMraw[0] !== '"') {
     // Split "key:value" pairs by ":" into "value, key" to remove ":"
