@@ -2,9 +2,9 @@ require("dotenv").config();
 
 const NODE_ENV = process.env.NODE_ENV;
 const NODE_ORIGIN = process.env.NODE_ORIGIN;
-const DB = process.env.DB;
+const DB = process.env.DB_URI;
 const TEST_DB = process.env.TEST_DB;
-const JWT = process.env.JWT;
+const JWT = process.env.JWT_KEY;
 const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD;
 
 const corsOptions = {

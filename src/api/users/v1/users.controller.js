@@ -108,7 +108,9 @@ exports.login = async (req, res, next) => {
             avatar_url: findUser.avatar_url,
             role: findUser.role
           };
-          const token = jwt.sign(user, process.env.JWT, { expiresIn: "1d" });
+          const token = jwt.sign(user, process.env.JWT_KEY, {
+            expiresIn: "1d"
+          });
           res.cookie("auth", `Bearer ${token}`, {
             httpOnly: true,
             sameSite: process.env.NODE_ENV === "development" ? "Lax" : "None",
