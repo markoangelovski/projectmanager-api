@@ -1,0 +1,8 @@
+# Ignore everything
+*
+
+# Allow files and directories
+!/docs/PMSPA.postman_collection.json
+!/src/*
+!/*.js
+!/*.json
