@@ -7,7 +7,7 @@ function checkUser(req, res, next) {
 
     if (authCookie) {
       const token = authCookie.split(" ")[1];
-      const verified = jwt.verify(token, process.env.JWT);
+      const verified = jwt.verify(token, process.env.JWT_KEY);
 
       if (verified) {
         req.user = verified;

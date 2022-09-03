@@ -28,7 +28,7 @@ describe("POST /v1/tasks", () => {
       email: newUser.email,
       role: newUser.role
     };
-    const token = jwt.sign(user, process.env.JWT, { expiresIn: "1d" });
+    const token = jwt.sign(user, process.env.JWT_KEY, { expiresIn: "1d" });
     cookie = `auth=Bearer%20${token}; Path=/; HttpOnly; Secure; SameSite=None`;
     project.owner = newUser._id;
     await Project.create(project).then(proj => (task.project = proj._id));
