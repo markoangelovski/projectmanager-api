@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  pmspa:
+    container_name: pmspa
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./.env:/app/.env
+    environment:
+      - NODE_ENV=production
+    # depends_on:
+    #   - mongo
+  # mongo:
+  #   image: mongo
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo-data:/data/db
+  # mongo-express:
+  #   image: mongo-express
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - mongo
+# volumes:
+#   mongo-data:
+#     driver: local

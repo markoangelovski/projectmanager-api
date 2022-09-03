@@ -49,7 +49,7 @@ const gtmParser = data => {
   );
   let tempKey = [];
   let GTM;
-  console.log("GTMarray", GTMarray);
+
   // Check if GTM data is valid JSON and convert if not
   if (GTMraw[0] !== '"') {
     // Split "key:value" pairs by ":" into "value, key" to remove ":"
