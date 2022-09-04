@@ -58,7 +58,7 @@ app.use("/v1/w", express.static(path.join(__dirname, "src/widget/build")));
 // Home route
 app.get("/", (req, res) => {
   res.json({
-    updatedAt: "2022-09-04T07:42:54.420Z",
+    updatedAt: "2022-09-04T08:19:25.906Z",
     status: "OK",
     statusCode: 200,
     user: req.user,
