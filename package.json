@@ -22,7 +22,7 @@
   "dependencies": {
     "@hapi/joi": "^16.1.7",
     "@supercharge/request-ip": "^1.1.2",
-    "axios": "^0.19.0",
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "^1.4.4",
@@ -36,17 +36,17 @@
     "moment": "^2.24.0",
     "mongoose": "^5.9.19",
     "page-metadata-parser": "^1.1.4",
-    "xlsx": "^0.15.6"
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^8.1.1",
+    "mocha": "^10.0.0",
     "morgan": "^1.9.1",
     "nodemon": "^2.0.4",
     "pre-commit": "^1.2.2",
     "supertest": "^4.0.2",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.1"
   }
 }
