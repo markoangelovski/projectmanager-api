@@ -5,7 +5,7 @@ exports.getQueryConditions = async (req, Model, ...rest) => {
   skip = skip >= 0 ? skip : 0;
 
   limit = !isNaN(Number(limit)) ? Number(limit) : 20;
-  limit = limit <= 0 || limit > 10 ? 10 : limit;
+  limit = limit <= 0 || limit > 50 ? 50 : limit;
 
   const globalOptions = [
     "title",
