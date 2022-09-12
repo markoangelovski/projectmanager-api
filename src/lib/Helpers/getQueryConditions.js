@@ -1,5 +1,5 @@
 exports.getQueryConditions = async (req, Model, ...rest) => {
-  let { skip = 0, limit = 10, sort = "title" } = req.query;
+  let { skip = 0, limit = 50, sort = "title" } = req.query;
 
   skip = !isNaN(Number(skip)) ? Number(skip) : 0;
   skip = skip >= 0 ? skip : 0;
