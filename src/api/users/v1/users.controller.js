@@ -114,7 +114,8 @@ exports.login = async (req, res, next) => {
           res.cookie("auth", `Bearer ${token}`, {
             // httpOnly: true,
             sameSite: process.env.NODE_ENV === "development" ? "Lax" : "None",
-            secure: process.env.NODE_ENV === "development" ? false : true
+            secure: process.env.NODE_ENV === "development" ? false : true,
+            domain: req.hostname
           });
           res.json({
             message: "Login successful!",
