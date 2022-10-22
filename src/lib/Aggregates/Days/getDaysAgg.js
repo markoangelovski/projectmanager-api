@@ -34,10 +34,13 @@ const getDaysAgg = async (start, end, total = false) => {
         "events.duration": "$events.duration",
         "events.booked": "$events.booked",
         "events.createdAt": "$events.createdAt",
+        "events.date": "$events.date",
         "events.task": { $arrayElemAt: ["$events.task.title", 0] },
         "events.taskId": { $arrayElemAt: ["$events.task._id", 0] },
         "events.kanboard": { $arrayElemAt: ["$events.task.kanboard", 0] },
-        "events.logs": { $ifNull: ["$events.logs", []] }
+        "events.logs": { $ifNull: ["$events.logs", []] },
+        "events.durationBooked": "$events.durationBooked",
+        "events.bookingDetails": "$events.bookingDetails"
       }
     },
     { $unset: ["events.logs._id"] },
