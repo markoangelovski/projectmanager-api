@@ -116,6 +116,7 @@ exports.login = async (req, res, next) => {
             sameSite: process.env.NODE_ENV === "development" ? "Lax" : "None",
             secure: process.env.NODE_ENV === "development" ? false : true
           });
+          res.set("X-Auth", `Bearer ${token}`);
           res.json({
             message: "Login successful!",
             user

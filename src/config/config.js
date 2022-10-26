@@ -10,6 +10,7 @@ const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD;
 const corsOptions = {
   origin: new RegExp(NODE_ORIGIN),
   credentials: true,
+  exposedHeaders: "X-Auth",
   optionsSuccessStatus: 204
 };
 
