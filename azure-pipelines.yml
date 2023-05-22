@@ -11,10 +11,10 @@ variables:
   azureSubscription: "Azure Connection"
 
   # Web app name
-  webAppName: "Project-Manager-legacy-API"
+  webAppName: "pmspa-api"
 
   # Environment name
-  environmentName: "Project-Manager-legacy-API"
+  environmentName: "PMSPA-API"
 
   # Agent VM image name
   agentName: "Local builder"
