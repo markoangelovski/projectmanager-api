@@ -3,7 +3,7 @@ const requestIp = require("@supercharge/request-ip");
 
 function checkUser(req, res, next) {
   try {
-    const authCookie = req.cookies.auth;
+    const authCookie = req.cookies.auth || req.get("Authorization");
 
     if (authCookie) {
       const token = authCookie.split(" ")[1];
